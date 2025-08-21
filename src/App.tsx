@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { vendors } from './data/vendors';
+import { vendors, VendorData } from './data/vendors';
 import { mapConfig } from './data/mapConfig';
 import { useStore, initializeStore } from './store/useStore';
 import { getCategoryColor, getCategoryIcon } from './data/mapConfig';
 import OpenStreetMap from './components/OpenStreetMap';
 import Header from './components/Header';
-import { Vendor } from './types';
+
 
 function App() {
   console.log('App component rendering...');
@@ -40,7 +40,7 @@ function App() {
     }
   }, [setVendors]);
 
-  const handleVendorClick = (vendor: Vendor) => {
+  const handleVendorClick = (vendor: VendorData) => {
     setSelectedVendor(vendor);
     setShowVendorPopup(true);
   };
@@ -57,7 +57,7 @@ function App() {
       
       {/* Main Content */}
       <div className="pt-20 pb-0 -mb-0">
-        <OpenStreetMap vendors={filteredVendors} onVendorClick={handleVendorClick} />
+        <OpenStreetMap vendors={filteredVendors as VendorData[]} onVendorClick={handleVendorClick} />
       </div>
       
       {/* Vendor Detail Popup */}
@@ -83,18 +83,10 @@ function App() {
                       >
                         {selectedVendor.category}
                       </span>
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        selectedVendor.status === 'open' ? 'bg-green-100 text-green-800' :
-                        selectedVendor.status === 'closed' ? 'bg-red-100 text-red-800' :
-                        'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {selectedVendor.status}
+                      <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">
+                        Available
                       </span>
-                      {selectedVendor.featured && (
-                        <span className="text-xs px-2 py-1 bg-amber-100 text-amber-800 rounded-full flex items-center gap-1">
-                          ⭐ Featured
-                        </span>
-                      )}
+
                     </div>
                   </div>
                 </div>
@@ -113,32 +105,14 @@ function App() {
 
             {/* Details */}
             <div className="px-6 pb-4 space-y-4">
-              {/* Hours */}
+              {/* Vendor Type */}
               <div className="flex items-start gap-3">
-                <span className="text-gray-400 mt-0.5">🕒</span>
+                <span className="text-gray-400 mt-0.5">🏪</span>
                 <div>
-                  <h4 className="font-medium text-gray-900">Hours</h4>
-                  <p className="text-gray-600">{selectedVendor.hours}</p>
+                  <h4 className="font-medium text-gray-900">Type</h4>
+                  <p className="text-gray-600 capitalize">{(selectedVendor as VendorData).type}</p>
                 </div>
               </div>
-
-              {/* Special Offers */}
-              {selectedVendor.specialOffers && selectedVendor.specialOffers.length > 0 && (
-                <div className="flex items-start gap-3">
-                  <span className="text-amber-400 mt-0.5">🎯</span>
-                  <div>
-                    <h4 className="font-medium text-gray-900">Special Offers</h4>
-                    <ul className="text-gray-600 space-y-1">
-                      {selectedVendor.specialOffers.map((offer, index) => (
-                        <li key={index} className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
-                          {offer}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
 
               {/* Location */}
               <div className="flex items-center gap-3 pt-2">

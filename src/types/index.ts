@@ -9,25 +9,25 @@ export interface Vendor {
     area: string;
     coordinates: [number, number]; // [lat, lng]
   };
-  hours: string;
-  specialOffers?: string[];
   contact?: {
-    phone?: string;
     email?: string;
     website?: string;
   };
-  status: 'open' | 'closed' | 'coming-soon';
-  featured?: boolean;
 }
 
 export type VendorCategory = 
   | 'food' 
+  | 'beverage'
   | 'arts' 
   | 'activities' 
   | 'services' 
   | 'entertainment' 
   | 'security' 
-  | 'facilities';
+  | 'restrooms'
+  | 'firstAid'
+  | 'parking'
+  | 'seating'
+  | 'information';
 
 export interface MapConfig {
   center: [number, number];
@@ -45,7 +45,6 @@ export interface MapConfig {
 export interface FilterState {
   categories: VendorCategory[];
   searchQuery: string;
-  showOpenOnly: boolean;
   showFeaturedOnly: boolean;
 }
 

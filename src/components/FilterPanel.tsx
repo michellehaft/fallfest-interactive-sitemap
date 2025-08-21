@@ -100,8 +100,8 @@ const FilterPanel: React.FC = () => {
             <label className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer">
               <input
                 type="checkbox"
-                checked={filters.showOpenOnly}
-                onChange={(e) => handleFilterChange('showOpenOnly', e.target.checked)}
+                checked={false}
+                onChange={() => {}}
                 className="w-4 h-4 text-fallfest-500 border-gray-300 rounded focus:ring-fallfest-500"
               />
               <div className="flex items-center gap-2">
@@ -206,7 +206,7 @@ const FilterPanel: React.FC = () => {
         </div>
 
         {/* Active Filters Summary */}
-        {(filters.categories.length > 0 || filters.showOpenOnly || filters.showFeaturedOnly) && (
+        {(filters.categories.length > 0 || filters.showFeaturedOnly) && (
           <div className="mt-4 p-3 bg-gray-50 rounded-lg">
             <h5 className="text-sm font-medium text-gray-700 mb-2">Active Filters:</h5>
             <div className="flex flex-wrap gap-2">
@@ -218,11 +218,7 @@ const FilterPanel: React.FC = () => {
                   {category}
                 </span>
               ))}
-              {filters.showOpenOnly && (
-                <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
-                  Open only
-                </span>
-              )}
+
               {filters.showFeaturedOnly && (
                 <span className="text-xs px-2 py-1 bg-amber-100 text-amber-700 rounded-full">
                   Featured only

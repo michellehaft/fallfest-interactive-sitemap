@@ -124,4 +124,60 @@
 .relative.w-full.h-screen {
   margin-bottom: 0 !important;
   padding-bottom: 0 !important;
+}
+
+/* Enhanced vendor popup styles */
+.vendor-popup .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: none;
+  padding: 0;
+}
+
+.vendor-popup .leaflet-popup-content {
+  margin: 0;
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.vendor-popup .leaflet-popup-tip {
+  background: white;
+  border: none;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Vendor marker animations */
+.vendor-marker {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vendor-marker:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4) !important;
+  z-index: 1000;
+}
+
+/* Category-specific hover effects */
+.vendor-marker[data-category="food"]:hover {
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.5) !important;
+}
+
+.vendor-marker[data-category="arts"]:hover {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5) !important;
+}
+
+.vendor-marker[data-category="activities"]:hover {
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5) !important;
+}
+
+.vendor-marker[data-category="services"]:hover,
+.vendor-marker[data-category="facilities"]:hover {
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5) !important;
+}
+
+/* Popup button hover effects */
+.vendor-popup-content button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 } 

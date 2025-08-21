@@ -1,316 +1,215 @@
-import { Vendor } from '../types';
+// Fallfest 2024 - Eastwood Village
+// Complete vendor, activity, and amenity data for interactive sitemap
 
-// Mock coordinates - in a real app, these would be actual GPS coordinates
-// For now, using a coordinate system that matches the visual layout
-const BASE_LAT = 36.1627; // Nashville area
-const BASE_LNG = -86.7816;
+import { Vendor, VendorCategory } from '../types';
 
-export const vendors: Vendor[] = [
-  // Security & Fire Lanes
-  {
-    id: 'security-north',
-    name: 'Security Checkpoint - North',
-    category: 'security',
-    description: 'Main security checkpoint at the northern entrance. All bags will be checked.',
-    location: {
-      x: 85,
-      y: 12,
-      area: 'north-entrance',
-      coordinates: [BASE_LAT + 0.001, BASE_LNG - 0.001]
-    },
-    hours: 'All day',
-    status: 'open',
-    featured: false
-  },
-  {
-    id: 'security-south',
-    name: 'Security Checkpoint - South',
-    category: 'security',
-    description: 'Security checkpoint at the southern entrance. All bags will be checked.',
-    location: {
-      x: 85,
-      y: 88,
-      area: 'south-entrance',
-      coordinates: [BASE_LAT - 0.001, BASE_LNG - 0.001]
-    },
-    hours: 'All day',
-    status: 'open',
-    featured: false
-  },
-  {
-    id: 'fire-lane-north',
-    name: 'Fire Lane - North (20ft)',
-    category: 'facilities',
-    description: 'Emergency access lane - keep clear at all times.',
-    location: {
-      x: 45,
-      y: 15,
-      area: 'north-entrance',
-      coordinates: [BASE_LAT + 0.0008, BASE_LNG - 0.001]
-    },
-    hours: 'All day',
-    status: 'open',
-    featured: false
-  },
-  {
-    id: 'fire-lane-south',
-    name: 'Fire Lane - South (20ft)',
-    category: 'facilities',
-    description: 'Emergency access lane - keep clear at all times.',
-    location: {
-      x: 45,
-      y: 85,
-      area: 'south-entrance',
-      coordinates: [BASE_LAT - 0.0008, BASE_LNG - 0.001]
-    },
-    hours: 'All day',
-    status: 'open',
-    featured: false
-  },
+// Base coordinates for Eastwood Village
+const BASE_LAT = 36.1888487;
+const BASE_LNG = -86.7383314;
 
-  // Main Stage & Entertainment
-  {
-    id: 'main-stage',
-    name: 'Main Stage',
-    category: 'entertainment',
-    description: 'Live music and performances throughout the day. Check schedule for times.',
-    location: {
-      x: 35,
-      y: 50,
-      area: 'center-west',
-      coordinates: [BASE_LAT, BASE_LNG - 0.0005]
-    },
-    hours: '10:00 AM - 8:00 PM',
-    status: 'open',
-    featured: true
-  },
+// Helper function to generate coordinates with slight offsets for variety
+const generateCoords = (latOffset: number, lngOffset: number): [number, number] => [
+  BASE_LAT + latOffset,
+  BASE_LNG + lngOffset
+];
 
-  // Food Vendors - West Side
+// Extended interface for our enhanced vendor data
+export interface VendorData extends Vendor {
+  type: 'vendor' | 'activity' | 'amenity';
+  dietaryOptions?: string[];
+  ageRequirements?: string;
+  safetyInfo?: string;
+  capacity?: string;
+  accessibility?: string;
+  features?: string[];
+}
+
+export const vendors: VendorData[] = [
+  // === FOOD VENDORS ===
   {
-    id: 'food-1',
-    name: 'Taco Fiesta',
-    category: 'food',
-    description: 'Authentic Mexican tacos, burritos, and quesadillas. Vegetarian options available.',
+    id: 'food-001',
+    name: 'Ofelia Tacos.',
+    type: 'vendor',
+    category: 'food' as VendorCategory,
     location: {
       x: 20,
       y: 25,
       area: 'west-vendor-area',
-      coordinates: [BASE_LAT + 0.0002, BASE_LNG - 0.0006]
+      coordinates: generateCoords(0.0002, -0.0008)
     },
-    hours: '11:00 AM - 7:00 PM',
-    specialOffers: ['$2 Taco Tuesday', 'Free chips with any order'],
-    status: 'open',
-    featured: false
-  },
-  {
-    id: 'food-2',
-    name: 'BBQ Pit Stop',
-    category: 'food',
-    description: 'Smoked brisket, pulled pork, and ribs. Homemade BBQ sauce.',
-    location: {
-      x: 20,
-      y: 35,
-      area: 'west-vendor-area',
-      coordinates: [BASE_LAT - 0.0002, BASE_LNG - 0.0006]
+    description: 'Welcome to Ofelia, a vibrant homage to the rich culinary traditions of Mexico City, nestled in Nashville.',
+    contact: {
+      website: 'ofelianashville.com'
     },
-    hours: '11:00 AM - 7:00 PM',
-    specialOffers: ['Combo plates available', 'Gluten-free options'],
-    status: 'open',
-    featured: true
+    dietaryOptions: ['gluten-free buns available']
   },
+  
   {
-    id: 'food-3',
-    name: 'Sweet Treats',
-    category: 'food',
-    description: 'Homemade cookies, brownies, and ice cream. Perfect for dessert!',
-    location: {
-      x: 20,
-      y: 45,
-      area: 'west-vendor-area',
-      coordinates: [BASE_LAT + 0.0003, BASE_LNG + 0.0006]
-    },
-    hours: '12:00 PM - 8:00 PM',
-    specialOffers: ['Buy 2 get 1 free on cookies'],
-    status: 'open',
-    featured: false
-  },
-  {
-    id: 'food-4',
-    name: 'Pizza Corner',
-    category: 'food',
-    description: 'Fresh-baked pizza by the slice or whole pie. Classic and specialty toppings.',
-    location: {
-      x: 20,
-      y: 55,
-      area: 'west-vendor-area',
-      coordinates: [BASE_LAT - 0.0003, BASE_LNG + 0.0006]
-    },
-    hours: '11:00 AM - 7:00 PM',
-    specialOffers: ['$5 lunch special', 'Gluten-free crust available'],
-    status: 'open',
-    featured: false
-  },
-
-  // Arts & Crafts - East Side
-  {
-    id: 'arts-1',
-    name: 'Handmade Jewelry',
-    category: 'arts',
-    description: 'Unique handcrafted jewelry pieces. Custom orders welcome.',
-    location: {
-      x: 80,
-      y: 25,
-      area: 'east-vendor-area',
-      coordinates: [BASE_LAT + 0.0002, BASE_LNG + 0.0007]
-    },
-    hours: '10:00 AM - 6:00 PM',
-    specialOffers: ['20% off for festival attendees'],
-    status: 'open',
-    featured: false
-  },
-  {
-    id: 'arts-2',
-    name: 'Pottery Studio',
-    category: 'arts',
-    description: 'Hand-thrown pottery and ceramics. Watch live demonstrations.',
-    location: {
-      x: 80,
-      y: 35,
-      area: 'east-vendor-area',
-      coordinates: [BASE_LAT - 0.0002, BASE_LNG + 0.0007]
-    },
-    hours: '10:00 AM - 6:00 PM',
-    specialOffers: ['Kids pottery workshop at 2 PM'],
-    status: 'open',
-    featured: true
-  },
-  {
-    id: 'arts-3',
-    name: 'Woodworking',
-    category: 'arts',
-    description: 'Handcrafted wooden items and furniture. Custom pieces available.',
-    location: {
-      x: 80,
-      y: 45,
-      area: 'east-vendor-area',
-      coordinates: [BASE_LAT, BASE_LNG + 0.0008]
-    },
-    hours: '10:00 AM - 6:00 PM',
-    status: 'open',
-    featured: false
-  },
-
-  // Activities
-  {
-    id: 'bounce-house-1',
-    name: 'Kids Bounce House',
-    category: 'activities',
-    description: 'Safe and fun bounce house for children ages 3-10.',
+    id: 'food-002',
+    name: 'Saap Saap BBQ',
+    type: 'vendor',
+    category: 'food' as VendorCategory,
     location: {
       x: 25,
-      y: 15,
-      area: 'west-activities',
-      coordinates: [BASE_LAT + 0.0004, BASE_LNG - 0.0007]
+      y: 30,
+      area: 'west-vendor-area',
+      coordinates: generateCoords(-0.0001, -0.0006)
     },
-    hours: '10:00 AM - 7:00 PM',
-    status: 'open',
-    featured: false
+    description: 'Saap Saap BBQ in Nashville, TN, is where Southern barbecue meets vibrant Lao flavors, creating an unforgettable culinary experience. This catering service, complete with a trailer smoker, brings expertly smoked and grilled meats to the streets of Nashville, offering a unique twist on traditional BBQ with Lao-inspired dishes.',
+    dietaryOptions: ['vegan', 'gluten-free']
   },
+
+  // === ARTS & CRAFTS VENDORS ===
   {
-    id: 'bounce-house-2',
-    name: 'Teen Bounce House',
-    category: 'activities',
-    description: 'Larger bounce house for older kids and teens.',
-    location: {
-      x: 45,
-      y: 15,
-      area: 'west-activities',
-      coordinates: [BASE_LAT - 0.0004, BASE_LNG - 0.0007]
-    },
-    hours: '10:00 AM - 7:00 PM',
-    status: 'open',
-    featured: false
-  },
-  {
-    id: 'skate-area',
-    name: 'Skate Zone',
-    category: 'activities',
-    description: 'Skateboarding area with ramps and obstacles. Helmets required.',
+    id: 'arts-001',
+    name: 'Tennessee Handwoven Textiles',
+    type: 'vendor',
+    category: 'arts' as VendorCategory,
     location: {
       x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0003, 0.0005)
+    },
+    description: 'Handwoven scarves, table runners, and wall hangings using traditional Tennessee patterns and locally sourced wool.',
+    contact: {
+      email: 'info@tnhandwoven.com',
+      website: 'tennesseehandwoven.com'
+    }
+  },
+
+  // === ACTIVITIES ===
+  {
+    id: 'activity-001',
+    name: 'Fallfest Bounce House',
+    type: 'activity',
+    category: 'activities' as VendorCategory,
+    location: {
+      x: 30,
       y: 15,
-      area: 'east-activities',
-      coordinates: [BASE_LAT - 0.0008, BASE_LNG - 0.0008]
+      area: 'west-activities',
+      coordinates: generateCoords(0.0001, -0.0004)
     },
-    hours: '10:00 AM - 6:00 PM',
-    status: 'open',
-    featured: false
+    description: 'Safe, supervised bounce house for children ages 3-12.',
+    ageRequirements: '3-12 years old',
+    safetyInfo: 'Adult supervision required',
+    capacity: '12 children maximum'
   },
 
-  // Tables & Seating
+  // === AMENITIES ===
   {
-    id: 'tables-1',
-    name: 'Community Tables',
-    category: 'facilities',
-    description: 'Shared seating area for dining and socializing.',
+    id: 'amenity-001',
+    name: 'Main Restroom Facility',
+    type: 'amenity',
+    category: 'restrooms' as VendorCategory,
     location: {
       x: 50,
-      y: 35,
-      area: 'center',
-      coordinates: [BASE_LAT + 0.0006, BASE_LNG]
+      y: 70,
+      area: 'central-amenities',
+      coordinates: generateCoords(-0.0002, 0.0003)
     },
-    hours: 'All day',
-    status: 'open',
-    featured: false
-  },
-  {
-    id: 'tables-2',
-    name: 'Picnic Area',
-    category: 'facilities',
-    description: 'Outdoor picnic tables with shade. Perfect for family meals.',
-    location: {
-      x: 50,
-      y: 65,
-      area: 'center',
-      coordinates: [BASE_LAT - 0.0006, BASE_LNG]
-    },
-    hours: 'All day',
-    status: 'open',
-    featured: false
-  },
-
-  // Services
-  {
-    id: 'bridal-nashville',
-    name: 'Bridal Nashville Dresses',
-    category: 'services',
-    description: 'Bridal boutique with wedding dresses and formal wear.',
-    location: {
-      x: 85,
-      y: 50,
-      area: 'east',
-      coordinates: [BASE_LAT, BASE_LNG + 0.001]
-    },
-    hours: '10:00 AM - 6:00 PM',
-    specialOffers: ['20% off all dresses during festival'],
-    status: 'open',
-    featured: true
+    description: 'Clean, well-maintained restroom facilities with baby changing stations and accessibility features.',
+    accessibility: 'ADA compliant',
+    features: [
+      'Baby changing stations',
+      'Hand sanitizer dispensers',
+      'Wheelchair accessible',
+      'Family restroom available'
+    ]
   }
 ];
 
-export const getVendorsByCategory = (category: string): Vendor[] => {
-  return vendors.filter(vendor => vendor.category === category);
-};
+// Category configurations for map display
+export const categoryConfig = {
+  food: {
+    color: '#F59E0B', // Amber
+    icon: '🍔',
+    label: 'Food'
+  },
+  beverage: {
+    color: '#059669', // Green
+    icon: '🥤',
+    label: 'Beverages'
+  },
+  arts: {
+    color: '#8B5CF6', // Purple
+    icon: '🎨',
+    label: 'Arts & Crafts'
+  },
+  activities: {
+    color: '#10B981', // Emerald
+    icon: '🎪',
+    label: 'Activities & Entertainment'
+  },
+  services: {
+    color: '#3B82F6', // Blue
+    icon: '🛠️',
+    label: 'Services'
+  },
+  restrooms: {
+    color: '#6B7280', // Gray
+    icon: '🚻',
+    label: 'Restrooms'
+  },
+  firstAid: {
+    color: '#EF4444', // Red
+    icon: '🏥',
+    label: 'First Aid'
+  },
+  security: {
+    color: '#1F2937', // Dark Gray
+    icon: '👮',
+    label: 'Security'
+  },
+  parking: {
+    color: '#059669', // Green
+    icon: '🅿️',
+    label: 'Parking'
+  },
+  seating: {
+    color: '#D97706', // Orange
+    icon: '🪑',
+    label: 'Seating Areas'
+  },
+  information: {
+    color: '#0891B2', // Cyan
+    icon: 'ℹ️',
+    label: 'Information'
+  }
+} as const;
 
-export const getVendorsByArea = (area: string): Vendor[] => {
-  return vendors.filter(vendor => vendor.location.area === area);
-};
+// Filter and search utilities
+export const getVendorsByType = (type: VendorData['type']) => vendors.filter(vendor => vendor.type === type);
+export const getVendorsByCategory = (category: string) => vendors.filter(vendor => vendor.category === category);
+export const getFeaturedVendors = () => vendors.slice(0, 3); // First 3 vendors as featured
+export const getActiveVendors = () => vendors; // All vendors are considered active
 
-export const searchVendors = (query: string): Vendor[] => {
+// Search function
+export const searchVendors = (query: string) => {
   const lowercaseQuery = query.toLowerCase();
   return vendors.filter(vendor => 
     vendor.name.toLowerCase().includes(lowercaseQuery) ||
     vendor.description.toLowerCase().includes(lowercaseQuery) ||
     vendor.category.toLowerCase().includes(lowercaseQuery)
   );
-}; 
+};
+
+// Get vendor by ID
+export const getVendorById = (id: string) => vendors.find(vendor => vendor.id === id);
+
+// Statistics
+export const getVendorStats = () => ({
+  total: vendors.length,
+  byType: {
+    vendors: getVendorsByType('vendor').length,
+    activities: getVendorsByType('activity').length,
+    amenities: getVendorsByType('amenity').length
+  },
+  byCategory: Object.keys(categoryConfig).reduce((acc, category) => {
+    acc[category] = getVendorsByCategory(category).length;
+    return acc;
+  }, {} as Record<string, number>),
+  active: getActiveVendors().length
+});
+
+export default vendors;

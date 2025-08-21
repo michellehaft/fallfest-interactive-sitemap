@@ -46,7 +46,6 @@ interface AppState {
 const initialFilters: FilterState = {
   categories: [],
   searchQuery: '',
-  showOpenOnly: false,
   showFeaturedOnly: false
 };
 
@@ -100,14 +99,10 @@ export const useStore = create<AppState>((set, get) => ({
       );
     }
     
-    // Open only filter
-    if (updatedFilters.showOpenOnly) {
-      filtered = filtered.filter(vendor => vendor.status === 'open');
-    }
-    
     // Featured only filter
     if (updatedFilters.showFeaturedOnly) {
-      filtered = filtered.filter(vendor => vendor.featured);
+      const featuredIds = ['food-001', 'food-002', 'arts-001']; // First 3 vendor IDs
+      filtered = filtered.filter(vendor => featuredIds.includes(vendor.id));
     }
     
     set({ filteredVendors: filtered });

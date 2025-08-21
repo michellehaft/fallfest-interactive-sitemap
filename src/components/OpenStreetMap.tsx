@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Vendor } from '../types';
+import { VendorData, categoryConfig } from '../data/vendors';
+import VendorManager from '../utils/VendorManager';
 
 // Fix for default marker icons in Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -12,57 +13,19 @@ L.Icon.Default.mergeOptions({
 });
 
 interface OpenStreetMapProps {
-  vendors: Vendor[];
-  onVendorClick: (vendor: Vendor) => void;
+  vendors: VendorData[];
+  onVendorClick: (vendor: VendorData) => void;
 }
 
 // Eastwood Village coordinates
 const EASTWOOD_CENTER: [number, number] = [36.1888487, -86.7383314];
 
-// Custom marker icons for different vendor categories
-const createCustomIcon = (category: string) => {
-  const colors = {
-    food: '#F59E0B',      // Amber
-    arts: '#8B5CF6',      // Purple
-    activities: '#10B981', // Emerald
-    services: '#3B82F6'   // Blue
-  };
 
-  const icons = {
-    food: '🍔',
-    arts: '🎨',
-    activities: '🎪',
-    services: '🛠️'
-  };
-
-  return L.divIcon({
-    className: 'custom-marker',
-    html: `
-      <div style="
-        background-color: ${colors[category as keyof typeof colors]};
-        border: 2px solid white;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        cursor: pointer;
-      ">
-        ${icons[category as keyof typeof icons]}
-      </div>
-    `,
-    iconSize: [30, 30],
-    iconAnchor: [15, 15]
-  });
-};
 
 const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
-  const markersRef = useRef<L.Marker[]>([]);
+  const vendorManagerRef = useRef<VendorManager | null>(null);
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
@@ -115,64 +78,19 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
       </div>
     `);
 
-    // Add vendor markers
-    vendors.forEach(vendor => {
-      if (vendor.location.coordinates) {
-        const [lat, lng] = vendor.location.coordinates;
-        const marker = L.marker([lat, lng], {
-          icon: createCustomIcon(vendor.category)
-        }).addTo(map);
-
-        // Add popup with vendor info
-        const popupContent = `
-          <div style="min-width: 200px;">
-            <h4 style="margin: 0 0 8px 0; color: #374151;">${vendor.name}</h4>
-            <p style="margin: 0 0 8px 0; font-size: 14px; color: #6B7280;">
-              ${vendor.description}
-            </p>
-            <div style="margin: 8px 0; padding: 8px; background: #F3F4F6; border-radius: 4px;">
-              <strong>Hours:</strong> ${vendor.hours}<br>
-              <strong>Status:</strong> 
-              <span style="color: ${vendor.status === 'open' ? '#059669' : '#DC2626'};">
-                ${vendor.status === 'open' ? '🟢 Open' : '🔴 Closed'}
-              </span>
-            </div>
-            ${vendor.specialOffers && vendor.specialOffers.length > 0 ? `
-              <div style="margin: 8px 0;">
-                <strong>Special Offers:</strong>
-                <ul style="margin: 5px 0; padding-left: 20px; font-size: 13px;">
-                  ${vendor.specialOffers.map(offer => `<li>${offer}</li>`).join('')}
-                </ul>
-              </div>
-            ` : ''}
-            <button 
-              onclick="window.vendorClickHandler && window.vendorClickHandler('${vendor.id}')"
-              style="
-                background: #3B82F6;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 14px;
-                margin-top: 8px;
-                width: 100%;
-              "
-            >
-              View Details
-            </button>
-          </div>
-        `;
-
-        marker.bindPopup(popupContent);
-        markersRef.current.push(marker);
-
-        // Add click handler for the marker itself
-        marker.on('click', () => {
-          onVendorClick(vendor);
-        });
+    // Initialize VendorManager
+    vendorManagerRef.current = new VendorManager(map, vendors, {
+      onVendorClick: (vendor) => {
+        onVendorClick(vendor);
+      },
+      popupOptions: {
+        maxWidth: 350,
+        className: 'vendor-popup'
       }
     });
+
+    // Set global reference for popup handlers
+    window.vendorManager = vendorManagerRef.current;
 
     // Add festival boundary overlay (approximate Eastwood Village area)
     const festivalBounds: [[number, number], [number, number]] = [
@@ -250,81 +168,24 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
 
     // Cleanup function
     return () => {
+      if (vendorManagerRef.current) {
+        vendorManagerRef.current.destroy();
+        vendorManagerRef.current = null;
+      }
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
       }
+      delete window.vendorManager;
     };
   }, [vendors, onVendorClick]);
 
-  // Update markers when vendors change
+  // Update vendors when props change
   useEffect(() => {
-    if (!mapInstanceRef.current) return;
-
-    // Clear existing markers
-    markersRef.current.forEach(marker => {
-      marker.remove();
-    });
-    markersRef.current = [];
-
-    // Add new markers
-    vendors.forEach(vendor => {
-      if (vendor.location.coordinates) {
-        const [lat, lng] = vendor.location.coordinates;
-        const marker = L.marker([lat, lng], {
-          icon: createCustomIcon(vendor.category)
-        }).addTo(mapInstanceRef.current!);
-
-        // Add popup and click handler (same as above)
-        const popupContent = `
-          <div style="min-width: 200px;">
-            <h4 style="margin: 0 0 8px 0; color: #374151;">${vendor.name}</h4>
-            <p style="margin: 0 0 8px 0; font-size: 14px; color: #6B7280;">
-              ${vendor.description}
-            </p>
-            <div style="margin: 8px 0; padding: 8px; background: #F3F4F6; border-radius: 4px;">
-              <strong>Hours:</strong> ${vendor.hours}<br>
-              <strong>Status:</strong> 
-              <span style="color: ${vendor.status === 'open' ? '#059669' : '#DC2626'};">
-                ${vendor.status === 'open' ? '🟢 Open' : '🔴 Closed'}
-              </span>
-            </div>
-            ${vendor.specialOffers && vendor.specialOffers.length > 0 ? `
-              <div style="margin: 8px 0;">
-                <strong>Special Offers:</strong>
-                <ul style="margin: 5px 0; padding-left: 20px; font-size: 13px;">
-                  ${vendor.specialOffers.map(offer => `<li>${offer}</li>`).join('')}
-                </ul>
-              </div>
-            ` : ''}
-            <button 
-              onclick="window.vendorClickHandler && window.vendorClickHandler('${vendor.id}')"
-              style="
-                background: #3B82F6;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 14px;
-                margin-top: 8px;
-                width: 100%;
-              "
-            >
-              View Details
-            </button>
-          </div>
-        `;
-
-        marker.bindPopup(popupContent);
-        markersRef.current.push(marker);
-
-        marker.on('click', () => {
-          onVendorClick(vendor);
-        });
-      }
-    });
-  }, [vendors, onVendorClick]);
+    if (vendorManagerRef.current) {
+      vendorManagerRef.current.importVendors(vendors);
+    }
+  }, [vendors]);
 
   // Set up global handler for popup buttons
   useEffect(() => {
@@ -352,22 +213,17 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
       <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-10">
         <h4 className="font-semibold text-gray-800 mb-3">Legend</h4>
         <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-amber-500 rounded-full"></div>
-            <span>Food Vendors</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-purple-500 rounded-full"></div>
-            <span>Arts & Crafts</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-emerald-500 rounded-full"></div>
-            <span>Activities</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-            <span>Services</span>
-          </div>
+          {Object.entries(categoryConfig).map(([key, config]) => (
+            <div key={key} className="flex items-center gap-2">
+              <div 
+                className="w-4 h-4 rounded-full flex items-center justify-center text-xs"
+                style={{ backgroundColor: config.color, color: 'white' }}
+              >
+                {config.icon}
+              </div>
+              <span>{config.label}</span>
+            </div>
+          ))}
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-red-600 rounded-full"></div>
             <span>Festival Center</span>
