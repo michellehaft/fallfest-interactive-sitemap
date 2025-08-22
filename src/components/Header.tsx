@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   const favorites = getFavorites();
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
       <div className="px-4 py-3 flex items-center justify-between">
         {/* Logo and Title */}
         <div className="flex items-center gap-3">
@@ -76,26 +76,6 @@ const Header: React.FC = () => {
           <button className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors md:hidden">
             <Menu className="w-5 h-5" />
           </button>
-        </div>
-      </div>
-
-      {/* Quick Stats */}
-      <div className="px-4 pb-3 flex items-center gap-6 text-sm text-gray-600">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-          <span>Open Now</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-          <span>Food & Drinks</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-          <span>Arts & Crafts</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-          <span>Activities</span>
         </div>
       </div>
     </header>

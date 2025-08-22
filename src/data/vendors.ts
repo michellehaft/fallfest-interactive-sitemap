@@ -16,6 +16,7 @@ const generateCoords = (latOffset: number, lngOffset: number): [number, number] 
 // Extended interface for our enhanced vendor data
 export interface VendorData extends Vendor {
   type: 'vendor' | 'activity' | 'amenity';
+  image?: string; // URL for vendor thumbnail/avatar image
   dietaryOptions?: string[];
   ageRequirements?: string;
   safetyInfo?: string;
@@ -31,6 +32,7 @@ export const vendors: VendorData[] = [
     name: 'Ofelia Tacos.',
     type: 'vendor',
     category: 'food' as VendorCategory,
+    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=150&h=150&fit=crop&auto=format&q=80', // Example taco image
     location: {
       x: 20,
       y: 25,
@@ -112,7 +114,7 @@ export const vendors: VendorData[] = [
   // === MERCHANT VENDORS ===
   {
     id: 'arts-001',
-    name: 'Tennessee Handwoven Textiles',
+    name: 'Blair and Landon Matney Art',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
     location: {
@@ -121,10 +123,9 @@ export const vendors: VendorData[] = [
       area: 'east-vendor-area',
       coordinates: generateCoords(0.0003, 0.0005)
     },
-    description: 'Handwoven scarves, table runners, and wall hangings using traditional Tennessee patterns and locally sourced wool.',
+    description: 'Art-painting and paper cutouts by local artists Blair and Landon Matney.',
     contact: {
-      email: 'info@tnhandwoven.com',
-      website: 'tennesseehandwoven.com'
+      website: 'landonmatney.com/'
     }
   },
 

@@ -52,6 +52,18 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
       onVendorClick: (vendor) => {
         onVendorClick(vendor);
       },
+      onVendorDrag: (vendor, newCoordinates) => {
+        console.log(`🎯 ${vendor.name} moved to: [${newCoordinates[0].toFixed(7)}, ${newCoordinates[1].toFixed(7)}]`);
+        console.log(`📍 For generateCoords: generateCoords(${(newCoordinates[0] - EASTWOOD_CENTER[0]).toFixed(7)}, ${(newCoordinates[1] - EASTWOOD_CENTER[1]).toFixed(7)})`);
+        
+        // Add to coordinates state for display
+        setClickedCoordinates(prev => [...prev, { 
+          lat: newCoordinates[0], 
+          lng: newCoordinates[1], 
+          offsetLat: newCoordinates[0] - EASTWOOD_CENTER[0], 
+          offsetLng: newCoordinates[1] - EASTWOOD_CENTER[1] 
+        }]);
+      },
       popupOptions: {
         maxWidth: 350,
         className: 'vendor-popup'
@@ -61,52 +73,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
     // Set global reference for popup handlers
     window.vendorManager = vendorManagerRef.current;
 
-    // Development mode click handler
-    const handleMapClick = (e: L.LeafletMouseEvent) => {
-      if (devMode) {
-        const { lat, lng } = e.latlng;
-        const offsetLat = lat - EASTWOOD_CENTER[0];
-        const offsetLng = lng - EASTWOOD_CENTER[1];
-        
-        console.log(`🎯 Coordinates: [${lat.toFixed(7)}, ${lng.toFixed(7)}]`);
-        console.log(`📍 For generateCoords: generateCoords(${offsetLat.toFixed(7)}, ${offsetLng.toFixed(7)})`);
-        
-        // Add to coordinates state
-        setClickedCoordinates(prev => [...prev, { lat, lng, offsetLat, offsetLng }]);
-        
-        // Create temporary marker
-        const tempMarker = L.marker([lat, lng], {
-          icon: L.divIcon({
-            className: 'temp-dev-marker',
-            html: `
-              <div style="
-                background: #FF6B6B;
-                color: white;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                border: 2px solid white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
-                font-weight: bold;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-              ">
-                📍
-              </div>
-            `,
-            iconSize: [20, 20],
-            iconAnchor: [10, 10]
-          })
-        }).addTo(map);
-        
-        // Store reference for cleanup
-        tempMarkersRef.current.push(tempMarker);
-      }
-    };
 
-    map.on('click', handleMapClick);
 
     // Cleanup function
     return () => {
@@ -130,16 +97,49 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
     };
   }, [vendors, onVendorClick]);
 
-  // Clear temporary markers when dev mode is toggled off
+  // Handle dev mode changes
   useEffect(() => {
-    if (!devMode && mapInstanceRef.current) {
-      tempMarkersRef.current.forEach(marker => {
-        mapInstanceRef.current!.removeLayer(marker);
-      });
-      tempMarkersRef.current = [];
-      setClickedCoordinates([]);
+    try {
+      console.log(`🛠️ Dev mode effect triggered. devMode=${devMode}, vendorManager=${!!vendorManagerRef.current}, map=${!!mapInstanceRef.current}`);
+      if (vendorManagerRef.current && mapInstanceRef.current) {
+        // Small delay to ensure markers are fully created
+        setTimeout(() => {
+          console.log(`🛠️ Setting drag mode to: ${devMode}`);
+          vendorManagerRef.current?.setDragMode(devMode);
+        }, 100);
+        
+        // Disable/enable map dragging based on dev mode
+        if (devMode) {
+          // Disable map dragging when dev mode is active
+          mapInstanceRef.current.dragging.disable();
+          mapInstanceRef.current.doubleClickZoom.disable();
+          mapInstanceRef.current.scrollWheelZoom.disable();
+          mapInstanceRef.current.boxZoom.disable();
+          mapInstanceRef.current.keyboard.disable();
+          if (mapInstanceRef.current.tap) mapInstanceRef.current.tap.disable();
+        } else {
+          // Re-enable map dragging when dev mode is disabled
+          mapInstanceRef.current.dragging.enable();
+          mapInstanceRef.current.doubleClickZoom.enable();
+          mapInstanceRef.current.scrollWheelZoom.enable();
+          mapInstanceRef.current.boxZoom.enable();
+          mapInstanceRef.current.keyboard.enable();
+          if (mapInstanceRef.current.tap) mapInstanceRef.current.tap.enable();
+          
+          // Clear temporary markers and coordinates when exiting dev mode
+          tempMarkersRef.current.forEach(marker => {
+            if (mapInstanceRef.current) {
+              mapInstanceRef.current.removeLayer(marker);
+            }
+          });
+          tempMarkersRef.current = [];
+          setClickedCoordinates([]);
+        }
+      }
+    } catch (error) {
+      console.error('Error handling dev mode change:', error);
     }
-  }, [devMode]);
+  }, [devMode, vendors]);
 
   // Keyboard shortcut for dev mode (Ctrl/Cmd + D)
   useEffect(() => {
@@ -158,16 +158,10 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, []);
 
-  // Function to clear all temporary markers
+  // Function to clear all coordinates
   const clearTempMarkers = () => {
-    if (mapInstanceRef.current) {
-      tempMarkersRef.current.forEach(marker => {
-        mapInstanceRef.current!.removeLayer(marker);
-      });
-      tempMarkersRef.current = [];
-      setClickedCoordinates([]);
-      console.log('🧹 Cleared all temporary markers and coordinates');
-    }
+    setClickedCoordinates([]);
+    console.log('🧹 Cleared all coordinates');
   };
 
   // Update vendors when props change
@@ -223,7 +217,8 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
         </div>
         {devMode && (
           <div className="mt-2 text-xs text-gray-300">
-            Click map to get coordinates<br/>
+            🔒 Map dragging disabled<br/>
+            🔄 Drag vendors to reposition<br/>
             <span className="text-gray-400">Ctrl/Cmd + D to toggle</span>
           </div>
         )}
@@ -233,7 +228,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
       {devMode && clickedCoordinates.length > 0 && (
         <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 z-20 max-w-md max-h-80 overflow-y-auto">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="font-semibold text-gray-800">📍 Clicked Coordinates</h4>
+            <h4 className="font-semibold text-gray-800">📍 Dragged Vendor Coordinates</h4>
             <button
               onClick={clearTempMarkers}
               className="text-gray-500 hover:text-red-600 text-sm"

@@ -56,7 +56,7 @@ function App() {
       <Header />
       
       {/* Main Content */}
-      <div className="pt-20 pb-0 -mb-0">
+      <div className="pt-16 pb-0 -mb-0">
         <OpenStreetMap vendors={filteredVendors as VendorData[]} onVendorClick={handleVendorClick} />
       </div>
       
@@ -68,11 +68,33 @@ function App() {
             <div className="relative p-6 pb-4">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div 
-                    className="w-12 h-12 rounded-xl flex items-center justify-center text-white text-2xl"
-                    style={{ backgroundColor: getCategoryColor(selectedVendor.category) }}
-                  >
-                    {getCategoryIcon(selectedVendor.category)}
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 flex items-center justify-center">
+                    {selectedVendor.image ? (
+                      <img 
+                        src={selectedVendor.image} 
+                        alt={selectedVendor.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          // Fallback to category icon if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.parentElement!.innerHTML = `<div class="w-full h-full rounded-full flex items-center justify-center text-white text-2xl" style="background-color: ${getCategoryColor(selectedVendor.category)}">${getCategoryIcon(selectedVendor.category)}</div>`;
+                        }}
+                      />
+                    ) : (
+                      // Placeholder image - you can replace this URL with your preferred placeholder
+                      <img 
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face&auto=format&q=80"
+                        alt={`${selectedVendor.name} placeholder`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          // Final fallback to category icon
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.parentElement!.innerHTML = `<div class="w-full h-full rounded-full flex items-center justify-center text-white text-2xl" style="background-color: ${getCategoryColor(selectedVendor.category)}">${getCategoryIcon(selectedVendor.category)}</div>`;
+                        }}
+                      />
+                    )}
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-gray-900">{selectedVendor.name}</h2>

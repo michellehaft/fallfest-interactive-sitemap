@@ -17,6 +17,7 @@ export interface MarkerClickHandler {
 
 export interface VendorManagerOptions {
   onVendorClick?: MarkerClickHandler;
+  onVendorDrag?: (vendor: VendorData, newCoordinates: [number, number]) => void;
   defaultFilter?: VendorFilter;
   enableClustering?: boolean;
   popupOptions?: L.PopupOptions;
@@ -32,12 +33,15 @@ export class VendorManager {
   private onVendorClick?: MarkerClickHandler;
   private popupOptions: L.PopupOptions;
   private markerOptions: L.MarkerOptions;
+  private isDragModeEnabled: boolean = false;
+  private onVendorDrag?: (vendor: VendorData, newCoordinates: [number, number]) => void;
 
   constructor(map: L.Map, vendors: VendorData[], options: VendorManagerOptions = {}) {
     this.map = map;
     this.vendors = [...vendors];
     this.markerGroup = L.layerGroup().addTo(map);
     this.onVendorClick = options.onVendorClick;
+    this.onVendorDrag = options.onVendorDrag;
     this.currentFilter = options.defaultFilter || {};
     this.popupOptions = options.popupOptions || {
       maxWidth: 300,
@@ -68,8 +72,14 @@ export class VendorManager {
     const marker = L.marker([lat, lng], {
       icon,
       title: vendor.name,
+      draggable: true, // Always create markers as draggable, we'll control it via enable/disable
       ...this.markerOptions
     });
+
+    // Initially disable dragging if not in drag mode
+    if (!this.isDragModeEnabled) {
+      marker.dragging?.disable();
+    }
 
     // Create popup content
     const popupContent = this.createPopupContent(vendor);
@@ -82,13 +92,44 @@ export class VendorManager {
       }
     });
 
-    // Add hover effects
-    marker.on('mouseover', () => {
-      marker.openPopup();
-    });
+    // Add hover effects (only when not in drag mode)
+    if (!this.isDragModeEnabled) {
+      marker.on('mouseover', () => {
+        marker.openPopup();
+      });
+    }
+
+    // Add drag handlers
+    this.addDragHandlers(marker, vendor);
 
     this.markers.set(vendor.id, marker);
     return marker;
+  }
+
+  /**
+   * Add drag event handlers to a marker
+   */
+  private addDragHandlers(marker: L.Marker, vendor: VendorData): void {
+    marker.on('dragstart', () => {
+      marker.closePopup();
+    });
+
+    marker.on('dragend', () => {
+      const newLatLng = marker.getLatLng();
+      const newCoordinates: [number, number] = [newLatLng.lat, newLatLng.lng];
+      
+      // Update vendor data
+      vendor.location.coordinates = newCoordinates;
+      
+      // Call the drag callback if provided
+      if (this.onVendorDrag) {
+        this.onVendorDrag(vendor, newCoordinates);
+      }
+      
+      // Update popup content with new coordinates
+      const updatedContent = this.createPopupContent(vendor);
+      marker.setPopupContent(updatedContent);
+    });
   }
 
   /**
@@ -127,17 +168,25 @@ export class VendorManager {
    * Create HTML content for vendor popup
    */
   private createPopupContent(vendor: VendorData): string {
-    const config = categoryConfig[vendor.category as keyof typeof categoryConfig] || categoryConfig.services;
+    try {
+      const config = categoryConfig[vendor.category as keyof typeof categoryConfig] || categoryConfig.services;
     
-    return `
-      <div class="vendor-popup-content" style="min-width: 250px;">
+      return `
+      <div class="vendor-popup-content" style="
+        min-width: 280px;
+        padding: 24px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e5e7eb;
+      ">
         <div class="popup-header" style="
           display: flex;
           align-items: center;
           gap: 12px;
-          margin-bottom: 12px;
-          padding-bottom: 8px;
-          border-bottom: 1px solid #e5e7eb;
+          margin-bottom: 16px;
+          padding-bottom: 12px;
+          border-bottom: 1px solid #f3f4f6;
         ">
           <div style="
             background-color: ${config.color};
@@ -181,62 +230,92 @@ export class VendorManager {
         </div>
         
         <div class="popup-body">
-          <p style="margin: 0 0 12px 0; color: #6b7280; font-size: 14px; line-height: 1.4;">
+          <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px; line-height: 1.5;">
             ${vendor.description}
           </p>
           
           ${vendor.ageRequirements ? `
-            <div style="margin-bottom: 8px;">
+            <div style="margin-bottom: 12px; padding: 8px 12px; background-color: #f8fafc; border-radius: 6px; border-left: 3px solid #0ea5e9;">
               <strong style="color: #374151; font-size: 13px;">👶 Age Requirements:</strong>
               <span style="color: #6b7280; font-size: 13px; margin-left: 8px;">${vendor.ageRequirements}</span>
             </div>
           ` : ''}
           
           ${vendor.capacity ? `
-            <div style="margin-bottom: 8px;">
+            <div style="margin-bottom: 12px; padding: 8px 12px; background-color: #fefce8; border-radius: 6px; border-left: 3px solid #eab308;">
               <strong style="color: #374151; font-size: 13px;">👥 Capacity:</strong>
               <span style="color: #6b7280; font-size: 13px; margin-left: 8px;">${vendor.capacity}</span>
             </div>
           ` : ''}
           
           ${vendor.dietaryOptions && vendor.dietaryOptions.length > 0 ? `
-            <div style="margin-bottom: 12px;">
+            <div style="margin-bottom: 16px; padding: 8px 12px; background-color: #f0fdf4; border-radius: 6px; border-left: 3px solid #22c55e;">
               <strong style="color: #374151; font-size: 13px;">🥗 Dietary Options:</strong>
-              <div style="margin: 4px 0 0 0;">
-                ${vendor.dietaryOptions.map(option => `<span style="background: #e5e7eb; color: #374151; padding: 2px 6px; border-radius: 8px; font-size: 11px; margin-right: 4px; margin-bottom: 2px; display: inline-block;">${option}</span>`).join('')}
+              <div style="margin: 8px 0 0 0;">
+                ${vendor.dietaryOptions.map(option => `<span style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 12px; font-size: 11px; margin-right: 6px; margin-bottom: 4px; display: inline-block; font-weight: 500;">${option}</span>`).join('')}
               </div>
             </div>
           ` : ''}
           
           ${vendor.contact ? `
-            <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #e5e7eb;">
-              ${vendor.contact.email ? `<div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">📧 ${vendor.contact.email}</div>` : ''}
-              ${vendor.contact.website ? `<div style="font-size: 12px;"><a href="https://${vendor.contact.website}" target="_blank" style="color: #3b82f6; text-decoration: none;">🌐 ${vendor.contact.website}</a></div>` : ''}
+            <div style="margin-top: 16px; padding: 12px; background-color: #f9fafb; border-radius: 8px; border: 1px solid #f3f4f6;">
+              <div style="font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 8px;">📞 Contact Information</div>
+              ${vendor.contact.email ? `<div style="font-size: 12px; margin-bottom: 4px;"><a href="mailto:${vendor.contact.email}" style="color: #3b82f6; text-decoration: none; font-weight: 400;">📧 ${vendor.contact.email}</a></div>` : ''}
+              ${vendor.contact.website ? `<div style="font-size: 12px;"><a href="https://${vendor.contact.website}" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 400;">🌐 ${vendor.contact.website}</a></div>` : ''}
             </div>
           ` : ''}
         </div>
         
-        <div class="popup-footer" style="margin-top: 12px; text-align: center;">
+        ${this.isDragModeEnabled ? `
+          <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #e5e7eb;">
+            <div style="background: #f3f4f6; padding: 8px; border-radius: 6px; font-family: monospace;">
+              <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px;">🛠️ DEV MODE - Coordinates:</div>
+              <div style="font-size: 12px; color: #374151; margin-bottom: 2px;">
+                <strong>Raw:</strong> [${vendor.location.coordinates[0].toFixed(7)}, ${vendor.location.coordinates[1].toFixed(7)}]
+              </div>
+              <div style="font-size: 12px; color: #374151;">
+                <strong>generateCoords:</strong> generateCoords(${(vendor.location.coordinates[0] - 36.1888487).toFixed(7)}, ${(vendor.location.coordinates[1] + 86.7383314).toFixed(7)})
+              </div>
+              <div style="font-size: 10px; color: #6b7280; margin-top: 4px;">🔄 Drag marker to update coordinates</div>
+            </div>
+          </div>
+        ` : ''}
+        
+        <div class="popup-footer" style="margin-top: 20px; text-align: center;">
           <button 
-            onclick="window.vendorManager?.showVendorDetails('${vendor.id}')"
+            onclick="window.vendorClickHandler?.('${vendor.id}')"
             style="
               background-color: ${config.color};
               color: white;
               border: none;
-              padding: 8px 16px;
-              border-radius: 6px;
-              font-size: 12px;
+              padding: 12px 24px;
+              border-radius: 8px;
+              font-size: 14px;
+              font-weight: 500;
               cursor: pointer;
               transition: all 0.2s ease;
+              min-width: 120px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             "
-            onmouseover="this.style.opacity='0.8'"
-            onmouseout="this.style.opacity='1'"
+            onmouseover="this.style.backgroundColor='${config.color}CC'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'"
+            onmouseout="this.style.backgroundColor='${config.color}'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'"
           >
             View Details
           </button>
         </div>
       </div>
     `;
+    } catch (error) {
+      console.error('Error creating popup content:', error);
+      return `
+        <div class="vendor-popup-content" style="min-width: 250px;">
+          <div class="popup-header">
+            <h3>${vendor.name}</h3>
+            <p>Error loading vendor details</p>
+          </div>
+        </div>
+      `;
+    }
   }
 
   /**
@@ -505,6 +584,66 @@ export class VendorManager {
     // Add new vendors
     this.vendors = [...vendors];
     this.initializeMarkers();
+  }
+
+  /**
+   * Enable or disable drag mode for all markers
+   */
+  public setDragMode(enabled: boolean): void {
+    try {
+      console.log(`🔧 VendorManager: Setting drag mode to ${enabled} for ${this.markers.size} markers`);
+      this.isDragModeEnabled = enabled;
+      
+      // Update all existing markers
+      this.markers.forEach((marker, vendorId) => {
+        if (marker) {
+          console.log(`🔧 Setting draggable=${enabled} for vendor ${vendorId}`);
+          
+          // Use the dragging property to enable/disable
+          if (enabled) {
+            if (marker.dragging) {
+              marker.dragging.enable();
+              console.log(`🔧 Dragging enabled for vendor ${vendorId}`);
+            } else {
+              console.warn(`🔧 No dragging property on marker for vendor ${vendorId}`);
+            }
+            // Remove hover effects in drag mode
+            marker.off('mouseover');
+            // Change cursor to indicate draggable
+            const markerElement = marker.getElement();
+            if (markerElement) {
+              markerElement.style.cursor = 'move';
+              console.log(`🔧 Cursor set to 'move' for vendor ${vendorId}`);
+            }
+          } else {
+            if (marker.dragging) {
+              marker.dragging.disable();
+              console.log(`🔧 Dragging disabled for vendor ${vendorId}`);
+            }
+            // Re-add hover effects when not in drag mode
+            marker.on('mouseover', () => {
+              marker.openPopup();
+            });
+            // Reset cursor
+            const markerElement = marker.getElement();
+            if (markerElement) {
+              markerElement.style.cursor = 'pointer';
+            }
+          }
+        } else {
+          console.warn(`🔧 Marker for vendor ${vendorId} is invalid`);
+        }
+      });
+    } catch (error) {
+      console.error('Error setting drag mode:', error);
+    }
+  }
+
+  /**
+   * Check if drag mode is enabled
+   */
+  public isDragModeActive(): boolean {
+    return this.isDragModeEnabled;
   }
 
   /**
