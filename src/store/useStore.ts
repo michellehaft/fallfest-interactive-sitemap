@@ -101,7 +101,7 @@ export const useStore = create<AppState>((set, get) => ({
     
     // Featured only filter
     if (updatedFilters.showFeaturedOnly) {
-      const featuredIds = ['food-001', 'food-002', 'arts-001']; // First 3 vendor IDs
+      const featuredIds = ['food-001', 'beverage-001', 'arts-001']; // First 3 vendor IDs (food, beverage, merchant)
       filtered = filtered.filter(vendor => featuredIds.includes(vendor.id));
     }
     

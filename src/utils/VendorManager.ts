@@ -345,7 +345,7 @@ export class VendorManager {
 
     // Featured filter (using first 3 vendors as featured)
     if (filter.featured !== undefined) {
-      const featuredIds = ['food-001', 'food-002', 'arts-001']; // First 3 vendor IDs
+      const featuredIds = ['food-001', 'beverage-001', 'arts-001']; // First 3 vendor IDs (food, beverage, merchant)
       const isFeatured = featuredIds.includes(vendor.id);
       if (isFeatured !== filter.featured) {
         return false;

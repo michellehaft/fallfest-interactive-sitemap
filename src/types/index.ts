@@ -18,16 +18,15 @@ export interface Vendor {
 export type VendorCategory = 
   | 'food' 
   | 'beverage'
-  | 'arts' 
+  | 'merchant'
+  | 'NGO/Civic'
   | 'activities' 
-  | 'services' 
-  | 'entertainment' 
+  | 'services'
   | 'security' 
   | 'restrooms'
   | 'firstAid'
   | 'parking'
-  | 'seating'
-  | 'information';
+  | 'seating';
 
 export interface MapConfig {
   center: [number, number];

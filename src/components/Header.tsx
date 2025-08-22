@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Filter, MapPin, Heart, Menu } from 'lucide-react';
+import { Search, Filter, Heart, Menu } from 'lucide-react';
 import { useStore } from '../store/useStore';
 
 const Header: React.FC = () => {
@@ -18,11 +18,15 @@ const Header: React.FC = () => {
       <div className="px-4 py-3 flex items-center justify-between">
         {/* Logo and Title */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-fallfest-500 rounded-lg flex items-center justify-center">
-            <MapPin className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 rounded-lg overflow-hidden border-2 border-fallfest-200">
+            <img 
+              src="https://scontent-atl3-3.cdninstagram.com/v/t51.2885-19/360424161_1324041308509534_3488725814737756122_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDI5LmMxIn0&_nc_ht=scontent-atl3-3.cdninstagram.com&_nc_cat=110&_nc_oc=Q6cZ2QFXhU5vRoclgmYbDITJVo2AGau2loB_VIAslATKSwo85HEZR65LlmJbTREF7vVv0Pk&_nc_ohc=_nqoAbmDijcQ7kNvwE5DxKg&_nc_gid=a5cGhRzBbxEgSpjrZW2Jbw&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfUwJA_gcDCIaZTcLCnytSbZOMrAkjba5sOmMuDTYZhx-w&oe=68ADAD0B&_nc_sid=7a9f4b"
+              alt="Eastwood Fallfest Logo" 
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Fallfest</h1>
+            <h1 className="text-xl font-bold text-gray-900">Eastwood Fallfest 2025</h1>
             <p className="text-sm text-gray-600">Interactive Sitemap</p>
           </div>
         </div>

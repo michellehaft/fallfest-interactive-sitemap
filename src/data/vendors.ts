@@ -59,12 +59,62 @@ export const vendors: VendorData[] = [
     dietaryOptions: ['vegan', 'gluten-free']
   },
 
-  // === ARTS & CRAFTS VENDORS ===
+  {
+    id: 'food-003',
+    name: 'Dreamburger',
+    type: 'vendor',
+    category: 'food' as VendorCategory,
+    location: {
+      x: 35,
+      y: 40,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0001, -0.0003)
+    },
+    description: 'Gourmet burgers made with locally sourced ingredients and creative toppings. From classic American favorites to innovative flavor combinations.',
+    contact: {
+      website: 'dreamburger.com'
+    },
+    dietaryOptions: ['vegetarian', 'vegan patties available']
+  },
+
+  // === BEVERAGE VENDORS ===
+  {
+    id: 'beverage-001',
+    name: 'East Nashville Beer Works',
+    type: 'vendor',
+    category: 'beverage' as VendorCategory,
+    location: {
+      x: 45,
+      y: 20,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0001, -0.0002)
+    },
+    description: 'Local craft brewery featuring handcrafted beers with a focus on East Nashville community spirit. Offering a variety of seasonal brews, IPAs, lagers, and specialty craft cocktails.',
+    contact: {
+      website: 'eastnashvillebeerworks.com'
+    }
+  },
+
+  {
+    id: 'beverage-002',
+    name: 'Delger Boba Tea',
+    type: 'vendor',
+    category: 'beverage' as VendorCategory,
+    location: {
+      x: 55,
+      y: 25,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0002, -0.0001)
+    },
+    description: 'Fresh and authentic boba tea with a wide variety of flavors and toppings. From classic milk teas to fruit-infused refreshers, enjoy premium bubble tea made with quality ingredients.'
+  },
+
+  // === MERCHANT VENDORS ===
   {
     id: 'arts-001',
     name: 'Tennessee Handwoven Textiles',
     type: 'vendor',
-    category: 'arts' as VendorCategory,
+    category: 'merchant' as VendorCategory,
     location: {
       x: 75,
       y: 25,
@@ -75,6 +125,40 @@ export const vendors: VendorData[] = [
     contact: {
       email: 'info@tnhandwoven.com',
       website: 'tennesseehandwoven.com'
+    }
+  },
+
+  {
+    id: 'merchant-001',
+    name: 'My Cluck Hut',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    location: {
+      x: 65,
+      y: 35,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0002, 0.0007)
+    },
+    description: 'Unique chicken-themed merchandise, home decor, and gifts. From quirky chicken collectibles to rustic farmhouse items, find the perfect addition to your coop or home.',
+    contact: {
+      website: 'mycluckhut.com'
+    }
+  },
+
+  {
+    id: 'merchant-002',
+    name: 'Mollie Weinman-Crocheted Goods',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    location: {
+      x: 75,
+      y: 40,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0004, 0.0003)
+    },
+    description: 'Handcrafted crocheted items including scarves, hats, blankets, and home decor. Each piece is lovingly made with quality yarn and attention to detail.',
+    contact: {
+      email: 'mollie@crocheted-goods.com'
     }
   },
 
@@ -96,6 +180,158 @@ export const vendors: VendorData[] = [
     capacity: '12 children maximum'
   },
 
+  {
+    id: 'activity-002',
+    name: 'Main Stage',
+    type: 'activity',
+    category: 'activities' as VendorCategory,
+    location: {
+      x: 50,
+      y: 40,
+      area: 'central-stage',
+      coordinates: generateCoords(0, 0)
+    },
+    description: 'Main performance stage featuring live music, entertainment, and special presentations throughout the festival.',
+    capacity: '500+ audience'
+  },
+
+  {
+    id: 'activity-003',
+    name: 'Pie Contest',
+    type: 'activity',
+    category: 'activities' as VendorCategory,
+    location: {
+      x: 40,
+      y: 55,
+      area: 'contest-area',
+      coordinates: generateCoords(-0.0004, 0.0002)
+    },
+    description: 'Annual pie baking contest featuring homemade pies from local bakers. Judging begins at 1:00pm, after which attendees are welcome to grab a slice of pie from our entries for free! The winner gets a $50 gift card to the Yellow Table Café.',
+    ageRequirements: 'All ages welcome'
+  },
+
+  {
+    id: 'activity-004',
+    name: 'Greenwood Honey Co',
+    type: 'activity',
+    category: 'activities' as VendorCategory,
+    location: {
+      x: 25,
+      y: 50,
+      area: 'demo-area',
+      coordinates: generateCoords(-0.0002, -0.0005)
+    },
+    description: 'Beekeeping demonstrations and honey tasting. Learn about local honey production and the importance of bees to our ecosystem.',
+    contact: {
+      website: 'greenwoodhoney.com'
+    }
+  },
+
+  {
+    id: 'activity-005',
+    name: 'Arts & Crafts',
+    type: 'activity',
+    category: 'activities' as VendorCategory,
+    location: {
+      x: 60,
+      y: 50,
+      area: 'craft-area',
+      coordinates: generateCoords(-0.0002, 0.0004)
+    },
+    description: 'Hands-on arts and crafts activities for all ages. Create your own festival keepsakes with guided projects and free materials.',
+    ageRequirements: 'All ages welcome'
+  },
+
+  {
+    id: 'activity-006',
+    name: "Cecil's Skate Shop",
+    type: 'activity',
+    category: 'activities' as VendorCategory,
+    location: {
+      x: 70,
+      y: 45,
+      area: 'demo-area',
+      coordinates: generateCoords(-0.0001, 0.0006)
+    },
+    description: 'Skateboard demonstrations, mini ramp setup, and skateboarding lessons for beginners. Local skate shop showcasing gear and skills.',
+    ageRequirements: '8+ years old',
+    safetyInfo: 'Helmets and safety gear provided',
+    contact: {
+      website: 'cecilsskate.com'
+    }
+  },
+
+  // === SERVICE VENDORS ===
+  {
+    id: 'services-001',
+    name: 'Angelpuff Fairy Hair',
+    type: 'vendor',
+    category: 'services' as VendorCategory,
+    location: {
+      x: 35,
+      y: 45,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(-0.0003, 0.0001)
+    },
+    description: 'Magical fairy hair tinsel and temporary hair coloring services. Add sparkle and color to your festival look with our safe, temporary hair accessories and styling.',
+    contact: {
+      website: 'angelpufffairyhair.com'
+    }
+  },
+
+  {
+    id: 'services-002',
+    name: 'Face To Face Creations',
+    type: 'vendor',
+    category: 'services' as VendorCategory,
+    location: {
+      x: 55,
+      y: 45,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(-0.0003, 0.0003)
+    },
+    description: 'Professional face painting and temporary tattoos for all ages. From simple designs to elaborate artwork, we bring your imagination to life with safe, high-quality paints.',
+    contact: {
+      website: 'facetofacecreations.com'
+    }
+  },
+
+  // === NGO/CIVIC VENDORS ===
+  {
+    id: 'ngo-001',
+    name: 'Root Nashville',
+    type: 'vendor',
+    category: 'NGO/Civic' as VendorCategory,
+    location: {
+      x: 30,
+      y: 60,
+      area: 'south-vendor-area',
+      coordinates: generateCoords(-0.0005, 0.0002)
+    },
+    description: 'Community organization focused on sustainable urban development and environmental stewardship in Nashville. Learn about local environmental initiatives and how to get involved.',
+    contact: {
+      website: 'rootnashville.org'
+    }
+  },
+
+  {
+    id: 'ngo-002',
+    name: 'Eastwood Neighbors Association',
+    type: 'vendor',
+    category: 'NGO/Civic' as VendorCategory,
+    location: {
+      x: 70,
+      y: 60,
+      area: 'south-vendor-area',
+      coordinates: generateCoords(-0.0003, 0.0006)
+    },
+    description: 'Local neighborhood association working to improve community life in Eastwood Village. Discover upcoming community events, volunteer opportunities, and ways to connect with your neighbors.',
+    contact: {
+      email: 'info@eastwoodneighbors.org',
+      website: 'eastwoodneighbors.org'
+    }
+  },
+
   // === AMENITIES ===
   {
     id: 'amenity-001',
@@ -108,13 +344,11 @@ export const vendors: VendorData[] = [
       area: 'central-amenities',
       coordinates: generateCoords(-0.0002, 0.0003)
     },
-    description: 'Clean, well-maintained restroom facilities with baby changing stations and accessibility features.',
+    description: 'Clean, well-maintained restroom with accessibility features.',
     accessibility: 'ADA compliant',
     features: [
-      'Baby changing stations',
-      'Hand sanitizer dispensers',
+      'Hand washing station',
       'Wheelchair accessible',
-      'Family restroom available'
     ]
   }
 ];
@@ -131,10 +365,15 @@ export const categoryConfig = {
     icon: '🥤',
     label: 'Beverages'
   },
-  arts: {
+  merchant: {
     color: '#8B5CF6', // Purple
-    icon: '🎨',
-    label: 'Arts & Crafts'
+    icon: '🛍️',
+    label: 'Merchants'
+  },
+  'NGO/Civic': {
+    color: '#EC4899', // Pink
+    icon: '🤝',
+    label: 'NGO/Civic Organizations'
   },
   activities: {
     color: '#10B981', // Emerald
@@ -143,7 +382,7 @@ export const categoryConfig = {
   },
   services: {
     color: '#3B82F6', // Blue
-    icon: '🛠️',
+    icon: '👨‍🎤',
     label: 'Services'
   },
   restrooms: {
@@ -170,11 +409,6 @@ export const categoryConfig = {
     color: '#D97706', // Orange
     icon: '🪑',
     label: 'Seating Areas'
-  },
-  information: {
-    color: '#0891B2', // Cyan
-    icon: 'ℹ️',
-    label: 'Information'
   }
 } as const;
 
