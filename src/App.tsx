@@ -68,7 +68,7 @@ function App() {
             <div className="relative p-6 pb-4">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 flex items-center justify-center">
+                  <div className="rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 flex items-center justify-center" style={{ width: '60px', height: '60px' }}>
                     {selectedVendor.image ? (
                       <img 
                         src={selectedVendor.image} 
@@ -105,10 +105,6 @@ function App() {
                       >
                         {selectedVendor.category}
                       </span>
-                      <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">
-                        Available
-                      </span>
-
                     </div>
                   </div>
                 </div>
@@ -125,33 +121,86 @@ function App() {
               <p className="text-gray-600 leading-relaxed">{selectedVendor.description}</p>
             </div>
 
+            {/* Detail Image */}
+            {(selectedVendor as VendorData).detailImage && (
+              <div className="px-6 pb-4">
+                <div className="w-full overflow-hidden rounded-lg border border-gray-200">
+                  <img 
+                    src={(selectedVendor as VendorData).detailImage}
+                    alt={`${selectedVendor.name} detail view`}
+                    className="w-full h-50 object-cover"
+                    style={{ width: '400px', height: '200px' }}
+                    onError={(e) => {
+                      // Hide image if it fails to load
+                      const target = e.target as HTMLImageElement;
+                      target.parentElement!.style.display = 'none';
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
             {/* Details */}
             <div className="px-6 pb-4 space-y-4">
-              {/* Vendor Type */}
-              <div className="flex items-start gap-3">
-                <span className="text-gray-400 mt-0.5">🏪</span>
-                <div>
-                  <h4 className="font-medium text-gray-900">Type</h4>
-                  <p className="text-gray-600 capitalize">{(selectedVendor as VendorData).type}</p>
+              {/* Age Requirements */}
+              {(selectedVendor as VendorData).ageRequirements && (
+                <div className="flex items-start gap-3">
+                  <span className="text-blue-500 mt-0.5">👶</span>
+                  <div className="flex-1 bg-blue-50 border-l-4 border-blue-400 p-3 rounded-r-lg">
+                    <h4 className="font-medium text-gray-900 text-sm">Age Requirements</h4>
+                    <p className="text-gray-600 text-sm">{(selectedVendor as VendorData).ageRequirements}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Location */}
-              <div className="flex items-center gap-3 pt-2">
-                <span className="text-gray-400">📍</span>
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">Location</h4>
-                  <p className="text-gray-600">{selectedVendor.location.area}</p>
+              {/* Capacity */}
+              {(selectedVendor as VendorData).capacity && (
+                <div className="flex items-start gap-3">
+                  <span className="text-yellow-500 mt-0.5">👥</span>
+                  <div className="flex-1 bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-r-lg">
+                    <h4 className="font-medium text-gray-900 text-sm">Capacity</h4>
+                    <p className="text-gray-600 text-sm">{(selectedVendor as VendorData).capacity}</p>
+                  </div>
                 </div>
-              </div>
-            </div>
+              )}
 
-            {/* Footer */}
-            <div className="px-6 py-4 bg-gray-50 rounded-b-2xl">
-              <div className="flex items-center justify-between text-sm text-gray-500">
-                <span>Vendor ID: {selectedVendor.id}</span>
-                <span>Click to visit!</span>
-              </div>
+              {/* Dietary Options */}
+              {(selectedVendor as VendorData).dietaryOptions && (selectedVendor as VendorData).dietaryOptions!.length > 0 && (
+                <div className="flex items-start gap-3">
+                  <span className="text-green-500 mt-0.5">🥗</span>
+                  <div className="flex-1 bg-green-50 border-l-4 border-green-400 p-3 rounded-r-lg">
+                    <h4 className="font-medium text-gray-900 text-sm">Dietary Options</h4>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {(selectedVendor as VendorData).dietaryOptions!.map((option, index) => (
+                        <span 
+                          key={index}
+                          className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium"
+                        >
+                          {option}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Contact Information */}
+              {selectedVendor.contact?.website && (
+                <div className="flex items-start gap-3 pt-2">
+                  <span className="text-gray-400 mt-0.5">🌐</span>
+                  <div>
+                    <h4 className="font-medium text-gray-900">Website</h4>
+                    <a 
+                      href={`https://${selectedVendor.contact.website}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 hover:underline"
+                    >
+                      {selectedVendor.contact.website}
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

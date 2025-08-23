@@ -17,6 +17,7 @@ const generateCoords = (latOffset: number, lngOffset: number): [number, number] 
 export interface VendorData extends Vendor {
   type: 'vendor' | 'activity' | 'amenity';
   image?: string; // URL for vendor thumbnail/avatar image
+  detailImage?: string; // URL for larger detail view image (400x200)
   dietaryOptions?: string[];
   ageRequirements?: string;
   safetyInfo?: string;
@@ -32,12 +33,13 @@ export const vendors: VendorData[] = [
     name: 'Ofelia Tacos.',
     type: 'vendor',
     category: 'food' as VendorCategory,
-    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=150&h=150&fit=crop&auto=format&q=80', // Example taco image
+    image: '/images/vendors/avatars/ofelia-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/ofelia-details.jpg', // Local detail image
     location: {
       x: 20,
       y: 25,
       area: 'west-vendor-area',
-      coordinates: generateCoords(0.0002, -0.0008)
+      coordinates: generateCoords(0.0002280, 0.0000263)
     },
     description: 'Welcome to Ofelia, a vibrant homage to the rich culinary traditions of Mexico City, nestled in Nashville.',
     contact: {
@@ -51,11 +53,13 @@ export const vendors: VendorData[] = [
     name: 'Saap Saap BBQ',
     type: 'vendor',
     category: 'food' as VendorCategory,
+    image: '/images/vendors/avatars/saapsaap-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/saapsaap-details.jpg', // Local detail image
     location: {
       x: 25,
       y: 30,
       area: 'west-vendor-area',
-      coordinates: generateCoords(-0.0001, -0.0006)
+      coordinates: generateCoords(0.0001327, -0.0000703)
     },
     description: 'Saap Saap BBQ in Nashville, TN, is where Southern barbecue meets vibrant Lao flavors, creating an unforgettable culinary experience. This catering service, complete with a trailer smoker, brings expertly smoked and grilled meats to the streets of Nashville, offering a unique twist on traditional BBQ with Lao-inspired dishes.',
     dietaryOptions: ['vegan', 'gluten-free']
@@ -66,11 +70,13 @@ export const vendors: VendorData[] = [
     name: 'Dreamburger',
     type: 'vendor',
     category: 'food' as VendorCategory,
+    image: '/images/vendors/avatars/dreamburger-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/saapsaap-details.jpg', // Local detail image
     location: {
       x: 35,
       y: 40,
       area: 'central-vendor-area',
-      coordinates: generateCoords(0.0001, -0.0003)
+      coordinates: generateCoords(0.0002648, -0.0001266)
     },
     description: 'Gourmet burgers made with locally sourced ingredients and creative toppings. From classic American favorites to innovative flavor combinations.',
     contact: {
@@ -85,11 +91,13 @@ export const vendors: VendorData[] = [
     name: 'East Nashville Beer Works',
     type: 'vendor',
     category: 'beverage' as VendorCategory,
+    image: '/images/vendors/avatars/eastnashbeerworks-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
     location: {
       x: 45,
       y: 20,
       area: 'central-vendor-area',
-      coordinates: generateCoords(0.0001, -0.0002)
+      coordinates: generateCoords(0.0004293, -0.0000676)
     },
     description: 'Local craft brewery featuring handcrafted beers with a focus on East Nashville community spirit. Offering a variety of seasonal brews, IPAs, lagers, and specialty craft cocktails.',
     contact: {
@@ -121,7 +129,7 @@ export const vendors: VendorData[] = [
       x: 75,
       y: 25,
       area: 'east-vendor-area',
-      coordinates: generateCoords(0.0003, 0.0005)
+      coordinates: generateCoords(0.0005678, -0.0002473)
     },
     description: 'Art-painting and paper cutouts by local artists Blair and Landon Matney.',
     contact: {
@@ -138,7 +146,7 @@ export const vendors: VendorData[] = [
       x: 65,
       y: 35,
       area: 'east-vendor-area',
-      coordinates: generateCoords(0.0002, 0.0007)
+      coordinates: generateCoords(0.0004012, -0.0001722)
     },
     description: 'Unique chicken-themed merchandise, home decor, and gifts. From quirky chicken collectibles to rustic farmhouse items, find the perfect addition to your coop or home.',
     contact: {
@@ -155,7 +163,7 @@ export const vendors: VendorData[] = [
       x: 75,
       y: 40,
       area: 'east-vendor-area',
-      coordinates: generateCoords(0.0004, 0.0003)
+      coordinates: generateCoords(0.0000635, -0.0000407)
     },
     description: 'Handcrafted crocheted items including scarves, hats, blankets, and home decor. Each piece is lovingly made with quality yarn and attention to detail.',
     contact: {
@@ -169,11 +177,13 @@ export const vendors: VendorData[] = [
     name: 'Fallfest Bounce House',
     type: 'activity',
     category: 'activities' as VendorCategory,
+    image: '/images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/bouncehouse-details.jpg', // Local detail image
     location: {
       x: 30,
       y: 15,
       area: 'west-activities',
-      coordinates: generateCoords(0.0001, -0.0004)
+      coordinates: generateCoords(0.0005787, 0.0001658)
     },
     description: 'Safe, supervised bounce house for children ages 3-12.',
     ageRequirements: '3-12 years old',
@@ -186,13 +196,15 @@ export const vendors: VendorData[] = [
     name: 'Main Stage',
     type: 'activity',
     category: 'activities' as VendorCategory,
+    image: '/images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/mainstage-details.jpg', // Local detail image
     location: {
       x: 50,
       y: 40,
       area: 'central-stage',
-      coordinates: generateCoords(0, 0)
+      coordinates: generateCoords(0.0005981, 0.0000263)
     },
-    description: 'Main performance stage featuring live music, entertainment, and special presentations throughout the festival.',
+    description: 'Main performance stage featuring live music, square dancing,and special presentations throughout the festival.',
     capacity: '500+ audience'
   },
 
@@ -201,11 +213,13 @@ export const vendors: VendorData[] = [
     name: 'Pie Contest',
     type: 'activity',
     category: 'activities' as VendorCategory,
+    image: '/images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/piecontest-details.jpg', // Local detail image
     location: {
       x: 40,
       y: 55,
       area: 'contest-area',
-      coordinates: generateCoords(-0.0004, 0.0002)
+      coordinates: generateCoords(0.0005029, 0.0000129)
     },
     description: 'Annual pie baking contest featuring homemade pies from local bakers. Judging begins at 1:00pm, after which attendees are welcome to grab a slice of pie from our entries for free! The winner gets a $50 gift card to the Yellow Table Café.',
     ageRequirements: 'All ages welcome'
@@ -216,13 +230,15 @@ export const vendors: VendorData[] = [
     name: 'Greenwood Honey Co',
     type: 'activity',
     category: 'activities' as VendorCategory,
+    image: '/images/vendors/avatars/greenwoodhoneyco-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/greenwoodhoneyco-details.jpg', // Local detail image
     location: {
       x: 25,
       y: 50,
       area: 'demo-area',
-      coordinates: generateCoords(-0.0002, -0.0005)
+      coordinates: generateCoords(0.0004942, -0.0000998)
     },
-    description: 'Beekeeping demonstrations and honey tasting. Learn about local honey production and the importance of bees to our ecosystem.',
+    description: 'Beekeeping demonstrations and honey tasting. Learn about local honey production and the importance of bees to our ecosystem. We\'ll also have our neighborhood Greenwood Honey Co. pickup truck staged in fall decor for the perfect fall family photo opportunity.',
     contact: {
       website: 'greenwoodhoney.com'
     }
@@ -233,11 +249,13 @@ export const vendors: VendorData[] = [
     name: 'Arts & Crafts',
     type: 'activity',
     category: 'activities' as VendorCategory,
+    image: '/images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/ofelia-details.jpg', // Local detail image
     location: {
       x: 60,
       y: 50,
       area: 'craft-area',
-      coordinates: generateCoords(-0.0002, 0.0004)
+      coordinates: generateCoords(0.0003470, 0.0000665)
     },
     description: 'Hands-on arts and crafts activities for all ages. Create your own festival keepsakes with guided projects and free materials.',
     ageRequirements: 'All ages welcome'
@@ -248,15 +266,17 @@ export const vendors: VendorData[] = [
     name: "Cecil's Skate Shop",
     type: 'activity',
     category: 'activities' as VendorCategory,
+    image: '/images/vendors/avatars/cecils-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/cecils-details.jpg', // Local detail image
     location: {
       x: 70,
       y: 45,
       area: 'demo-area',
-      coordinates: generateCoords(-0.0001, 0.0006)
+      coordinates: generateCoords(-0.0003067, 0.0000639)
     },
     description: 'Skateboard demonstrations, mini ramp setup, and skateboarding lessons for beginners. Local skate shop showcasing gear and skills.',
     ageRequirements: '8+ years old',
-    safetyInfo: 'Helmets and safety gear provided',
+    safetyInfo: 'Helmets and safety gear not provided',
     contact: {
       website: 'cecilsskate.com'
     }
@@ -268,11 +288,13 @@ export const vendors: VendorData[] = [
     name: 'Angelpuff Fairy Hair',
     type: 'vendor',
     category: 'services' as VendorCategory,
+    image: '/images/vendors/avatars/angelpuff-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/angelpuff-details.jpg', // Local detail image
     location: {
       x: 35,
       y: 45,
       area: 'central-vendor-area',
-      coordinates: generateCoords(-0.0003, 0.0001)
+      coordinates: generateCoords(0.0004661, -0.0001990)
     },
     description: 'Magical fairy hair tinsel and temporary hair coloring services. Add sparkle and color to your festival look with our safe, temporary hair accessories and styling.',
     contact: {
@@ -285,11 +307,13 @@ export const vendors: VendorData[] = [
     name: 'Face To Face Creations',
     type: 'vendor',
     category: 'services' as VendorCategory,
+    image: '/images/vendors/avatars/facetoface-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/facetoface-details.jpg', // Local detail image
     location: {
       x: 55,
       y: 45,
       area: 'central-vendor-area',
-      coordinates: generateCoords(-0.0003, 0.0003)
+      coordinates: generateCoords(0.0005635, -0.0001212)
     },
     description: 'Professional face painting and temporary tattoos for all ages. From simple designs to elaborate artwork, we bring your imagination to life with safe, high-quality paints.',
     contact: {
@@ -307,7 +331,7 @@ export const vendors: VendorData[] = [
       x: 30,
       y: 60,
       area: 'south-vendor-area',
-      coordinates: generateCoords(-0.0005, 0.0002)
+      coordinates: generateCoords(0.0000180, 0.0001121)
     },
     description: 'Community organization focused on sustainable urban development and environmental stewardship in Nashville. Learn about local environmental initiatives and how to get involved.',
     contact: {
@@ -324,7 +348,7 @@ export const vendors: VendorData[] = [
       x: 70,
       y: 60,
       area: 'south-vendor-area',
-      coordinates: generateCoords(-0.0003, 0.0006)
+      coordinates: generateCoords(0.0006306, -0.0002768)
     },
     description: 'Local neighborhood association working to improve community life in Eastwood Village. Discover upcoming community events, volunteer opportunities, and ways to connect with your neighbors.',
     contact: {
@@ -343,7 +367,7 @@ export const vendors: VendorData[] = [
       x: 50,
       y: 70,
       area: 'central-amenities',
-      coordinates: generateCoords(-0.0002, 0.0003)
+      coordinates: generateCoords(0.0006609, -0.0000729)
     },
     description: 'Clean, well-maintained restroom with accessibility features.',
     accessibility: 'ADA compliant',

@@ -216,15 +216,6 @@ export class VendorManager {
               ">
                 ${config.label}
               </span>
-              <span style="
-                background-color: #10b981;
-                color: white;
-                padding: 2px 8px;
-                border-radius: 12px;
-                font-size: 11px;
-              ">
-                🟢 Available
-              </span>
             </div>
           </div>
         </div>
@@ -256,14 +247,7 @@ export class VendorManager {
               </div>
             </div>
           ` : ''}
-          
-          ${vendor.contact ? `
-            <div style="margin-top: 16px; padding: 12px; background-color: #f9fafb; border-radius: 8px; border: 1px solid #f3f4f6;">
-              <div style="font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 8px;">📞 Contact Information</div>
-              ${vendor.contact.email ? `<div style="font-size: 12px; margin-bottom: 4px;"><a href="mailto:${vendor.contact.email}" style="color: #3b82f6; text-decoration: none; font-weight: 400;">📧 ${vendor.contact.email}</a></div>` : ''}
-              ${vendor.contact.website ? `<div style="font-size: 12px;"><a href="https://${vendor.contact.website}" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 400;">🌐 ${vendor.contact.website}</a></div>` : ''}
-            </div>
-          ` : ''}
+
         </div>
         
         ${this.isDragModeEnabled ? `

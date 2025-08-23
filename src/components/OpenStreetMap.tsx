@@ -36,7 +36,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
     if (!mapRef.current || mapInstanceRef.current) return;
 
     // Initialize the map
-    const map = L.map(mapRef.current).setView(EASTWOOD_CENTER, 18);
+    const map = L.map(mapRef.current).setView(EASTWOOD_CENTER, 19);
     mapInstanceRef.current = map;
 
     // Add OpenStreetMap tiles
