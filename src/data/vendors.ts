@@ -250,12 +250,12 @@ export const vendors: VendorData[] = [
     type: 'activity',
     category: 'activities' as VendorCategory,
     image: '/images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/ofelia-details.jpg', // Local detail image
+    detailImage: '/images/vendors/details/artsandcrafts-details.jpg', // Local detail image
     location: {
       x: 60,
       y: 50,
       area: 'craft-area',
-      coordinates: generateCoords(0.0003470, 0.0000665)
+      coordinates: generateCoords(0.0003665, 0.0000478)
     },
     description: 'Hands-on arts and crafts activities for all ages. Create your own festival keepsakes with guided projects and free materials.',
     ageRequirements: 'All ages welcome'
@@ -360,24 +360,6 @@ export const vendors: VendorData[] = [
   },
 
   // === AMENITIES ===
-  {
-    id: 'amenity-001',
-    name: 'Main Restroom Facility',
-    type: 'amenity',
-    category: 'restrooms' as VendorCategory,
-    location: {
-      x: 50,
-      y: 70,
-      area: 'central-amenities',
-      coordinates: generateCoords(0.0006609, -0.0000729)
-    },
-    description: 'Clean, well-maintained restroom with accessibility features.',
-    accessibility: 'ADA compliant',
-    features: [
-      'Hand washing station',
-      'Wheelchair accessible',
-    ]
-  }
 ];
 
 // Category configurations for map display
@@ -388,9 +370,9 @@ export const categoryConfig = {
     label: 'Food'
   },
   beverage: {
-    color: '#059669', // Green
+    color: '#4A68F9', // Green
     icon: '🥤',
-    label: 'Beverages'
+    label: 'Beverage'
   },
   merchant: {
     color: '#8B5CF6', // Purple
@@ -400,42 +382,17 @@ export const categoryConfig = {
   'NGO/Civic': {
     color: '#EC4899', // Pink
     icon: '🤝',
-    label: 'NGO/Civic Organizations'
+    label: 'Non-Profit'
   },
   activities: {
-    color: '#10B981', // Emerald
+    color: '#1EB86B', // Emerald
     icon: '🎪',
-    label: 'Activities & Entertainment'
+    label: 'Activities'
   },
   services: {
-    color: '#3B82F6', // Blue
+    color: '#bba85f', // Blue
     icon: '👨‍🎤',
     label: 'Services'
-  },
-  restrooms: {
-    color: '#6B7280', // Gray
-    icon: '🚻',
-    label: 'Restrooms'
-  },
-  firstAid: {
-    color: '#EF4444', // Red
-    icon: '🏥',
-    label: 'First Aid'
-  },
-  security: {
-    color: '#1F2937', // Dark Gray
-    icon: '👮',
-    label: 'Security'
-  },
-  parking: {
-    color: '#059669', // Green
-    icon: '🅿️',
-    label: 'Parking'
-  },
-  seating: {
-    color: '#D97706', // Orange
-    icon: '🪑',
-    label: 'Seating Areas'
   }
 } as const;
 

@@ -1,16 +1,18 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Filter, Menu, X } from 'lucide-react';
 import { useStore } from '../store/useStore';
-import { VendorData } from '../data/vendors';
+import { VendorData, categoryConfig } from '../data/vendors';
+import { infrastructureConfig } from '../data/infrastructure';
 import { getCategoryColor, getCategoryIcon } from '../data/mapConfig';
 
 interface HeaderProps {
   vendors: VendorData[];
   onVendorClick: (vendor: VendorData) => void;
   openVendorPopup?: ((vendorId: string) => void) | null;
+  onCategoryFilter?: (category: string | null) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup }) => {
+const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup, onCategoryFilter }) => {
   const { 
     toggleFilterPanel, 
     isFilterPanelOpen
@@ -18,22 +20,46 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
 
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Filter vendors based on search query
+  // Combine vendor and infrastructure categories
+  const allCategories = useMemo(() => {
+    const vendorCategories = Object.entries(categoryConfig).map(([key, config]) => ({
+      id: key,
+      type: 'vendor' as const,
+      ...config
+    }));
+    
+    const infraCategories = Object.entries(infrastructureConfig).map(([key, config]) => ({
+      id: key,
+      type: 'infrastructure' as const,
+      ...config
+    }));
+    
+    return [...vendorCategories, ...infraCategories];
+  }, []);
+
+  // Filter vendors based on search query and category
   const filteredVendors = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return vendors.sort((a, b) => a.name.localeCompare(b.name));
+    let result = vendors;
+    
+    // Apply category filter
+    if (selectedCategory) {
+      result = result.filter(vendor => vendor.category === selectedCategory);
     }
     
-    const query = searchQuery.toLowerCase().trim();
-    return vendors
-      .filter(vendor => 
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      result = result.filter(vendor => 
         vendor.name.toLowerCase().includes(query) ||
         vendor.category.toLowerCase().includes(query) ||
         vendor.description.toLowerCase().includes(query)
-      )
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [vendors, searchQuery]);
+      );
+    }
+    
+    return result.sort((a, b) => a.name.localeCompare(b.name));
+  }, [vendors, searchQuery, selectedCategory]);
 
   const handleSearchClick = () => {
     setIsSearchActive(true);
@@ -44,18 +70,45 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
     setIsSearchActive(false);
   };
 
+  const handleCategoryFilter = (categoryId: string | null) => {
+    setSelectedCategory(categoryId);
+    if (onCategoryFilter) {
+      onCategoryFilter(categoryId);
+    }
+  };
+
+  // Helper function to darken a hex color
+  const darkenColor = (hex: string, percent: number = 20): string => {
+    // Remove # if present
+    hex = hex.replace('#', '');
+    
+    // Parse RGB
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    // Darken by percentage
+    const darkenedR = Math.floor(r * (1 - percent / 100));
+    const darkenedG = Math.floor(g * (1 - percent / 100));
+    const darkenedB = Math.floor(b * (1 - percent / 100));
+    
+    // Convert back to hex
+    const toHex = (n: number) => n.toString(16).padStart(2, '0');
+    return `#${toHex(darkenedR)}${toHex(darkenedG)}${toHex(darkenedB)}`;
+  };
+
   return (
     <header className="fixed top-0 left-0 bottom-0 z-50 border-r border-gray-200 w-80 overflow-y-auto" style={{ backgroundColor: '#f3f3f2' }}>
-      <div className="px-4 py-3 flex flex-col space-y-4">
-        {/* Header Image */}
-        <div style={{ marginTop: '4px', marginLeft: '0px', marginRight: '0px' }}>
-          <img 
-            src="/images/general/sidebar-header.jpg"
-            alt="Eastwood Fallfest Header"
-            className="w-full h-auto rounded-lg"
-          />
-        </div>
+      {/* Header Image - Full width, no margins */}
+      <div>
+        <img 
+          src="/images/general/sidebar-header.jpg"
+          alt="Eastwood Fallfest Header"
+          className="w-full h-auto"
+        />
+      </div>
 
+      <div className="px-4 py-3 flex flex-col space-y-4">
         {/* Title */}
         <div>
           <h1 className="text-xl font-bold text-gray-900">2025 Festival Sitemap</h1>
@@ -106,19 +159,48 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
             </button>
           )}
 
-          {/* Filter Button */}
-          <button
-            onClick={toggleFilterPanel}
-            className={`w-full p-3 rounded-lg transition-colors flex items-center gap-3 ${
-              isFilterPanelOpen 
-                ? 'bg-fallfest-100 text-fallfest-700' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-            title="Filter vendors"
-          >
-            <Filter className="w-5 h-5" />
-            <span className="text-sm font-medium">Filter Options</span>
-          </button>
+          {/* Category Filter Pills */}
+          <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+              {/* All/Clear Filter Button */}
+              <button
+                onClick={() => handleCategoryFilter(null)}
+                className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium transition-colors ${
+                  selectedCategory === null
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                <span>All</span>
+              </button>
+              
+              {/* Category Pills */}
+              {allCategories.map((category) => {
+                const isSelected = selectedCategory === category.id;
+                const backgroundColor = isSelected ? darkenColor(category.color) : category.color;
+                
+                return (
+                  <button
+                    key={`${category.type}-${category.id}`}
+                    onClick={() => handleCategoryFilter(isSelected ? null : category.id)}
+                    className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                      isSelected
+                        ? 'text-white'
+                        : 'text-white hover:opacity-80 hover:shadow-md'
+                    }`}
+                    style={{
+                      backgroundColor,
+                      opacity: isSelected ? 1 : 0.9
+                    }}
+                  >
+                    <span>{category.icon}</span>
+                    <span>{category.label}</span>
+                    {isSelected && (
+                      <X className="w-3 h-3 ml-1" />
+                    )}
+                  </button>
+                );
+              })}
+          </div>
 
 
         </div>
@@ -178,10 +260,10 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                     <h4 className="text-sm font-medium text-gray-900 truncate">{vendor.name}</h4>
                     <div className="flex items-center gap-1 mt-1">
                       <span
-                        className="text-xs px-2 py-0.5 rounded-full text-white capitalize"
+                        className="text-xs px-2 py-0.5 rounded-full text-white"
                         style={{ backgroundColor: getCategoryColor(vendor.category) }}
                       >
-                        {vendor.category}
+                        {categoryConfig[vendor.category as keyof typeof categoryConfig]?.label || vendor.category}
                       </span>
                     </div>
                   </div>

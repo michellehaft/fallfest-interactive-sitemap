@@ -34,6 +34,20 @@ function App() {
     }
   }, []);
 
+  const handleCategoryFilter = useCallback((category: string | null) => {
+    if (vendorManagerRef.current) {
+      if (category) {
+        // Filter to specific category
+        vendorManagerRef.current.applyFilter({
+          categories: [category]
+        });
+      } else {
+        // Clear filters to show all
+        vendorManagerRef.current.clearFilters();
+      }
+    }
+  }, []);
+
   console.log('Store values:', { filteredVendors, selectedVendor, isFilterPanelOpen, isSearchOpen });
 
   useEffect(() => {
@@ -66,7 +80,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <Header vendors={filteredVendors as VendorData[]} onVendorClick={handleVendorClick} openVendorPopup={openVendorPopup} />
+              <Header vendors={filteredVendors as VendorData[]} onVendorClick={handleVendorClick} openVendorPopup={openVendorPopup} onCategoryFilter={handleCategoryFilter} />
       
       {/* Main Content */}
       <div className="ml-80 pb-0 -mb-0">

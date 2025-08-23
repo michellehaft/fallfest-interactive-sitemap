@@ -285,7 +285,7 @@ export class VendorManager {
           <button 
             onclick="window.vendorClickHandler?.('${vendor.id}')"
             style="
-              background-color: ${config.color};
+              background-color: #4f7973;
               color: white;
               border: none;
               padding: 12px 24px;
@@ -297,8 +297,8 @@ export class VendorManager {
               min-width: 120px;
               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             "
-            onmouseover="this.style.backgroundColor='${config.color}CC'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'"
-            onmouseout="this.style.backgroundColor='${config.color}'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'"
+            onmouseover="this.style.backgroundColor='#4f7973CC'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.15)'"
+            onmouseout="this.style.backgroundColor='#4f7973'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'"
           >
             View Details
           </button>

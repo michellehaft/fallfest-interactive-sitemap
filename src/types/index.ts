@@ -21,12 +21,7 @@ export type VendorCategory =
   | 'merchant'
   | 'NGO/Civic'
   | 'activities' 
-  | 'services'
-  | 'security' 
-  | 'restrooms'
-  | 'firstAid'
-  | 'parking'
-  | 'seating';
+  | 'services';
 
 export interface MapConfig {
   center: [number, number];

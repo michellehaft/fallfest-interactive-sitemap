@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { VendorData, categoryConfig } from '../data/vendors';
+import { infrastructureItems, infrastructureConfig } from '../data/infrastructure';
 import VendorManager from '../utils/VendorManager';
+import { InfrastructureManager } from '../utils/InfrastructureManager';
 
 // Fix for default marker icons in Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -27,6 +29,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const vendorManagerRef = useRef<VendorManager | null>(null);
+  const infrastructureManagerRef = useRef<InfrastructureManager | null>(null);
   const tempMarkersRef = useRef<L.Marker[]>([]);
   
   // Development mode state
@@ -62,7 +65,9 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
           lat: newCoordinates[0], 
           lng: newCoordinates[1], 
           offsetLat: newCoordinates[0] - EASTWOOD_CENTER[0], 
-          offsetLng: newCoordinates[1] - EASTWOOD_CENTER[1] 
+          offsetLng: newCoordinates[1] - EASTWOOD_CENTER[1],
+          type: 'vendor',
+          name: vendor.name
         }]);
       },
       popupOptions: {
@@ -73,6 +78,24 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
 
     // Set global reference for popup handlers
     window.vendorManager = vendorManagerRef.current;
+
+    // Initialize InfrastructureManager
+    infrastructureManagerRef.current = new InfrastructureManager(map, infrastructureItems, {
+      onInfrastructureDrag: (item, newCoordinates) => {
+        console.log(`🏗️ ${item.name} moved to: [${newCoordinates[0].toFixed(7)}, ${newCoordinates[1].toFixed(7)}]`);
+        console.log(`🏗️ For generateCoords: generateCoords(${(newCoordinates[0] - EASTWOOD_CENTER[0]).toFixed(7)}, ${(newCoordinates[1] - EASTWOOD_CENTER[1]).toFixed(7)})`);
+        
+        // Add to coordinates state for display
+        setClickedCoordinates(prev => [...prev, { 
+          lat: newCoordinates[0], 
+          lng: newCoordinates[1], 
+          offsetLat: newCoordinates[0] - EASTWOOD_CENTER[0], 
+          offsetLng: newCoordinates[1] - EASTWOOD_CENTER[1],
+          type: 'infrastructure',
+          name: item.name
+        }]);
+      }
+    });
 
     // Cleanup function
     return () => {
@@ -87,6 +110,10 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
       if (vendorManagerRef.current) {
         vendorManagerRef.current.destroy();
         vendorManagerRef.current = null;
+      }
+      if (infrastructureManagerRef.current) {
+        infrastructureManagerRef.current.destroy();
+        infrastructureManagerRef.current = null;
       }
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
@@ -106,12 +133,13 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
   // Handle dev mode changes
   useEffect(() => {
     try {
-      console.log(`🛠️ Dev mode effect triggered. devMode=${devMode}, vendorManager=${!!vendorManagerRef.current}, map=${!!mapInstanceRef.current}`);
+                console.log(`🛠️ Dev mode effect triggered. devMode=${devMode}, vendorManager=${!!vendorManagerRef.current}, infrastructureManager=${!!infrastructureManagerRef.current}, map=${!!mapInstanceRef.current}`);
       if (vendorManagerRef.current && mapInstanceRef.current) {
         // Small delay to ensure markers are fully created
         setTimeout(() => {
           console.log(`🛠️ Setting drag mode to: ${devMode}`);
           vendorManagerRef.current?.setDragMode(devMode);
+          infrastructureManagerRef.current?.setDevMode(devMode);
         }, 100);
         
         // Disable/enable map dragging based on dev mode
@@ -224,7 +252,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
         {devMode && (
           <div className="mt-2 text-xs text-gray-300">
             🔒 Map dragging disabled<br/>
-            🔄 Drag vendors to reposition<br/>
+            🔄 Drag vendors & infrastructure to reposition<br/>
             <span className="text-gray-400">Ctrl/Cmd + D to toggle</span>
           </div>
         )}
@@ -234,7 +262,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
       {devMode && clickedCoordinates.length > 0 && (
         <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 z-20 max-w-md max-h-80 overflow-y-auto">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="font-semibold text-gray-800">📍 Dragged Vendor Coordinates</h4>
+            <h4 className="font-semibold text-gray-800">📍 Dragged Marker Coordinates</h4>
             <button
               onClick={clearTempMarkers}
               className="text-gray-500 hover:text-red-600 text-sm"
@@ -247,7 +275,10 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
             {clickedCoordinates.map((coord, index) => (
               <div key={index} className="bg-gray-50 rounded p-3 border">
                 <div className="text-sm font-medium text-gray-700 mb-2">
-                  Point {index + 1}
+                  {(coord as any).type === 'infrastructure' ? '🏗️' : '🎯'} {(coord as any).name || `Point ${index + 1}`}
+                  <span className="text-xs text-gray-500 ml-2">
+                    ({(coord as any).type || 'unknown'})
+                  </span>
                 </div>
                 <div className="space-y-2 text-xs font-mono">
                   <div>
@@ -285,19 +316,46 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
 
       {/* Legend */}
       <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-10">
-        <div className="space-y-2 text-sm">
-          {Object.entries(categoryConfig).map(([key, config]) => (
-            <div key={key} className="flex items-center gap-2">
-              <div 
-                className="w-4 h-4 rounded-full flex items-center justify-center text-xs"
-                style={{ backgroundColor: config.color, color: 'white' }}
-              >
-                {config.icon}
+        <div className="space-y-3 text-sm">
+          {/* Vendor Categories */}
+          <div className="space-y-2">
+            {Object.entries(categoryConfig).map(([key, config]) => (
+              <div key={key} className="flex items-center gap-2">
+                <div 
+                  className="w-4 h-4 rounded-full flex items-center justify-center text-xs"
+                  style={{ backgroundColor: config.color, color: 'white' }}
+                >
+                  {config.icon}
+                </div>
+                <span>{config.label}</span>
               </div>
-              <span>{config.label}</span>
-            </div>
-          ))}
+            ))}
+          </div>
 
+          {/* Infrastructure Section */}
+          <div className="border-t border-gray-200 pt-3">
+            <div className="space-y-2">
+              {Object.entries(infrastructureConfig).map(([key, config]) => (
+                <div key={key} className="flex items-center gap-2">
+                  <div 
+                    className="w-4 h-4 flex items-center justify-center text-xs"
+                    style={{ 
+                      backgroundColor: config.color, 
+                      color: config.shape === 'diamond' ? 'black' : 'white',
+                      borderRadius: config.shape === 'circle' ? '50%' : config.shape === 'diamond' ? '0' : '2px',
+                      transform: config.shape === 'diamond' ? 'rotate(45deg)' : 'none',
+                      border: config.shape === 'diamond' ? '1px solid #000' : 'none'
+                    }}
+                  >
+                    <span style={{ transform: config.shape === 'diamond' ? 'rotate(-45deg)' : 'none' }}>
+                      {config.icon}
+                    </span>
+                  </div>
+                  <span>{config.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

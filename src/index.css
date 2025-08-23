@@ -69,6 +69,35 @@
   background: white;
 }
 
+/* Infrastructure marker styles */
+.infrastructure-marker-icon {
+  border: none !important;
+  background: transparent !important;
+}
+
+.infrastructure-marker {
+  cursor: pointer;
+  user-select: none;
+}
+
+.infrastructure-marker:hover {
+  transform: scale(1.1);
+  z-index: 1000;
+}
+
+.infrastructure-barricade:hover {
+  transform: scale(1.05); /* Less scale for rectangular barricades */
+}
+
+.infrastructure-diamond:hover {
+  transform: rotate(45deg) scale(1.1);
+}
+
+/* Infrastructure popup styles */
+.infrastructure-popup-content {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
 .leaflet-control-zoom {
   border: none !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
@@ -188,4 +217,24 @@
 .vendor-popup-content button:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Custom scrollbar styles for category pills */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 9999px;
+}
+
+.scrollbar-track-gray-100::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
 } 
