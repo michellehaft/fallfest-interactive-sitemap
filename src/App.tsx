@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { vendors, VendorData } from './data/vendors';
 import { mapConfig } from './data/mapConfig';
 import { useStore, initializeStore } from './store/useStore';
@@ -20,7 +20,19 @@ function App() {
   } = useStore();
 
   const [showVendorPopup, setShowVendorPopup] = useState(false);
-  const [openVendorPopup, setOpenVendorPopup] = useState<((vendorId: string) => void) | null>(null);
+  const vendorManagerRef = useRef<any>(null);
+  
+  // Create a stable callback function that doesn't change on every render
+  const handleVendorManagerReady = useCallback((vendorManager: any) => {
+    console.log('📋 VendorManager ready, storing reference');
+    vendorManagerRef.current = vendorManager;
+  }, []);
+
+  const openVendorPopup = useCallback((vendorId: string) => {
+    if (vendorManagerRef.current) {
+      vendorManagerRef.current.openVendorPopup(vendorId);
+    }
+  }, []);
 
   console.log('Store values:', { filteredVendors, selectedVendor, isFilterPanelOpen, isSearchOpen });
 
@@ -61,7 +73,7 @@ function App() {
         <OpenStreetMap 
           vendors={filteredVendors as VendorData[]} 
           onVendorClick={handleVendorClick} 
-          onVendorManagerReady={setOpenVendorPopup}
+          onVendorManagerReady={handleVendorManagerReady}
         />
       </div>
       

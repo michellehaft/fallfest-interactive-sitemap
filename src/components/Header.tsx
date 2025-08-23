@@ -1,5 +1,5 @@
-import React from 'react';
-import { Search, Filter, Menu } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Search, Filter, Menu, X } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { VendorData } from '../data/vendors';
 import { getCategoryColor, getCategoryIcon } from '../data/mapConfig';
@@ -13,44 +13,98 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup }) => {
   const { 
     toggleFilterPanel, 
-    toggleSearch, 
-    isFilterPanelOpen,
-    isSearchOpen
+    isFilterPanelOpen
   } = useStore();
 
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Filter vendors based on search query
+  const filteredVendors = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return vendors.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    
+    const query = searchQuery.toLowerCase().trim();
+    return vendors
+      .filter(vendor => 
+        vendor.name.toLowerCase().includes(query) ||
+        vendor.category.toLowerCase().includes(query) ||
+        vendor.description.toLowerCase().includes(query)
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [vendors, searchQuery]);
+
+  const handleSearchClick = () => {
+    setIsSearchActive(true);
+  };
+
+  const handleSearchClear = () => {
+    setSearchQuery('');
+    setIsSearchActive(false);
+  };
+
   return (
-    <header className="fixed top-0 left-0 bottom-0 z-50 bg-white/90 backdrop-blur-md border-r border-gray-200 w-80 overflow-y-auto">
+    <header className="fixed top-0 left-0 bottom-0 z-50 border-r border-gray-200 w-80 overflow-y-auto" style={{ backgroundColor: '#f3f3f2' }}>
       <div className="px-4 py-3 flex flex-col space-y-4">
-        {/* Logo and Title */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg overflow-hidden border-2 border-fallfest-200">
-            <img 
-              src="https://scontent-atl3-3.cdninstagram.com/v/t51.2885-19/360424161_1324041308509534_3488725814737756122_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDI5LmMxIn0&_nc_ht=scontent-atl3-3.cdninstagram.com&_nc_cat=110&_nc_oc=Q6cZ2QFXhU5vRoclgmYbDITJVo2AGau2loB_VIAslATKSwo85HEZR65LlmJbTREF7vVv0Pk&_nc_ohc=_nqoAbmDijcQ7kNvwE5DxKg&_nc_gid=a5cGhRzBbxEgSpjrZW2Jbw&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfUwJA_gcDCIaZTcLCnytSbZOMrAkjba5sOmMuDTYZhx-w&oe=68ADAD0B&_nc_sid=7a9f4b"
-              alt="Eastwood Fallfest Logo" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">Eastwood Fallfest 2025</h1>
-            <p className="text-sm text-gray-600">Interactive Sitemap</p>
-          </div>
+        {/* Header Image */}
+        <div style={{ marginTop: '4px', marginLeft: '0px', marginRight: '0px' }}>
+          <img 
+            src="/images/general/sidebar-header.jpg"
+            alt="Eastwood Fallfest Header"
+            className="w-full h-auto rounded-lg"
+          />
+        </div>
+
+        {/* Title */}
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">2025 Festival Sitemap</h1>
+          <p className="text-sm text-gray-600">Interactive Sitemap</p>
         </div>
 
         {/* Navigation Controls */}
         <div className="flex flex-col gap-2">
-          {/* Search Button */}
-          <button
-            onClick={toggleSearch}
-            className={`w-full p-3 rounded-lg transition-colors flex items-center gap-3 ${
-              isSearchOpen 
-                ? 'bg-fallfest-100 text-fallfest-700' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-            title="Search vendors"
-          >
-            <Search className="w-5 h-5" />
-            <span className="text-sm font-medium">Search Vendors</span>
-          </button>
+          {/* Search Component */}
+          {isSearchActive ? (
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search vendors..."
+                className="w-full p-3 pl-10 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 text-sm"
+                style={{ 
+                  '--tw-ring-color': 'rgb(229, 231, 235)',
+                  '--tw-ring-opacity': '1'
+                } as React.CSSProperties & { [key: string]: string }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'rgb(229, 231, 235)';
+                  e.target.style.boxShadow = '0 0 0 2px rgb(229, 231, 235)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '';
+                  e.target.style.boxShadow = '';
+                }}
+                autoFocus
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <button
+                onClick={handleSearchClear}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleSearchClick}
+              className="w-full p-3 rounded-lg transition-colors flex items-center gap-3 bg-gray-100 text-gray-600 hover:bg-gray-200"
+              title="Search vendors"
+            >
+              <Search className="w-5 h-5" />
+              <span className="text-sm font-medium">Search Vendors</span>
+            </button>
+          )}
 
           {/* Filter Button */}
           <button
@@ -72,7 +126,19 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
         {/* Vendor List */}
         <div className="border-t border-gray-200 pt-4">
           <div>
-            {vendors.map((vendor, index) => (
+            {filteredVendors.length === 0 && searchQuery.trim() ? (
+              <div className="p-4 text-center text-gray-500">
+                <Search className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                <p className="text-sm">No vendors found matching "{searchQuery}"</p>
+                <button
+                  onClick={handleSearchClear}
+                  className="mt-2 text-xs text-fallfest-600 hover:text-fallfest-700 underline"
+                >
+                  Clear search
+                </button>
+              </div>
+            ) : (
+              filteredVendors.map((vendor, index) => (
               <div key={vendor.id}>
                 <button
                   onClick={() => {
@@ -122,7 +188,7 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                 </button>
                 
                 {/* Divider (except for last item) */}
-                {index < vendors.length - 1 && (
+                {index < filteredVendors.length - 1 && (
                   <div 
                     className="mx-auto" 
                     style={{ 
@@ -133,7 +199,8 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                   />
                 )}
               </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>

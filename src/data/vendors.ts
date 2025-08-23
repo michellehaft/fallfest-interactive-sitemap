@@ -344,6 +344,8 @@ export const vendors: VendorData[] = [
     name: 'Eastwood Neighbors Association',
     type: 'vendor',
     category: 'NGO/Civic' as VendorCategory,
+    image: '/images/vendors/avatars/eastwoodneighbors-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/eastwoodneighbors-details.jpg', // Local detail image
     location: {
       x: 70,
       y: 60,

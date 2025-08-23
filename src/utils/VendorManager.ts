@@ -198,8 +198,24 @@ export class VendorManager {
             justify-content: center;
             font-size: 18px;
             color: white;
+            overflow: hidden;
+            flex-shrink: 0;
           ">
-            ${config.icon}
+            ${vendor.image ? `
+              <img 
+                src="${vendor.image}" 
+                alt="${vendor.name}" 
+                style="
+                  width: 40px;
+                  height: 40px;
+                  object-fit: cover;
+                  border-radius: 50%;
+                  flex-shrink: 0;
+                  display: block;
+                "
+                onerror="this.style.display='none'; this.parentElement.innerHTML='${config.icon}';"
+              />
+            ` : config.icon}
           </div>
           <div>
             <h3 style="margin: 0; color: #1f2937; font-size: 16px; font-weight: 600;">

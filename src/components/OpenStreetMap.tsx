@@ -15,7 +15,7 @@ L.Icon.Default.mergeOptions({
 interface OpenStreetMapProps {
   vendors: VendorData[];
   onVendorClick: (vendor: VendorData) => void;
-  onVendorManagerReady?: (openVendorPopup: (vendorId: string) => void) => void;
+  onVendorManagerReady?: (vendorManager: any) => void;
 }
 
 // Eastwood Village coordinates
@@ -74,15 +74,6 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
     // Set global reference for popup handlers
     window.vendorManager = vendorManagerRef.current;
 
-    // Expose vendor popup function to parent component
-    if (onVendorManagerReady) {
-      onVendorManagerReady((vendorId: string) => {
-        vendorManagerRef.current?.openVendorPopup(vendorId);
-      });
-    }
-
-
-
     // Cleanup function
     return () => {
       // Clear temporary markers
@@ -104,6 +95,13 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
       delete window.vendorManager;
     };
   }, [vendors, onVendorClick]);
+
+  // Expose VendorManager when ready
+  useEffect(() => {
+    if (vendorManagerRef.current && onVendorManagerReady) {
+      onVendorManagerReady(vendorManagerRef.current);
+    }
+  }, [onVendorManagerReady, vendors]);
 
   // Handle dev mode changes
   useEffect(() => {
@@ -287,7 +285,6 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
 
       {/* Legend */}
       <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-10">
-        <h4 className="font-semibold text-gray-800 mb-3">Legend</h4>
         <div className="space-y-2 text-sm">
           {Object.entries(categoryConfig).map(([key, config]) => (
             <div key={key} className="flex items-center gap-2">
