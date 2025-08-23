@@ -15,6 +15,7 @@ L.Icon.Default.mergeOptions({
 interface OpenStreetMapProps {
   vendors: VendorData[];
   onVendorClick: (vendor: VendorData) => void;
+  onVendorManagerReady?: (openVendorPopup: (vendorId: string) => void) => void;
 }
 
 // Eastwood Village coordinates
@@ -22,7 +23,7 @@ const EASTWOOD_CENTER: [number, number] = [36.1888487, -86.7383314];
 
 
 
-const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick }) => {
+const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, onVendorManagerReady }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const vendorManagerRef = useRef<VendorManager | null>(null);
@@ -73,6 +74,13 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
     // Set global reference for popup handlers
     window.vendorManager = vendorManagerRef.current;
 
+    // Expose vendor popup function to parent component
+    if (onVendorManagerReady) {
+      onVendorManagerReady((vendorId: string) => {
+        vendorManagerRef.current?.openVendorPopup(vendorId);
+      });
+    }
+
 
 
     // Cleanup function
@@ -116,7 +124,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
           mapInstanceRef.current.scrollWheelZoom.disable();
           mapInstanceRef.current.boxZoom.disable();
           mapInstanceRef.current.keyboard.disable();
-          if (mapInstanceRef.current.tap) mapInstanceRef.current.tap.disable();
+          if ((mapInstanceRef.current as any).tap) (mapInstanceRef.current as any).tap.disable();
         } else {
           // Re-enable map dragging when dev mode is disabled
           mapInstanceRef.current.dragging.enable();
@@ -124,7 +132,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick })
           mapInstanceRef.current.scrollWheelZoom.enable();
           mapInstanceRef.current.boxZoom.enable();
           mapInstanceRef.current.keyboard.enable();
-          if (mapInstanceRef.current.tap) mapInstanceRef.current.tap.enable();
+          if ((mapInstanceRef.current as any).tap) (mapInstanceRef.current as any).tap.enable();
           
           // Clear temporary markers and coordinates when exiting dev mode
           tempMarkersRef.current.forEach(marker => {

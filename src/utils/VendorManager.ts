@@ -498,6 +498,16 @@ export class VendorManager {
   }
 
   /**
+   * Open popup for a specific vendor by ID
+   */
+  public openVendorPopup(vendorId: string): void {
+    const marker = this.markers.get(vendorId);
+    if (marker) {
+      marker.openPopup();
+    }
+  }
+
+  /**
    * Clear all filters
    */
   public clearFilters(): void {

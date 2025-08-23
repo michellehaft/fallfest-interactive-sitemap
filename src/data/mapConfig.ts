@@ -1,4 +1,5 @@
 import { MapConfig } from '../types';
+import { categoryConfig } from './vendors';
 
 export const mapConfig: MapConfig = {
   center: [36.1627, -86.7816], // Nashville area
@@ -68,27 +69,9 @@ export const mapConfig: MapConfig = {
 };
 
 export const getCategoryColor = (category: string): string => {
-  const colors: { [key: string]: string } = {
-    food: '#F97316',
-    arts: '#8B5CF6',
-    activities: '#10B981',
-    services: '#3B82F6',
-    entertainment: '#EC4899',
-    security: '#EF4444',
-    facilities: '#6B7280'
-  };
-  return colors[category] || '#6B7280';
+  return categoryConfig[category as keyof typeof categoryConfig]?.color || '#6B7280';
 };
 
 export const getCategoryIcon = (category: string): string => {
-  const icons: { [key: string]: string } = {
-    food: '🍔',
-    arts: '🎨',
-    activities: '🎯',
-    services: '🛍️',
-    entertainment: '🎭',
-    security: '🛡️',
-    facilities: '🏢'
-  };
-  return icons[category] || '📍';
+  return categoryConfig[category as keyof typeof categoryConfig]?.icon || '📍';
 }; 

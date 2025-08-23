@@ -20,6 +20,7 @@ function App() {
   } = useStore();
 
   const [showVendorPopup, setShowVendorPopup] = useState(false);
+  const [openVendorPopup, setOpenVendorPopup] = useState<((vendorId: string) => void) | null>(null);
 
   console.log('Store values:', { filteredVendors, selectedVendor, isFilterPanelOpen, isSearchOpen });
 
@@ -53,11 +54,15 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <Header />
+      <Header vendors={filteredVendors as VendorData[]} onVendorClick={handleVendorClick} openVendorPopup={openVendorPopup} />
       
       {/* Main Content */}
-      <div className="pt-16 pb-0 -mb-0">
-        <OpenStreetMap vendors={filteredVendors as VendorData[]} onVendorClick={handleVendorClick} />
+      <div className="ml-80 pb-0 -mb-0">
+        <OpenStreetMap 
+          vendors={filteredVendors as VendorData[]} 
+          onVendorClick={handleVendorClick} 
+          onVendorManagerReady={setOpenVendorPopup}
+        />
       </div>
       
       {/* Vendor Detail Popup */}
@@ -69,9 +74,9 @@ function App() {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 flex items-center justify-center" style={{ width: '60px', height: '60px' }}>
-                    {selectedVendor.image ? (
+                    {(selectedVendor as VendorData).image ? (
                       <img 
-                        src={selectedVendor.image} 
+                        src={(selectedVendor as VendorData).image} 
                         alt={selectedVendor.name}
                         className="w-full h-full object-cover"
                         onError={(e) => {

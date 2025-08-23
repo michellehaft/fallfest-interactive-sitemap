@@ -1,21 +1,26 @@
 import React from 'react';
-import { Search, Filter, Heart, Menu } from 'lucide-react';
+import { Search, Filter, Menu } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import { VendorData } from '../data/vendors';
+import { getCategoryColor, getCategoryIcon } from '../data/mapConfig';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  vendors: VendorData[];
+  onVendorClick: (vendor: VendorData) => void;
+  openVendorPopup?: ((vendorId: string) => void) | null;
+}
+
+const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup }) => {
   const { 
     toggleFilterPanel, 
     toggleSearch, 
-    getFavorites,
     isFilterPanelOpen,
     isSearchOpen
   } = useStore();
 
-  const favorites = getFavorites();
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
-      <div className="px-4 py-3 flex items-center justify-between">
+    <header className="fixed top-0 left-0 bottom-0 z-50 bg-white/90 backdrop-blur-md border-r border-gray-200 w-80 overflow-y-auto">
+      <div className="px-4 py-3 flex flex-col space-y-4">
         {/* Logo and Title */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg overflow-hidden border-2 border-fallfest-200">
@@ -32,11 +37,11 @@ const Header: React.FC = () => {
         </div>
 
         {/* Navigation Controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-2">
           {/* Search Button */}
           <button
             onClick={toggleSearch}
-            className={`p-2 rounded-lg transition-colors ${
+            className={`w-full p-3 rounded-lg transition-colors flex items-center gap-3 ${
               isSearchOpen 
                 ? 'bg-fallfest-100 text-fallfest-700' 
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -44,12 +49,13 @@ const Header: React.FC = () => {
             title="Search vendors"
           >
             <Search className="w-5 h-5" />
+            <span className="text-sm font-medium">Search Vendors</span>
           </button>
 
           {/* Filter Button */}
           <button
             onClick={toggleFilterPanel}
-            className={`p-2 rounded-lg transition-colors ${
+            className={`w-full p-3 rounded-lg transition-colors flex items-center gap-3 ${
               isFilterPanelOpen 
                 ? 'bg-fallfest-100 text-fallfest-700' 
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -57,25 +63,78 @@ const Header: React.FC = () => {
             title="Filter vendors"
           >
             <Filter className="w-5 h-5" />
+            <span className="text-sm font-medium">Filter Options</span>
           </button>
 
-          {/* Favorites Button */}
-          <button
-            className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors relative"
-            title="View favorites"
-          >
-            <Heart className="w-5 h-5" />
-            {favorites.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                {favorites.length}
-              </span>
-            )}
-          </button>
 
-          {/* Mobile Menu Button */}
-          <button className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors md:hidden">
-            <Menu className="w-5 h-5" />
-          </button>
+        </div>
+
+        {/* Vendor List */}
+        <div className="border-t border-gray-200 pt-4">
+          <div>
+            {vendors.map((vendor, index) => (
+              <div key={vendor.id}>
+                <button
+                  onClick={() => {
+                    if (openVendorPopup) {
+                      openVendorPopup(vendor.id);
+                    } else {
+                      onVendorClick(vendor);
+                    }
+                  }}
+                  className="w-full p-3 hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+                >
+                {/* Vendor Avatar */}
+                <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center justify-center flex-shrink-0">
+                  {vendor.image ? (
+                    <img
+                      src={vendor.image}
+                      alt={vendor.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.parentElement!.innerHTML = `<div class="w-full h-full rounded-full flex items-center justify-center text-white text-sm" style="background-color: ${getCategoryColor(vendor.category)}">${getCategoryIcon(vendor.category)}</div>`;
+                      }}
+                    />
+                  ) : (
+                    <div 
+                      className="w-full h-full rounded-full flex items-center justify-center text-white text-sm"
+                      style={{ backgroundColor: getCategoryColor(vendor.category) }}
+                    >
+                      {getCategoryIcon(vendor.category)}
+                    </div>
+                  )}
+                </div>
+
+                  {/* Vendor Info */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-medium text-gray-900 truncate">{vendor.name}</h4>
+                    <div className="flex items-center gap-1 mt-1">
+                      <span
+                        className="text-xs px-2 py-0.5 rounded-full text-white capitalize"
+                        style={{ backgroundColor: getCategoryColor(vendor.category) }}
+                      >
+                        {vendor.category}
+                      </span>
+                    </div>
+                  </div>
+                </button>
+                
+                {/* Divider (except for last item) */}
+                {index < vendors.length - 1 && (
+                  <div 
+                    className="mx-auto" 
+                    style={{ 
+                      width: '290px', 
+                      height: '1px', 
+                      backgroundColor: 'rgb(229, 231, 235)' 
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </header>
