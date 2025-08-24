@@ -109,7 +109,7 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
       {/* Header Image - Full width, no margins */}
       <div>
         <img 
-          src="/images/general/sidebar-header.jpg"
+          src="images/general/sidebar-header.jpg"
           alt="Eastwood Fallfest Header"
           className="w-full h-auto"
         />
