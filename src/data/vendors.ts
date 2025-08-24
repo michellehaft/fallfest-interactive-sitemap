@@ -33,8 +33,8 @@ export const vendors: VendorData[] = [
     name: 'Ofelia Tacos.',
     type: 'vendor',
     category: 'food' as VendorCategory,
-    image: '/images/vendors/avatars/ofelia-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/ofelia-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/ofelia-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/ofelia-details.jpg', // Local detail image
     location: {
       x: 20,
       y: 25,
@@ -53,8 +53,8 @@ export const vendors: VendorData[] = [
     name: 'Saap Saap BBQ',
     type: 'vendor',
     category: 'food' as VendorCategory,
-    image: '/images/vendors/avatars/saapsaap-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/saapsaap-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/saapsaap-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/saapsaap-details.jpg', // Local detail image
     location: {
       x: 25,
       y: 30,
@@ -73,8 +73,8 @@ export const vendors: VendorData[] = [
     name: 'Dreamburger',
     type: 'vendor',
     category: 'food' as VendorCategory,
-    image: '/images/vendors/avatars/dreamburger-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/dreamburger-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/dreamburger-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/dreamburger-details.jpg', // Local detail image
     location: {
       x: 35,
       y: 40,
@@ -92,8 +92,8 @@ export const vendors: VendorData[] = [
     name: 'The Yellow Table Café',
     type: 'vendor',
     category: 'food' as VendorCategory,
-    image: '/images/vendors/avatars/yellowtable-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/yellowtable-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/yellowtable-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/yellowtable-details.jpg', // Local detail image
     location: {
       x: 35,
       y: 40,
@@ -111,8 +111,8 @@ export const vendors: VendorData[] = [
     name: 'Butterlamp',
     type: 'vendor',
     category: 'food' as VendorCategory,
-    image: '/images/vendors/avatars/butterlamp-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/butterlamp-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/butterlamp-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/butterlamp-details.jpg', // Local detail image
     location: {
       x: 35,
       y: 40,
@@ -132,8 +132,8 @@ export const vendors: VendorData[] = [
     name: 'East Nashville Beer Works',
     type: 'vendor',
     category: 'beverage' as VendorCategory,
-    image: '/images/vendors/avatars/eastnashbeerworks-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/eastnashbeerworks-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
     location: {
       x: 45,
       y: 20,
@@ -151,8 +151,8 @@ export const vendors: VendorData[] = [
     name: 'Delger Boba Tea',
     type: 'vendor',
     category: 'beverage' as VendorCategory,
-    image: '/images/vendors/avatars/delger-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/delger-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
     location: {
       x: 55,
       y: 25,
@@ -168,8 +168,8 @@ export const vendors: VendorData[] = [
     name: 'Blair and Landon Matney Art',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
-    image: '/images/vendors/avatars/delger-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/delger-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
     location: {
       x: 75,
       y: 25,
@@ -187,8 +187,8 @@ export const vendors: VendorData[] = [
     name: 'My Cluck Hut',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
-    image: '/images/vendors/avatars/mycluckhut-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/mycluckhut-details.png', // Local detail image
+    image: 'images/vendors/avatars/mycluckhut-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/mycluckhut-details.png', // Local detail image
     location: {
       x: 65,
       y: 35,
@@ -206,8 +206,8 @@ export const vendors: VendorData[] = [
     name: 'Mollie Weinman-Crocheted Goods',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
-    image: '/images/vendors/avatars/mollieweinman-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/mollieweinman-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
     location: {
       x: 75,
       y: 40,
@@ -224,8 +224,8 @@ export const vendors: VendorData[] = [
     name: 'The Video Store',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
-    image: '/images/vendors/avatars/videostore-avatar.png', // Local avatar image
-    detailImage: '/images/vendors/details/videostore-details.png', // Local detail image
+    image: 'images/vendors/avatars/videostore-avatar.png', // Local avatar image
+    detailImage: 'images/vendors/details/videostore-details.png', // Local detail image
     location: {
       x: 75,
       y: 40,
@@ -243,8 +243,8 @@ export const vendors: VendorData[] = [
     name: 'Desert + Vine',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
-    image: '/images/vendors/avatars/desertvine-avatar.png', // Local avatar image
-    detailImage: '/images/vendors/details/desertvine-details.png', // Local detail image
+    image: 'images/vendors/avatars/desertvine-avatar.png', // Local avatar image
+    detailImage: 'images/vendors/details/desertvine-details.png', // Local detail image
     location: {
       x: 75,
       y: 40,
@@ -262,8 +262,8 @@ export const vendors: VendorData[] = [
     name: 'Kinda Collected',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
-    image: '/images/vendors/avatars/kindacollected-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/kindacollected-details.png', // Local detail image
+    image: 'images/vendors/avatars/kindacollected-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/kindacollected-details.png', // Local detail image
     location: {
       x: 75,
       y: 40,
@@ -281,8 +281,8 @@ export const vendors: VendorData[] = [
     name: 'Novelette Booksellers',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
-    image: '/images/vendors/avatars/novelette-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/novelette-details.png', // Local detail image
+    image: 'images/vendors/avatars/novelette-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/novelette-details.png', // Local detail image
     location: {
       x: 75,
       y: 40,
@@ -301,8 +301,8 @@ export const vendors: VendorData[] = [
     name: 'Fallfest Bounce House',
     type: 'activity',
     category: 'activities' as VendorCategory,
-    image: '/images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/bouncehouse-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/bouncehouse-details.jpg', // Local detail image
     location: {
       x: 30,
       y: 15,
@@ -320,8 +320,8 @@ export const vendors: VendorData[] = [
     name: 'Main Stage',
     type: 'activity',
     category: 'activities' as VendorCategory,
-    image: '/images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/mainstage-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/mainstage-details.jpg', // Local detail image
     location: {
       x: 50,
       y: 40,
@@ -337,8 +337,8 @@ export const vendors: VendorData[] = [
     name: 'Pie Contest',
     type: 'activity',
     category: 'activities' as VendorCategory,
-    image: '/images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/piecontest-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/piecontest-details.jpg', // Local detail image
     location: {
       x: 40,
       y: 55,
@@ -354,8 +354,8 @@ export const vendors: VendorData[] = [
     name: 'Greenwood Honey Co',
     type: 'activity',
     category: 'activities' as VendorCategory,
-    image: '/images/vendors/avatars/greenwoodhoneyco-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/greenwoodhoneyco-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/greenwoodhoneyco-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/greenwoodhoneyco-details.jpg', // Local detail image
     location: {
       x: 25,
       y: 50,
@@ -373,8 +373,8 @@ export const vendors: VendorData[] = [
     name: 'Arts & Crafts',
     type: 'activity',
     category: 'activities' as VendorCategory,
-    image: '/images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/artsandcrafts-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/artsandcrafts-details.jpg', // Local detail image
     location: {
       x: 60,
       y: 50,
@@ -390,8 +390,8 @@ export const vendors: VendorData[] = [
     name: "Cecil's Skate Shop",
     type: 'activity',
     category: 'activities' as VendorCategory,
-    image: '/images/vendors/avatars/cecils-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/cecils-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/cecils-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/cecils-details.jpg', // Local detail image
     location: {
       x: 70,
       y: 45,
@@ -412,8 +412,8 @@ export const vendors: VendorData[] = [
     name: 'Angelpuff Fairy Hair',
     type: 'vendor',
     category: 'services' as VendorCategory,
-    image: '/images/vendors/avatars/angelpuff-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/angelpuff-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/angelpuff-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/angelpuff-details.jpg', // Local detail image
     location: {
       x: 35,
       y: 45,
@@ -431,8 +431,8 @@ export const vendors: VendorData[] = [
     name: 'Face To Face Creations',
     type: 'vendor',
     category: 'services' as VendorCategory,
-    image: '/images/vendors/avatars/facetoface-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/facetoface-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/facetoface-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/facetoface-details.jpg', // Local detail image
     location: {
       x: 55,
       y: 45,
@@ -451,8 +451,8 @@ export const vendors: VendorData[] = [
     name: 'Root Nashville',
     type: 'vendor',
     category: 'NGO/Civic' as VendorCategory,
-    image: '/images/vendors/avatars/rootnashville-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/rootnashville-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/rootnashville-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/rootnashville-details.jpg', // Local detail image
     location: {
       x: 30,
       y: 60,
@@ -470,8 +470,8 @@ export const vendors: VendorData[] = [
     name: 'Eastwood Neighbors Association',
     type: 'vendor',
     category: 'NGO/Civic' as VendorCategory,
-    image: '/images/vendors/avatars/eastwoodneighbors-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/eastwoodneighbors-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/eastwoodneighbors-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/eastwoodneighbors-details.jpg', // Local detail image
     location: {
       x: 70,
       y: 60,
