@@ -1,6 +1,7 @@
 {
   "name": "fallfest-interactive-sitemap",
   "version": "1.0.0",
+  "type": "module",
   "description": "Interactive digital sitemap for Fallfest event attendees",
   "main": "index.js",
   "scripts": {
