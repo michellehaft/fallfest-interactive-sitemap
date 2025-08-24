@@ -45,7 +45,7 @@ export const vendors: VendorData[] = [
     contact: {
       website: 'ofelianashville.com'
     },
-    dietaryOptions: ['gluten-free buns available']
+    dietaryOptions: ['gluten-free and vegetarian options available']
   },
   
   {
@@ -61,7 +61,10 @@ export const vendors: VendorData[] = [
       area: 'west-vendor-area',
       coordinates: generateCoords(0.0001327, -0.0000703)
     },
-    description: 'Saap Saap BBQ in Nashville, TN, is where Southern barbecue meets vibrant Lao flavors, creating an unforgettable culinary experience. This catering service, complete with a trailer smoker, brings expertly smoked and grilled meats to the streets of Nashville, offering a unique twist on traditional BBQ with Lao-inspired dishes.',
+    description: 'Saap Saap BBQ in Nashville, TN, is where Southern barbecue meets vibrant Lao flavors, creating an unforgettable culinary experience. Complete with a trailer smoker, we bring expertly smoked and grilled meats to the streets of Nashville, offering a unique twist on traditional BBQ with Lao-inspired dishes.',
+    contact: {
+      website: 'roaminghunger.com/saap-saap-bbq/'
+    },
     dietaryOptions: ['vegan', 'gluten-free']
   },
 
@@ -71,7 +74,7 @@ export const vendors: VendorData[] = [
     type: 'vendor',
     category: 'food' as VendorCategory,
     image: '/images/vendors/avatars/dreamburger-avatar.jpg', // Local avatar image
-    detailImage: '/images/vendors/details/saapsaap-details.jpg', // Local detail image
+    detailImage: '/images/vendors/details/dreamburger-details.jpg', // Local detail image
     location: {
       x: 35,
       y: 40,
@@ -82,7 +85,45 @@ export const vendors: VendorData[] = [
     contact: {
       website: 'dreamburger.com'
     },
-    dietaryOptions: ['vegetarian', 'vegan patties available']
+    dietaryOptions: ['vegetarian']
+  },
+  {
+    id: 'food-004',
+    name: 'The Yellow Table Café',
+    type: 'vendor',
+    category: 'food' as VendorCategory,
+    image: '/images/vendors/avatars/yellowtable-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/yellowtable-details.jpg', // Local detail image
+    location: {
+      x: 35,
+      y: 40,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0002107, 0.0003562)
+    },
+    description: 'Cozy café & crêperie in the @eastwood.village.shops in East Nashville. Open Tues-Sat, 8 AM to 3 PM.',
+    contact: {
+      website: 'theyellowtablecafe.com'
+    },
+    dietaryOptions: ['vegetarian']
+  },
+  {
+    id: 'food-005',
+    name: 'Butterlamp',
+    type: 'vendor',
+    category: 'food' as VendorCategory,
+    image: '/images/vendors/avatars/butterlamp-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/butterlamp-details.jpg', // Local detail image
+    location: {
+      x: 35,
+      y: 40,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(-0.0000145, 0.0006808)
+    },
+    description: 'A wine bar and bread house located in East Nashville.',
+    contact: {
+      website: 'butterlampnashville.com'
+    },
+    dietaryOptions: ['vegetarian']
   },
 
   // === BEVERAGE VENDORS ===
@@ -110,6 +151,8 @@ export const vendors: VendorData[] = [
     name: 'Delger Boba Tea',
     type: 'vendor',
     category: 'beverage' as VendorCategory,
+    image: '/images/vendors/avatars/delger-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
     location: {
       x: 55,
       y: 25,
@@ -125,6 +168,8 @@ export const vendors: VendorData[] = [
     name: 'Blair and Landon Matney Art',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
+    image: '/images/vendors/avatars/delger-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
     location: {
       x: 75,
       y: 25,
@@ -142,13 +187,15 @@ export const vendors: VendorData[] = [
     name: 'My Cluck Hut',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
+    image: '/images/vendors/avatars/mycluckhut-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/mycluckhut-details.png', // Local detail image
     location: {
       x: 65,
       y: 35,
       area: 'east-vendor-area',
       coordinates: generateCoords(0.0004012, -0.0001722)
     },
-    description: 'Unique chicken-themed merchandise, home decor, and gifts. From quirky chicken collectibles to rustic farmhouse items, find the perfect addition to your coop or home.',
+    description: 'Natural, plant-based bath products that don’t suck. Our skincare is eco-friendly, plastic-free, and made for real humans with real skin. No palm oil. No weird chemicals. Just ethical, zero-waste products.',
     contact: {
       website: 'mycluckhut.com'
     }
@@ -159,6 +206,8 @@ export const vendors: VendorData[] = [
     name: 'Mollie Weinman-Crocheted Goods',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
+    image: '/images/vendors/avatars/mollieweinman-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
     location: {
       x: 75,
       y: 40,
@@ -167,7 +216,82 @@ export const vendors: VendorData[] = [
     },
     description: 'Handcrafted crocheted items including scarves, hats, blankets, and home decor. Each piece is lovingly made with quality yarn and attention to detail.',
     contact: {
-      email: 'mollie@crocheted-goods.com'
+    }
+  },
+
+  {
+    id: 'merchant-003',
+    name: 'The Video Store',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: '/images/vendors/avatars/videostore-avatar.png', // Local avatar image
+    detailImage: '/images/vendors/details/videostore-details.png', // Local detail image
+    location: {
+      x: 75,
+      y: 40,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0003081, 0.0001872)
+    },
+    description: 'The Video Store is a local video rental store in East Nashville. We have a wide selection of movies and TV shows to rent.',
+    contact: {
+      website: 'thevideostore.com'
+    }
+  },
+
+  {
+    id: 'merchant-004',
+    name: 'Desert + Vine',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: '/images/vendors/avatars/desertvine-avatar.png', // Local avatar image
+    detailImage: '/images/vendors/details/desertvine-details.png', // Local detail image
+    location: {
+      x: 75,
+      y: 40,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0004163, 0.0001363)
+    },
+    description: 'Your new favorite plant shop! Houseplants, refillable supplies, animal friends + vintage!',
+    contact: {
+      website: 'desertandvinebotanical.com'
+    }
+  },
+
+  {
+    id: 'merchant-005',
+    name: 'Kinda Collected',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: '/images/vendors/avatars/kindacollected-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/kindacollected-details.png', // Local detail image
+    location: {
+      x: 75,
+      y: 40,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0003622, 0.0001604)
+    },
+    description: 'A curated market shop and home good store in east nashville.',
+    contact: {
+      website: 'kindacollected.com'
+    }
+  },
+
+  {
+    id: 'merchant-006',
+    name: 'Novelette Booksellers',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: '/images/vendors/avatars/novelette-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/novelette-details.png', // Local detail image
+    location: {
+      x: 75,
+      y: 40,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0002713, 0.0003214)
+    },
+    description: 'We are a fun, vibey, safe space for book lovers of all ages. We boast a highly curated selection of both fiction and non-fiction books by diverse authors.',
+    contact: {
+      website: 'novelettebooksellers.com'
     }
   },
 
@@ -327,6 +451,8 @@ export const vendors: VendorData[] = [
     name: 'Root Nashville',
     type: 'vendor',
     category: 'NGO/Civic' as VendorCategory,
+    image: '/images/vendors/avatars/rootnashville-avatar.jpg', // Local avatar image
+    detailImage: '/images/vendors/details/rootnashville-details.jpg', // Local detail image
     location: {
       x: 30,
       y: 60,
@@ -370,8 +496,8 @@ export const categoryConfig = {
     label: 'Food'
   },
   beverage: {
-    color: '#4A68F9', // Green
-    icon: '🥤',
+    color: '#2C4BE0', // Green
+    icon: '🧋',
     label: 'Beverage'
   },
   merchant: {
@@ -390,7 +516,7 @@ export const categoryConfig = {
     label: 'Activities'
   },
   services: {
-    color: '#bba85f', // Blue
+    color: '#1A1C1E', // Black
     icon: '👨‍🎤',
     label: 'Services'
   }

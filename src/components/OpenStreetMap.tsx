@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { VendorData, categoryConfig } from '../data/vendors';
-import { infrastructureItems, infrastructureConfig } from '../data/infrastructure';
+import { VendorData } from '../data/vendors';
+import { infrastructureItems } from '../data/infrastructure';
 import VendorManager from '../utils/VendorManager';
 import { InfrastructureManager } from '../utils/InfrastructureManager';
 
@@ -18,6 +18,7 @@ interface OpenStreetMapProps {
   vendors: VendorData[];
   onVendorClick: (vendor: VendorData) => void;
   onVendorManagerReady?: (vendorManager: any) => void;
+  onInfrastructureManagerReady?: (infrastructureManager: any) => void;
 }
 
 // Eastwood Village coordinates
@@ -25,7 +26,7 @@ const EASTWOOD_CENTER: [number, number] = [36.1888487, -86.7383314];
 
 
 
-const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, onVendorManagerReady }) => {
+const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, onVendorManagerReady, onInfrastructureManagerReady }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const vendorManagerRef = useRef<VendorManager | null>(null);
@@ -96,6 +97,11 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
         }]);
       }
     });
+
+    // Notify parent about infrastructure manager
+    if (onInfrastructureManagerReady) {
+      onInfrastructureManagerReady(infrastructureManagerRef.current);
+    }
 
     // Cleanup function
     return () => {
@@ -314,50 +320,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
         </div>
       )}
 
-      {/* Legend */}
-      <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-10">
-        <div className="space-y-3 text-sm">
-          {/* Vendor Categories */}
-          <div className="space-y-2">
-            {Object.entries(categoryConfig).map(([key, config]) => (
-              <div key={key} className="flex items-center gap-2">
-                <div 
-                  className="w-4 h-4 rounded-full flex items-center justify-center text-xs"
-                  style={{ backgroundColor: config.color, color: 'white' }}
-                >
-                  {config.icon}
-                </div>
-                <span>{config.label}</span>
-              </div>
-            ))}
-          </div>
 
-          {/* Infrastructure Section */}
-          <div className="border-t border-gray-200 pt-3">
-            <div className="space-y-2">
-              {Object.entries(infrastructureConfig).map(([key, config]) => (
-                <div key={key} className="flex items-center gap-2">
-                  <div 
-                    className="w-4 h-4 flex items-center justify-center text-xs"
-                    style={{ 
-                      backgroundColor: config.color, 
-                      color: config.shape === 'diamond' ? 'black' : 'white',
-                      borderRadius: config.shape === 'circle' ? '50%' : config.shape === 'diamond' ? '0' : '2px',
-                      transform: config.shape === 'diamond' ? 'rotate(45deg)' : 'none',
-                      border: config.shape === 'diamond' ? '1px solid #000' : 'none'
-                    }}
-                  >
-                    <span style={{ transform: config.shape === 'diamond' ? 'rotate(-45deg)' : 'none' }}>
-                      {config.icon}
-                    </span>
-                  </div>
-                  <span>{config.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -208,10 +208,28 @@ export class InfrastructureManager {
   private createPopupContent(item: InfrastructureItem): string {
     const config = infrastructureConfig[item.type];
     
+    // Generate features section for restrooms only
+    const featuresSection = item.type === 'restrooms' && item.features && item.features.length > 0 ? `
+      <div style="margin-top: 12px;">
+        <h4 style="margin: 0 0 8px 0; color: #1f2937; font-size: 13px; font-weight: 600;">Features</h4>
+        <div style="
+          margin-bottom: 12px; 
+          padding: 8px 12px; 
+          background-color: #f8fafc; 
+          border-radius: 6px; 
+          border-left: 3px solid #0ea5e9;
+        ">
+          <p style="margin: 0; color: #6b7280; font-size: 12px; line-height: 1.4;">
+            ${item.features.join(', ')}
+          </p>
+        </div>
+      </div>
+    ` : '';
+    
     return `
       <div class="infrastructure-popup-content" style="
         min-width: 200px;
-        padding: 16px;
+        padding: 16px 32px 6px 16px;
         background: white;
         border-radius: 8px;
       ">
@@ -261,6 +279,16 @@ export class InfrastructureManager {
             </h3>
           </div>
         </div>
+        
+        ${item.description ? `
+          <div style="margin: 8px 0;">
+            <p style="margin: 0; color: #6b7280; font-size: 12px; line-height: 1.4;">
+              ${item.description}
+            </p>
+          </div>
+        ` : ''}
+        
+        ${featuresSection}
       </div>
     `;
   }
@@ -292,6 +320,40 @@ export class InfrastructureManager {
     } else {
       this.map.removeLayer(this.markerGroup);
     }
+  }
+
+  /**
+   * Hide all infrastructure markers
+   */
+  public hideAll(): void {
+    this.markers.forEach((marker) => {
+      this.markerGroup.removeLayer(marker);
+    });
+  }
+
+  /**
+   * Show all infrastructure markers
+   */
+  public showAll(): void {
+    this.markers.forEach((marker) => {
+      this.markerGroup.addLayer(marker);
+    });
+  }
+
+  /**
+   * Show only infrastructure markers of a specific type
+   */
+  public showOnly(type: string): void {
+    this.infrastructureItems.forEach((item) => {
+      const marker = this.markers.get(item.id);
+      if (marker) {
+        if (item.type === type) {
+          this.markerGroup.addLayer(marker);
+        } else {
+          this.markerGroup.removeLayer(marker);
+        }
+      }
+    });
   }
 
   /**

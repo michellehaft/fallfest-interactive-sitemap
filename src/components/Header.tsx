@@ -21,6 +21,7 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Combine vendor and infrastructure categories
   const allCategories = useMemo(() => {
@@ -62,12 +63,22 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
   }, [vendors, searchQuery, selectedCategory]);
 
   const handleSearchClick = () => {
-    setIsSearchActive(true);
+    setIsAnimating(true);
+    // Start animation, then switch to active state
+    setTimeout(() => {
+      setIsSearchActive(true);
+      setIsAnimating(false);
+    }, 250);
   };
 
   const handleSearchClear = () => {
     setSearchQuery('');
+    setIsAnimating(true);
     setIsSearchActive(false);
+    // Reset animation state after transition
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 250);
   };
 
   const handleCategoryFilter = (categoryId: string | null) => {
@@ -111,8 +122,8 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
       <div className="px-4 py-3 flex flex-col space-y-4">
         {/* Title */}
         <div>
-          <h1 className="text-xl font-bold text-gray-900">2025 Festival Sitemap</h1>
-          <p className="text-sm text-gray-600">Interactive Sitemap</p>
+          <h1 className="text-xl font-bold text-gray-900">Festival Sitemap</h1>
+          <p className="text-sm text-gray-600">Oct. 4, 2025, 11am - 5pm</p>
         </div>
 
         {/* Navigation Controls */}
@@ -125,7 +136,7 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search vendors..."
-                className="w-full p-3 pl-10 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 text-sm"
+                className="w-full p-3 pl-10 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 text-sm transition-all duration-250 ease-out"
                 style={{ 
                   '--tw-ring-color': 'rgb(229, 231, 235)',
                   '--tw-ring-opacity': '1'
@@ -140,10 +151,10 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                 }}
                 autoFocus
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 transition-all duration-250 ease-out" />
               <button
                 onClick={handleSearchClear}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-all duration-150"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -151,11 +162,21 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
           ) : (
             <button
               onClick={handleSearchClick}
-              className="w-full p-3 rounded-lg transition-colors flex items-center gap-3 bg-gray-100 text-gray-600 hover:bg-gray-200"
+              className="w-full rounded-lg flex items-center bg-gray-100 text-gray-600 hover:bg-gray-200 relative overflow-hidden transition-colors duration-200"
               title="Search vendors"
+              style={{ 
+                padding: '12px',
+                paddingLeft: '12px'
+              }}
             >
-              <Search className="w-5 h-5" />
-              <span className="text-sm font-medium">Search Vendors</span>
+              <div className="flex items-center transition-all duration-250 ease-out" style={{
+                transform: isAnimating ? 'translateX(28px)' : 'translateX(0)'
+              }}>
+                <Search className="w-5 h-5 flex-shrink-0" />
+                <span className="text-sm font-medium ml-3 whitespace-nowrap">
+                  Search Vendors
+                </span>
+              </div>
             </button>
           )}
 
@@ -166,9 +187,12 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                 onClick={() => handleCategoryFilter(null)}
                 className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium transition-colors ${
                   selectedCategory === null
-                    ? 'bg-gray-800 text-white'
+                    ? 'text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
+                style={{
+                  backgroundColor: selectedCategory === null ? '#A5AAAF' : undefined
+                }}
               >
                 <span>All</span>
               </button>
@@ -178,14 +202,18 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                 const isSelected = selectedCategory === category.id;
                 const backgroundColor = isSelected ? darkenColor(category.color) : category.color;
                 
+                // Use dark text for light-colored categories that have poor contrast with white text
+                const shouldUseDarkText = category.id === 'seating' || category.id === 'trash';
+                const textColor = shouldUseDarkText ? 'text-gray-800' : 'text-white';
+                
                 return (
                   <button
                     key={`${category.type}-${category.id}`}
                     onClick={() => handleCategoryFilter(isSelected ? null : category.id)}
                     className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
                       isSelected
-                        ? 'text-white'
-                        : 'text-white hover:opacity-80 hover:shadow-md'
+                        ? textColor
+                        : `${textColor} hover:opacity-80 hover:shadow-md`
                     }`}
                     style={{
                       backgroundColor,
@@ -207,7 +235,7 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
 
         {/* Vendor List */}
         <div className="border-t border-gray-200 pt-4">
-          <div>
+          <div className="space-y-2">
             {filteredVendors.length === 0 && searchQuery.trim() ? (
               <div className="p-4 text-center text-gray-500">
                 <Search className="w-8 h-8 mx-auto mb-2 text-gray-300" />
@@ -220,67 +248,71 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                 </button>
               </div>
             ) : (
-              filteredVendors.map((vendor, index) => (
-              <div key={vendor.id}>
-                <button
-                  onClick={() => {
-                    if (openVendorPopup) {
-                      openVendorPopup(vendor.id);
-                    } else {
-                      onVendorClick(vendor);
-                    }
+              filteredVendors.map((vendor) => (
+                <div 
+                  key={vendor.id}
+                  className="border transition-all duration-200 relative overflow-hidden"
+                  style={{ 
+                    borderColor: 'rgb(229, 231, 235)',
+                    borderRadius: '12px'
                   }}
-                  className="w-full p-3 hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
                 >
-                {/* Vendor Avatar */}
-                <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center justify-center flex-shrink-0">
-                  {vendor.image ? (
-                    <img
-                      src={vendor.image}
-                      alt={vendor.name}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        target.parentElement!.innerHTML = `<div class="w-full h-full rounded-full flex items-center justify-center text-white text-sm" style="background-color: ${getCategoryColor(vendor.category)}">${getCategoryIcon(vendor.category)}</div>`;
-                      }}
-                    />
-                  ) : (
-                    <div 
-                      className="w-full h-full rounded-full flex items-center justify-center text-white text-sm"
-                      style={{ backgroundColor: getCategoryColor(vendor.category) }}
-                    >
-                      {getCategoryIcon(vendor.category)}
-                    </div>
-                  )}
-                </div>
-
-                  {/* Vendor Info */}
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium text-gray-900 truncate">{vendor.name}</h4>
-                    <div className="flex items-center gap-1 mt-1">
-                      <span
-                        className="text-xs px-2 py-0.5 rounded-full text-white"
-                        style={{ backgroundColor: getCategoryColor(vendor.category) }}
-                      >
-                        {categoryConfig[vendor.category as keyof typeof categoryConfig]?.label || vendor.category}
-                      </span>
-                    </div>
-                  </div>
-                </button>
-                
-                {/* Divider (except for last item) */}
-                {index < filteredVendors.length - 1 && (
-                  <div 
-                    className="mx-auto" 
-                    style={{ 
-                      width: '290px', 
-                      height: '1px', 
-                      backgroundColor: 'rgb(229, 231, 235)' 
+                  <button
+                    onClick={() => {
+                      if (openVendorPopup) {
+                        openVendorPopup(vendor.id);
+                      } else {
+                        onVendorClick(vendor);
+                      }
                     }}
-                  />
-                )}
-              </div>
+                    className="w-full p-3 flex items-center gap-3 text-left transition-all duration-200"
+                    style={{ 
+                      borderRadius: '12px'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
+                  >
+                    {/* Vendor Avatar */}
+                    <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center justify-center flex-shrink-0">
+                      {vendor.image ? (
+                        <img
+                          src={vendor.image}
+                          alt={vendor.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            target.parentElement!.innerHTML = `<div class="w-full h-full rounded-full flex items-center justify-center text-white text-sm" style="background-color: ${getCategoryColor(vendor.category)}">${getCategoryIcon(vendor.category)}</div>`;
+                          }}
+                        />
+                      ) : (
+                        <div 
+                          className="w-full h-full rounded-full flex items-center justify-center text-white text-sm"
+                          style={{ backgroundColor: getCategoryColor(vendor.category) }}
+                        >
+                          {getCategoryIcon(vendor.category)}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Vendor Info */}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-sm font-medium text-gray-900 truncate">{vendor.name}</h4>
+                      <div className="flex items-center gap-1 mt-1">
+                        <span
+                          className="text-xs px-2 py-0.5 rounded-full text-white"
+                          style={{ backgroundColor: getCategoryColor(vendor.category) }}
+                        >
+                          {categoryConfig[vendor.category as keyof typeof categoryConfig]?.label || vendor.category}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                </div>
               ))
             )}
           </div>

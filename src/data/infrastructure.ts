@@ -7,6 +7,7 @@ export interface InfrastructureItem {
     coordinates: [number, number];
   };
   description?: string;
+  features?: string[]; // Array of feature tags (e.g., for restrooms: wheelchair accessible, hand washing station)
 }
 
 // Helper function to generate coordinates relative to Eastwood center
@@ -118,21 +119,21 @@ export const infrastructureItems: InfrastructureItem[] = [
     name: 'Lower Plaza Seating',
     type: 'seating',
     location: { coordinates: generateCoords(0.0001609, 0.0002784) },
-    description: 'Family seating area'
+    description: 'General seating area'
   },
   {
     id: 'seating-004',
     name: 'Seating Area',
     type: 'seating',
     location: { coordinates: generateCoords(0.0000656, 0.0001792) },
-    description: 'Vendor area rest spot'
+    description: 'General seating area'
   },
   {
     id: 'seating-006',
     name: 'Seating Area',
     type: 'seating',
     location: { coordinates: generateCoords(0.0003037, 0.0000800) },
-    description: 'Central gathering seating'
+    description: 'General seating area'
   },
 
   // Trash Cans (4 items)
@@ -208,7 +209,7 @@ export const infrastructureItems: InfrastructureItem[] = [
     name: 'Eastwood Village Parking',
     type: 'parking',
     location: { coordinates: generateCoords(-0.0001400, 0.0011662) }, // Placeholder coordinates
-    description: 'Parking on Greenwood Ave.'
+    description: 'Eastwood Village building parking on Hobson Chapel Pl. Please do not park in spots marked for resident parking.'
   },
 
   // Restrooms (1 item)
@@ -217,7 +218,7 @@ export const infrastructureItems: InfrastructureItem[] = [
     name: 'Main Restroom Facility',
     type: 'restrooms',
     location: { coordinates: generateCoords(0.0006609, -0.0000729) },
-    description: 'Clean, well-maintained restroom with accessibility features. ADA compliant with hand washing station and wheelchair accessible.'
+    description: 'Clean restroom facility with wheelchair accessibility and hand washing station',
   },
 
   // First Aid (1 item)
@@ -245,7 +246,7 @@ export const infrastructureConfig = {
     shape: 'diamond'
   },
   seating: {
-    color: '#C58C07', // Light brown
+    color: '#EED092', // Light brown
     icon: '🪑',
     label: 'Seating Areas',
     shape: 'circle'

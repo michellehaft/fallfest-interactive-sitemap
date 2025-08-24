@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { vendors, VendorData } from './data/vendors';
+import { vendors, VendorData, categoryConfig } from './data/vendors';
+import { infrastructureConfig } from './data/infrastructure';
 import { mapConfig } from './data/mapConfig';
 import { useStore, initializeStore } from './store/useStore';
 import { getCategoryColor, getCategoryIcon } from './data/mapConfig';
@@ -21,11 +22,17 @@ function App() {
 
   const [showVendorPopup, setShowVendorPopup] = useState(false);
   const vendorManagerRef = useRef<any>(null);
+  const infrastructureManagerRef = useRef<any>(null);
   
   // Create a stable callback function that doesn't change on every render
   const handleVendorManagerReady = useCallback((vendorManager: any) => {
     console.log('📋 VendorManager ready, storing reference');
     vendorManagerRef.current = vendorManager;
+  }, []);
+
+  const handleInfrastructureManagerReady = useCallback((infrastructureManager: any) => {
+    console.log('🏗️ InfrastructureManager ready, storing reference');
+    infrastructureManagerRef.current = infrastructureManager;
   }, []);
 
   const openVendorPopup = useCallback((vendorId: string) => {
@@ -35,15 +42,37 @@ function App() {
   }, []);
 
   const handleCategoryFilter = useCallback((category: string | null) => {
-    if (vendorManagerRef.current) {
-      if (category) {
-        // Filter to specific category
-        vendorManagerRef.current.applyFilter({
-          categories: [category]
-        });
-      } else {
-        // Clear filters to show all
+    if (category) {
+      // Determine if it's a vendor or infrastructure category
+      const isVendorCategory = categoryConfig.hasOwnProperty(category);
+      const isInfrastructureCategory = infrastructureConfig.hasOwnProperty(category);
+      
+      if (isVendorCategory) {
+        // Show only this vendor category, hide all infrastructure
+        if (vendorManagerRef.current) {
+          vendorManagerRef.current.applyFilter({
+            categories: [category]
+          });
+        }
+        if (infrastructureManagerRef.current) {
+          infrastructureManagerRef.current.hideAll();
+        }
+      } else if (isInfrastructureCategory) {
+        // Show only this infrastructure category, hide all vendors
+        if (vendorManagerRef.current) {
+          vendorManagerRef.current.hideAll();
+        }
+        if (infrastructureManagerRef.current) {
+          infrastructureManagerRef.current.showOnly(category);
+        }
+      }
+    } else {
+      // Clear all filters to show everything
+      if (vendorManagerRef.current) {
         vendorManagerRef.current.clearFilters();
+      }
+      if (infrastructureManagerRef.current) {
+        infrastructureManagerRef.current.showAll();
       }
     }
   }, []);
@@ -88,6 +117,7 @@ function App() {
           vendors={filteredVendors as VendorData[]} 
           onVendorClick={handleVendorClick} 
           onVendorManagerReady={handleVendorManagerReady}
+          onInfrastructureManagerReady={handleInfrastructureManagerReady}
         />
       </div>
       

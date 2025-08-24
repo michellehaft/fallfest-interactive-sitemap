@@ -532,6 +532,15 @@ export class VendorManager {
   }
 
   /**
+   * Hide all vendor markers
+   */
+  public hideAll(): void {
+    this.markers.forEach((marker) => {
+      this.markerGroup.removeLayer(marker);
+    });
+  }
+
+  /**
    * Focus on a specific vendor
    */
   public focusOnVendor(vendorId: string, zoom?: number): boolean {
