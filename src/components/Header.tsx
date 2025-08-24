@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, Menu, X } from 'lucide-react';
-import { useStore } from '../store/useStore';
+import { Search, X } from 'lucide-react';
 import { VendorData, categoryConfig } from '../data/vendors';
 import { infrastructureConfig } from '../data/infrastructure';
 import { getCategoryColor, getCategoryIcon } from '../data/mapConfig';
@@ -13,10 +12,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup, onCategoryFilter }) => {
-  const { 
-    toggleFilterPanel, 
-    isFilterPanelOpen
-  } = useStore();
+  // Remove unused store destructuring
 
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');

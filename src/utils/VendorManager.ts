@@ -9,6 +9,7 @@ export interface VendorFilter {
   featured?: boolean;
   searchQuery?: string;
   bounds?: L.LatLngBounds;
+  status?: ('open' | 'closed' | 'coming-soon')[];
 }
 
 export interface MarkerClickHandler {

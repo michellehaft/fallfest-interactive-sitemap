@@ -10,9 +10,14 @@ export interface Vendor {
     coordinates: [number, number]; // [lat, lng]
   };
   contact?: {
+    phone?: string;
     email?: string;
     website?: string;
   };
+  status?: 'open' | 'closed' | 'coming-soon';
+  hours?: string;
+  specialOffers?: string[];
+  featured?: boolean;
 }
 
 export type VendorCategory = 
@@ -21,7 +26,11 @@ export type VendorCategory =
   | 'merchant'
   | 'NGO/Civic'
   | 'activities' 
-  | 'services';
+  | 'services'
+  | 'arts'
+  | 'entertainment'
+  | 'security'
+  | 'facilities';
 
 export interface MapConfig {
   center: [number, number];

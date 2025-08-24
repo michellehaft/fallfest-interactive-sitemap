@@ -70,9 +70,11 @@ const VendorPopup: React.FC<VendorPopupProps> = ({ vendor }) => {
                   >
                     {vendor.category}
                   </span>
-                  <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(vendor.status)}`}>
-                    {vendor.status}
-                  </span>
+                  {vendor.status && (
+                    <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(vendor.status)}`}>
+                      {vendor.status}
+                    </span>
+                  )}
                   {vendor.featured && (
                     <span className="text-xs px-2 py-1 bg-amber-100 text-amber-800 rounded-full flex items-center gap-1">
                       <Star className="w-3 h-3" />
