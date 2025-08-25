@@ -6,10 +6,14 @@ import { useStore, initializeStore } from './store/useStore';
 import { getCategoryColor, getCategoryIcon } from './data/mapConfig';
 import OpenStreetMap from './components/OpenStreetMap';
 import Header from './components/Header';
+import MobileBottomSheet from './components/MobileBottomSheet';
+import { useIsMobile } from './hooks/useMediaQuery';
 
 
 function App() {
   console.log('App component rendering...');
+  
+  const isMobile = useIsMobile();
   
   const { 
     setVendors, 
@@ -98,7 +102,10 @@ function App() {
 
   const handleVendorClick = (vendor: VendorData) => {
     setSelectedVendor(vendor);
-    setShowVendorPopup(true);
+    // Only show popup on desktop - mobile will handle it via the bottom sheet
+    if (!isMobile) {
+      setShowVendorPopup(true);
+    }
   };
 
   const closeVendorPopup = () => {
@@ -108,18 +115,47 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-              <Header vendors={filteredVendors as VendorData[]} onVendorClick={handleVendorClick} openVendorPopup={openVendorPopup} onCategoryFilter={handleCategoryFilter} />
+      {/* Desktop Layout - UNCHANGED */}
+      {!isMobile && (
+        <>
+          {/* Header */}
+          <Header vendors={filteredVendors as VendorData[]} onVendorClick={handleVendorClick} openVendorPopup={openVendorPopup} onCategoryFilter={handleCategoryFilter} />
+          
+          {/* Main Content */}
+          <div className="pb-0 -mb-0" style={{ marginLeft: '393px' }}>
+            <OpenStreetMap 
+              vendors={filteredVendors as VendorData[]} 
+              onVendorClick={handleVendorClick} 
+              onVendorManagerReady={handleVendorManagerReady}
+              onInfrastructureManagerReady={handleInfrastructureManagerReady}
+            />
+          </div>
+        </>
+      )}
       
-      {/* Main Content */}
-      <div className="pb-0 -mb-0" style={{ marginLeft: '393px' }}>
-        <OpenStreetMap 
-          vendors={filteredVendors as VendorData[]} 
-          onVendorClick={handleVendorClick} 
-          onVendorManagerReady={handleVendorManagerReady}
-          onInfrastructureManagerReady={handleInfrastructureManagerReady}
-        />
-      </div>
+      {/* Mobile Layout - NEW */}
+      {isMobile && (
+        <>
+          {/* Full Screen Map */}
+          <div className="h-screen w-full">
+            <OpenStreetMap 
+              vendors={filteredVendors as VendorData[]} 
+              onVendorClick={handleVendorClick} 
+              onVendorManagerReady={handleVendorManagerReady}
+              onInfrastructureManagerReady={handleInfrastructureManagerReady}
+            />
+          </div>
+          
+          {/* Mobile Bottom Sheet */}
+          <MobileBottomSheet
+            vendors={filteredVendors as VendorData[]}
+            onVendorClick={handleVendorClick}
+            openVendorPopup={openVendorPopup}
+            onCategoryFilter={handleCategoryFilter}
+            selectedVendor={selectedVendor}
+          />
+        </>
+      )}
       
       {/* Vendor Detail Popup */}
       {showVendorPopup && selectedVendor && (
