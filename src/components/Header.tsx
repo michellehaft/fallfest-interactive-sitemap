@@ -105,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
   };
 
   return (
-    <header className="fixed top-0 left-0 bottom-0 z-50 border-r border-gray-200 w-80 overflow-y-auto" style={{ backgroundColor: '#f3f3f2' }}>
+    <header className="fixed top-0 left-0 bottom-0 z-50 border-r border-gray-200 overflow-y-auto" style={{ backgroundColor: '#f3f3f2', width: '393px' }}>
       {/* Header Image - Full width, no margins */}
       <div>
         <img 
@@ -115,13 +115,7 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
         />
       </div>
 
-      <div className="px-4 py-3 flex flex-col space-y-4">
-        {/* Title */}
-        <div>
-          <h1 className="text-xl font-bold text-gray-900">Festival Sitemap</h1>
-          <p className="text-sm text-gray-600">Oct. 4, 2025, 11am - 5pm</p>
-        </div>
-
+      <div className="px-6 py-3 flex flex-col space-y-4">
         {/* Navigation Controls */}
         <div className="flex flex-col gap-2">
           {/* Search Component */}
@@ -177,7 +171,7 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
           )}
 
           {/* Category Filter Pills */}
-          <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+          <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 -mr-6 pr-6">
               {/* All/Clear Filter Button */}
               <button
                 onClick={() => handleCategoryFilter(null)}
@@ -231,6 +225,17 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
 
         {/* Vendor List */}
         <div className="border-t border-gray-200 pt-4">
+          {/* Vendor Count */}
+          <div 
+            style={{
+              margin: '0 0 16px 0',
+              color: '#6b7280',
+              fontSize: '14px',
+              lineHeight: '1.5'
+            }}
+          >
+            {filteredVendors.length} vendor{filteredVendors.length !== 1 ? 's' : ''}
+          </div>
           <div className="space-y-2">
             {filteredVendors.length === 0 && searchQuery.trim() ? (
               <div className="p-4 text-center text-gray-500">
@@ -247,10 +252,11 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
               filteredVendors.map((vendor) => (
                 <div 
                   key={vendor.id}
-                  className="border transition-all duration-200 relative overflow-hidden"
+                  className="border relative overflow-hidden vendor-card-hover"
                   style={{ 
                     borderColor: 'rgb(229, 231, 235)',
-                    borderRadius: '12px'
+                    borderRadius: '12px',
+                    transition: 'box-shadow 0.2s ease-in-out'
                   }}
                 >
                   <button
@@ -261,15 +267,9 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                         onVendorClick(vendor);
                       }
                     }}
-                    className="w-full p-3 flex items-center gap-3 text-left transition-all duration-200"
+                    className="w-full p-3 flex items-center gap-3 text-left"
                     style={{ 
                       borderRadius: '12px'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'transparent';
                     }}
                   >
                     {/* Vendor Avatar */}

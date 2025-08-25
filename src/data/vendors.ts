@@ -143,7 +143,8 @@ export const vendors: VendorData[] = [
     description: 'Local craft brewery featuring handcrafted beers with a focus on East Nashville community spirit. Offering a variety of seasonal brews, IPAs, lagers, and specialty craft cocktails.',
     contact: {
       website: 'eastnashvillebeerworks.com'
-    }
+    },
+    ageRequirements: '21 and over'
   },
 
   {

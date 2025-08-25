@@ -112,7 +112,7 @@ function App() {
               <Header vendors={filteredVendors as VendorData[]} onVendorClick={handleVendorClick} openVendorPopup={openVendorPopup} onCategoryFilter={handleCategoryFilter} />
       
       {/* Main Content */}
-      <div className="ml-80 pb-0 -mb-0">
+      <div className="pb-0 -mb-0" style={{ marginLeft: '393px' }}>
         <OpenStreetMap 
           vendors={filteredVendors as VendorData[]} 
           onVendorClick={handleVendorClick} 
@@ -123,7 +123,15 @@ function App() {
       
       {/* Vendor Detail Popup */}
       {showVendorPopup && selectedVendor && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div 
+          className="fixed z-50 flex items-center justify-center bg-black bg-opacity-50"
+          style={{
+            top: 0,
+            bottom: 0,
+            left: '393px', // Start after the sidebar
+            right: 0 // Extend to the right edge
+          }}
+        >
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
             {/* Popup Header */}
             <div className="relative p-6 pb-4">
