@@ -360,7 +360,6 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
               )}
             </div>
           </div>
-            </div>
           </>
         )}
       </div>
