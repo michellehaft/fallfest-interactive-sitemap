@@ -161,7 +161,7 @@ function App() {
             onVendorClick={handleVendorClick}
             openVendorPopup={openVendorPopup}
             onCategoryFilter={handleCategoryFilter}
-            selectedVendor={selectedVendor}
+            selectedVendor={selectedVendor as VendorData | null}
             onVendorClose={handleMobileVendorClose}
             onOpenDetailView={handleMobileOpenDetailView}
           />
