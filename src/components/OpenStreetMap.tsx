@@ -40,8 +40,16 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    // Initialize the map
-    const map = L.map(mapRef.current).setView(EASTWOOD_CENTER, 19);
+    // Initialize the map with mobile-friendly options
+    const map = L.map(mapRef.current, {
+      tap: true, // Enable tap events on mobile
+      touchZoom: true, // Enable touch zoom
+      doubleClickZoom: true,
+      scrollWheelZoom: true,
+      boxZoom: true,
+      keyboard: true,
+      dragging: true
+    }).setView(EASTWOOD_CENTER, 19);
     mapInstanceRef.current = map;
 
     // Add OpenStreetMap tiles

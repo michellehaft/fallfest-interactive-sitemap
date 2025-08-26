@@ -100,18 +100,27 @@ function App() {
     }
   }, [setVendors]);
 
-  const handleVendorClick = (vendor: VendorData) => {
+  const handleVendorClick = useCallback((vendor: VendorData) => {
     setSelectedVendor(vendor);
     // Only show popup on desktop - mobile will handle it via the bottom sheet
     if (!isMobile) {
       setShowVendorPopup(true);
     }
-  };
+  }, [isMobile]);
 
-  const closeVendorPopup = () => {
+  const closeVendorPopup = useCallback(() => {
     setShowVendorPopup(false);
     setSelectedVendor(null);
-  };
+  }, []);
+
+  const handleMobileVendorClose = useCallback(() => {
+    setSelectedVendor(null);
+  }, []);
+
+  const handleMobileOpenDetailView = useCallback((vendor: VendorData) => {
+    setSelectedVendor(vendor);
+    // Mobile detail view will be handled by the MobileBottomSheet itself
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -153,12 +162,14 @@ function App() {
             openVendorPopup={openVendorPopup}
             onCategoryFilter={handleCategoryFilter}
             selectedVendor={selectedVendor}
+            onVendorClose={handleMobileVendorClose}
+            onOpenDetailView={handleMobileOpenDetailView}
           />
         </>
       )}
       
-      {/* Vendor Detail Popup */}
-      {showVendorPopup && selectedVendor && (
+      {/* Vendor Detail Popup - Desktop Only */}
+      {!isMobile && showVendorPopup && selectedVendor && (
         <div 
           className="fixed z-50 flex items-center justify-center bg-black bg-opacity-50"
           style={{

@@ -86,8 +86,12 @@ export class VendorManager {
     const popupContent = this.createPopupContent(vendor);
     marker.bindPopup(popupContent, this.popupOptions);
 
-    // Add click handler
+    // Add click handler that opens popup AND calls callback
     marker.on('click', () => {
+      // Always open the popup when marker is clicked
+      marker.openPopup();
+      
+      // Also call the click callback if provided
       if (this.onVendorClick) {
         this.onVendorClick(vendor, marker);
       }
@@ -284,7 +288,13 @@ export class VendorManager {
         
         <div class="popup-footer" style="margin-top: 20px; text-align: center;">
           <button 
-            onclick="window.vendorClickHandler?.('${vendor.id}')"
+            onclick="
+              if (window.innerWidth < 768 && window.mobileDetailViewHandler) {
+                window.mobileDetailViewHandler('${vendor.id}');
+              } else {
+                window.vendorClickHandler?.('${vendor.id}');
+              }
+            "
             style="
               background-color: #4f7973;
               color: white;

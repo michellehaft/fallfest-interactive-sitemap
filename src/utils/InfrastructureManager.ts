@@ -39,8 +39,9 @@ export class InfrastructureManager {
     const marker = L.marker([lat, lng], {
       icon,
       title: item.name,
-      zIndexOffset: -1000, // Ensure infrastructure markers stay below vendor markers
-      draggable: true // Always create markers as draggable, we'll control it via enable/disable
+      zIndexOffset: -500, // Higher z-index for better touch interaction while still below vendors
+      draggable: true, // Always create markers as draggable, we'll control it via enable/disable
+      bubblingMouseEvents: false // Prevent event bubbling issues on mobile
     });
 
     // Initially disable dragging if not in drag mode
@@ -51,11 +52,28 @@ export class InfrastructureManager {
     // Create popup content
     const popupContent = this.createPopupContent(item);
     marker.bindPopup(popupContent, {
-      maxWidth: 250,
+      maxWidth: 300,
       className: 'infrastructure-popup'
     });
 
-    // Add hover handlers to show popup on mouseover
+    // Add click handler to open popup (for mobile and desktop)
+    marker.on('click', (e) => {
+      console.log('🏗️ Infrastructure marker clicked:', item.name, item.type);
+      e.originalEvent?.stopPropagation();
+      marker.openPopup();
+    });
+
+    // Also add touch events specifically for mobile
+    marker.on('touchstart', (e: any) => {
+      console.log('📱 Infrastructure marker touched:', item.name);
+      if (e.originalEvent) {
+        e.originalEvent.preventDefault();
+        e.originalEvent.stopPropagation();
+      }
+      marker.openPopup();
+    });
+
+    // Add hover handlers to show popup on mouseover (desktop only)
     marker.on('mouseover', () => {
       marker.openPopup();
     });
@@ -147,23 +165,25 @@ export class InfrastructureManager {
           <div class="infrastructure-marker infrastructure-diamond" style="
             background-color: ${config.color};
             border: 2px solid #ffffff;
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             transform: rotate(45deg);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-size: 16px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
             position: relative;
+            cursor: pointer;
+            touch-action: manipulation;
           " data-type="${type}">
             <span style="transform: rotate(-45deg); color: black; font-weight: bold;">
               ${config.icon}
             </span>
           </div>
         `;
-        iconSize = [28, 28];
-        iconAnchor = [14, 14];
+        iconSize = [32, 32];
+        iconAnchor = [16, 16];
         break;
 
       case 'circle':
@@ -174,22 +194,23 @@ export class InfrastructureManager {
             background-color: ${config.color};
             border: 2px solid white;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 18px;
             color: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
             cursor: pointer;
             transition: all 0.2s ease;
+            touch-action: manipulation;
           " data-type="${type}">
             ${config.icon}
           </div>
         `;
-        iconSize = [32, 32];
-        iconAnchor = [16, 16];
+        iconSize = [36, 36];
+        iconAnchor = [18, 18];
         break;
     }
 
@@ -208,32 +229,16 @@ export class InfrastructureManager {
   private createPopupContent(item: InfrastructureItem): string {
     const config = infrastructureConfig[item.type];
     
-    // Generate features section for restrooms only
-    const featuresSection = item.type === 'restrooms' && item.features && item.features.length > 0 ? `
-      <div style="margin-top: 12px;">
-        <h4 style="margin: 0 0 8px 0; color: #1f2937; font-size: 13px; font-weight: 600;">Features</h4>
-        <div style="
-          margin-bottom: 12px; 
-          padding: 8px 12px; 
-          background-color: #f8fafc; 
-          border-radius: 6px; 
-          border-left: 3px solid #0ea5e9;
-        ">
-          <p style="margin: 0; color: #6b7280; font-size: 12px; line-height: 1.4;">
-            ${item.features.join(', ')}
-          </p>
-        </div>
-      </div>
-    ` : '';
-    
     return `
       <div class="infrastructure-popup-content" style="
         min-width: 200px;
-        padding: 16px 32px 6px 16px;
+        padding: 16px;
         background: white;
         border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
       ">
-        <div class="popup-header" style="
+        <div style="
           display: flex;
           align-items: center;
           gap: 12px;
@@ -253,20 +258,20 @@ export class InfrastructureManager {
               );
               background-size: 6px 6px;
               border: 2px solid #FFFFFF;
-              width: 32px;
-              height: 20px;
+              width: 28px;
+              height: 18px;
               border-radius: 3px;
             ` : `
               background-color: ${config.color};
               border-radius: ${config.shape === 'circle' ? '50%' : '0'};
-              width: 32px;
-              height: 32px;
+              width: 28px;
+              height: 28px;
               ${config.shape === 'diamond' ? 'transform: rotate(45deg); border: 2px solid #ffffff;' : 'border: 2px solid white;'}
             `}
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
             color: ${config.shape === 'diamond' ? 'black' : 'white'};
           ">
             <span ${config.shape === 'diamond' ? 'style="transform: rotate(-45deg);"' : ''}>
@@ -281,14 +286,10 @@ export class InfrastructureManager {
         </div>
         
         ${item.description ? `
-          <div style="margin: 8px 0;">
-            <p style="margin: 0; color: #6b7280; font-size: 12px; line-height: 1.4;">
-              ${item.description}
-            </p>
-          </div>
+          <p style="margin: 8px 0 0 0; color: #6b7280; font-size: 12px; line-height: 1.4;">
+            ${item.description}
+          </p>
         ` : ''}
-        
-        ${featuresSection}
       </div>
     `;
   }

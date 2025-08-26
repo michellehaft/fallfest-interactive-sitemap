@@ -11,6 +11,8 @@ interface MobileBottomSheetProps {
   openVendorPopup?: ((vendorId: string) => void) | null;
   onCategoryFilter?: (category: string | null) => void;
   selectedVendor?: VendorData | null;
+  onVendorClose?: () => void;
+  onOpenDetailView?: (vendor: VendorData) => void;
 }
 
 type SheetState = 'collapsed' | 'partial' | 'full';
@@ -20,7 +22,9 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
   onVendorClick, 
   openVendorPopup, 
   onCategoryFilter,
-  selectedVendor: propSelectedVendor 
+  selectedVendor: propSelectedVendor,
+  onVendorClose,
+  onOpenDetailView 
 }) => {
   const [sheetState, setSheetState] = useState<SheetState>('partial');
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -34,14 +38,31 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
 
   const sheetRef = useRef<HTMLDivElement>(null);
 
-  // Handle vendor selection from map
+  // Handle vendor selection from map (now for popup, not detail view)
   useEffect(() => {
     if (propSelectedVendor && propSelectedVendor !== selectedVendor) {
+      // Don't automatically open detail view anymore
+      // Just set the selected vendor for potential detail view opening
       setSelectedVendor(propSelectedVendor);
-      setShowDetailView(true);
-      setSheetState('full');
     }
   }, [propSelectedVendor, selectedVendor]);
+
+  // Expose handleOpenDetailView globally for map popup buttons
+  useEffect(() => {
+    (window as any).mobileDetailViewHandler = (vendorId: string) => {
+      const vendor = vendors.find(v => v.id === vendorId);
+      if (vendor) {
+        handleOpenDetailView(vendor);
+        if (onOpenDetailView) {
+          onOpenDetailView(vendor);
+        }
+      }
+    };
+
+    return () => {
+      delete (window as any).mobileDetailViewHandler;
+    };
+  }, [vendors, onOpenDetailView]);
 
   // Filter vendors based on search and category
   const filteredVendors = vendors.filter(vendor => {
@@ -131,12 +152,27 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
     else setSheetState('partial');
   };
 
-  // Handle vendor click to show detail view
+  // Handle vendor click to show map popup (not detail view)
   const handleVendorClick = (vendor: VendorData) => {
+    // Trigger the vendor click for state management
+    onVendorClick(vendor);
+    
+    // Open the vendor popup on the map
+    if (openVendorPopup) {
+      openVendorPopup(vendor.id);
+    }
+    
+    // Optionally collapse sheet to better show the map popup
+    if (sheetState === 'full') {
+      setSheetState('partial');
+    }
+  };
+
+  // Handle opening detail view from map popup "View Details" button
+  const handleOpenDetailView = (vendor: VendorData) => {
     setSelectedVendor(vendor);
     setShowDetailView(true);
     setSheetState('full'); // Expand to full for detail view
-    onVendorClick(vendor); // Call parent handler
   };
 
   // Handle closing detail view
@@ -144,6 +180,9 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
     setShowDetailView(false);
     setSelectedVendor(null);
     setSheetState('partial'); // Return to partial state
+    if (onVendorClose) {
+      onVendorClose(); // Clear parent's selectedVendor state
+    }
   };
 
   return (
@@ -177,7 +216,8 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
             onClose={handleCloseDetailView}
           />
         ) : (
-          <div className="px-4 flex flex-col h-full overflow-hidden">
+          <>
+            <div className="px-4 flex flex-col h-full overflow-hidden">
         {/* Search Bar */}
         <div className="mb-3">
           {isSearchActive ? (
@@ -321,6 +361,8 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
             </div>
           </div>
         )}
+            </div>
+          </>
         )}
       </div>
     </div>
