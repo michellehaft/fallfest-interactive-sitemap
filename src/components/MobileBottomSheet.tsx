@@ -216,8 +216,7 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
             onClose={handleCloseDetailView}
           />
         ) : (
-          <>
-            <div className="px-4 flex flex-col h-full overflow-hidden">
+          <div className="px-4 flex flex-col h-full overflow-hidden">
         {/* Search Bar */}
         <div className="mb-3">
           {isSearchActive ? (
@@ -360,7 +359,7 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
               )}
             </div>
           </div>
-          </>
+          </div>
         )}
       </div>
     </div>
