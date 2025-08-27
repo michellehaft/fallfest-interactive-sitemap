@@ -105,7 +105,11 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
   };
 
   return (
-    <header className="fixed top-0 left-0 bottom-0 z-50 border-r border-gray-200 overflow-y-auto" style={{ backgroundColor: '#f3f3f2', width: '393px' }}>
+    <header className="fixed top-0 left-0 bottom-0 z-50 border-r border-gray-200 overflow-y-auto" style={{ 
+      backgroundColor: '#f3f3f2', 
+      width: '393px',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)'
+    }}>
       {/* Header Image - Full width, no margins */}
       <div>
         <img 

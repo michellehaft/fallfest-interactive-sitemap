@@ -37,7 +37,7 @@ export const infrastructureItems: InfrastructureItem[] = [
     id: 'barricade-003',
     name: 'Barricade',
     type: 'barricade',
-    location: { coordinates: generateCoords(-0.0002288, -0.0011083) },
+    location: { coordinates: generateCoords(0.0000526, -0.0041418) },
     description: 'Road closure for festival area'
   },
   {
@@ -77,13 +77,7 @@ export const infrastructureItems: InfrastructureItem[] = [
     location: { coordinates: generateCoords(0.0004986, 0.0020514) },
     description: 'Local traffic redirect'
   },
-  {
-    id: 'detour-003',
-    name: 'Hobson Chapel Detour',
-    type: 'detour',
-    location: { coordinates: generateCoords(-0.0003955, 0.0002328) },
-    description: 'Local traffic redirect'
-  },
+  
   {
     id: 'detour-005',
     name: 'Greenwood Alley Detour',
@@ -100,9 +94,9 @@ export const infrastructureItems: InfrastructureItem[] = [
   },
   {
     id: 'detour-007',
-    name: 'Roberts Detour',
+    name: '14th Street Detour',
     type: 'detour',
-    location: { coordinates: generateCoords(-0.0002180, -0.0013202) },
+    location: { coordinates: generateCoords(-0.0005708, -0.0043832) },
     description: 'Local traffic redirect'
   },
 
@@ -178,7 +172,7 @@ export const infrastructureItems: InfrastructureItem[] = [
     id: 'security-002',
     name: 'Roberts Security',
     type: 'security',
-    location: { coordinates: generateCoords(-0.0002201, -0.0012182) },
+    location: { coordinates: generateCoords(0.0000310, -0.0039434) },
     description: 'Roberts Security'
   },
   {

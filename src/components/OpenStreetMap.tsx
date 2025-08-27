@@ -236,7 +236,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
     <div className="relative w-full h-screen mb-0 pb-0">
       <div 
         ref={mapRef} 
-        className="w-full h-full rounded-t-lg border-t border-l border-r border-gray-300"
+        className="w-full h-full"
         style={{ zIndex: 1, marginBottom: 0, paddingBottom: 0, height: '100vh' }}
       />
       
