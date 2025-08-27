@@ -114,6 +114,9 @@ export class VendorManager {
       marker.on('mouseover', () => {
         marker.openPopup();
       });
+      marker.on('mouseout', () => {
+        marker.closePopup();
+      });
     }
 
     // Add drag handlers
@@ -664,6 +667,7 @@ export class VendorManager {
             }
             // Remove hover effects in drag mode
             marker.off('mouseover');
+            marker.off('mouseout');
             // Change cursor to indicate draggable
             const markerElement = marker.getElement();
             if (markerElement) {
@@ -678,6 +682,9 @@ export class VendorManager {
             // Re-add hover effects when not in drag mode
             marker.on('mouseover', () => {
               marker.openPopup();
+            });
+            marker.on('mouseout', () => {
+              marker.closePopup();
             });
             // Reset cursor
             const markerElement = marker.getElement();
