@@ -60,7 +60,21 @@ export class InfrastructureManager {
     marker.on('click', (e) => {
       console.log('🏗️ Infrastructure marker clicked:', item.name, item.type);
       e.originalEvent?.stopPropagation();
-      marker.openPopup();
+      
+      // Pan to marker on mobile for better popup visibility
+      if (window.innerWidth < 768) {
+        this.map?.panTo(marker.getLatLng(), {
+          animate: true,
+          duration: 0.3
+        });
+        // Small delay to ensure map has panned before opening popup
+        setTimeout(() => {
+          marker.openPopup();
+        }, 200);
+      } else {
+        // Desktop: open popup immediately
+        marker.openPopup();
+      }
     });
 
     // Also add touch events specifically for mobile
@@ -70,7 +84,21 @@ export class InfrastructureManager {
         e.originalEvent.preventDefault();
         e.originalEvent.stopPropagation();
       }
-      marker.openPopup();
+      
+      // Pan to marker on mobile for better popup visibility
+      if (window.innerWidth < 768) {
+        this.map?.panTo(marker.getLatLng(), {
+          animate: true,
+          duration: 0.3
+        });
+        // Small delay to ensure map has panned before opening popup
+        setTimeout(() => {
+          marker.openPopup();
+        }, 200);
+      } else {
+        // Desktop: open popup immediately
+        marker.openPopup();
+      }
     });
 
     // Add hover handlers to show popup on mouseover (desktop only)
@@ -194,14 +222,14 @@ export class InfrastructureManager {
             background-color: ${config.color};
             border: 2px solid white;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             color: white;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             cursor: pointer;
             transition: all 0.2s ease;
             touch-action: manipulation;
@@ -209,8 +237,8 @@ export class InfrastructureManager {
             ${config.icon}
           </div>
         `;
-        iconSize = [36, 36];
-        iconAnchor = [18, 18];
+        iconSize = [32, 32];
+        iconAnchor = [16, 16];
         break;
     }
 

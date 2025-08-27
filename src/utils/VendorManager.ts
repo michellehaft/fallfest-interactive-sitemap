@@ -88,8 +88,20 @@ export class VendorManager {
 
     // Add click handler that opens popup AND calls callback
     marker.on('click', () => {
-      // Always open the popup when marker is clicked
-      marker.openPopup();
+      // Pan to marker on mobile for better popup visibility
+      if (window.innerWidth < 768) {
+        this.map?.panTo(marker.getLatLng(), {
+          animate: true,
+          duration: 0.3
+        });
+        // Small delay to ensure map has panned before opening popup
+        setTimeout(() => {
+          marker.openPopup();
+        }, 200);
+      } else {
+        // Desktop: open popup immediately
+        marker.openPopup();
+      }
       
       // Also call the click callback if provided
       if (this.onVendorClick) {
@@ -530,7 +542,20 @@ export class VendorManager {
   public openVendorPopup(vendorId: string): void {
     const marker = this.markers.get(vendorId);
     if (marker) {
-      marker.openPopup();
+      // Pan to marker on mobile for better popup visibility
+      if (window.innerWidth < 768) {
+        this.map?.panTo(marker.getLatLng(), {
+          animate: true,
+          duration: 0.3
+        });
+        // Small delay to ensure map has panned before opening popup
+        setTimeout(() => {
+          marker.openPopup();
+        }, 200);
+      } else {
+        // Desktop: open popup immediately
+        marker.openPopup();
+      }
     }
   }
 
