@@ -130,7 +130,7 @@ const Header: React.FC<HeaderProps> = ({ vendors, onVendorClick, openVendorPopup
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search vendors..."
-                className="w-full p-3 pl-10 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 text-sm transition-all duration-250 ease-out"
+                className="w-full p-3 pl-10 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 text-base transition-all duration-250 ease-out"
                 style={{ 
                   '--tw-ring-color': 'rgb(229, 231, 235)',
                   '--tw-ring-opacity': '1'
