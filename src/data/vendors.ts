@@ -169,8 +169,8 @@ export const vendors: VendorData[] = [
     name: 'Blair and Landon Matney Art',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
-    image: 'images/vendors/avatars/delger-avatar.jpg', // Local avatar image
-    detailImage: 'images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/landonmatney-avatar.png', // Local avatar image
+    detailImage: 'images/vendors/details/landonmatney-details.jpg', // Local detail image
     location: {
       x: 75,
       y: 25,
