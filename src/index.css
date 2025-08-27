@@ -93,7 +93,14 @@
   transform: rotate(45deg) scale(1.1);
 }
 
-/* Infrastructure popup styles */
+/* Infrastructure popup styles - match vendor popup styling */
+.infrastructure-popup .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
 .infrastructure-popup-content {
   font-family: 'Inter', system-ui, sans-serif;
 }
