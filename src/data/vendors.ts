@@ -691,7 +691,7 @@ export const vendors: VendorData[] = [
     type: 'activity',
     category: 'activities' as VendorCategory,
     image: 'images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
-    detailImage: 'images/vendors/details/cecils-details.jpg', // Local detail image
+    detailImage: 'images/vendors/details/beergarden-details.jpg', // Local detail image
     location: {
       x: 70,
       y: 45,
