@@ -177,9 +177,9 @@ export class InfrastructureManager {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            border-radius: 3px;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border-radius: 50%;
           " data-type="${type}">
           </div>
         `;
@@ -200,9 +200,10 @@ export class InfrastructureManager {
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             position: relative;
             cursor: pointer;
+            transition: all 0.2s ease;
             touch-action: manipulation;
           " data-type="${type}">
             <span style="transform: rotate(-45deg); color: black; font-weight: bold;">
