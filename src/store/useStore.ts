@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Vendor, FilterState, UserPreferences } from '../types';
+import { FilterState, UserPreferences } from '../types';
 import { VendorData } from '../data/vendors';
 
 interface AppState {

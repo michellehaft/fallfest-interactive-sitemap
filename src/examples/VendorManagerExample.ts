@@ -8,7 +8,7 @@ import { VendorCategory } from '../types';
 // Example: Basic VendorManager setup
 export function setupBasicVendorManager(map: L.Map, vendors: VendorData[]): VendorManager {
   const vendorManager = new VendorManager(map, vendors, {
-    onVendorClick: (vendor, marker) => {
+    onVendorClick: (vendor) => {
       console.log('Vendor clicked:', vendor.name);
       // Handle vendor click - open details modal, etc.
     },
@@ -42,9 +42,7 @@ export function addNewVendor(vendorManager: VendorManager): void {
     },
     specialOffers: ['Happy Hour 3-5 PM: $1 tacos'],
     status: 'open',
-    featured: true,
-    pricing: '$$',
-    paymentMethods: ['cash', 'card']
+    featured: true
   };
 
   vendorManager.addVendor(newVendor);
@@ -109,7 +107,6 @@ export function showVendorStats(vendorManager: VendorManager): void {
   console.log(`Currently visible: ${stats.visible}`);
   console.log('By type:', stats.byType);
   console.log('By category:', stats.byCategory);
-  console.log('By status:', stats.byStatus);
 }
 
 // Example: Finding and focusing on a specific vendor
@@ -161,21 +158,16 @@ export function advancedFiltering(vendorManager: VendorManager): void {
   // Get all vendors and apply custom filtering logic
   const allVendors = vendorManager.getAllVendors();
   
-  // Custom filter: featured food vendors that accept cards
+  // Custom filter: featured food vendors
   const customFilteredVendors = allVendors.filter(vendor => 
     vendor.featured && 
-    vendor.category === 'food' && 
-    vendor.paymentMethods?.includes('card')
+    vendor.category === 'food'
   );
   
-  console.log(`Found ${customFilteredVendors.length} featured food vendors accepting cards`);
+  console.log(`Found ${customFilteredVendors.length} featured food vendors`);
   
   // Apply filter to show only these vendors
   if (customFilteredVendors.length > 0) {
-    const vendorIds = customFilteredVendors.map(v => v.id);
-    
-    // Create a filter that shows only these specific vendors
-    const searchQuery = customFilteredVendors.map(v => v.name).join('|');
     vendorManager.applyFilter({
       searchQuery: customFilteredVendors[0].name // Show first vendor as example
     });
