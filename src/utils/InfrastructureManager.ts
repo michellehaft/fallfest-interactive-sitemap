@@ -40,14 +40,9 @@ export class InfrastructureManager {
       icon,
       title: item.name,
       zIndexOffset: -500, // Higher z-index for better touch interaction while still below vendors
-      draggable: true, // Always create markers as draggable, we'll control it via enable/disable
+      draggable: this.isDragModeEnabled, // Only make draggable when in dev mode
       bubblingMouseEvents: false // Prevent event bubbling issues on mobile
     });
-
-    // Initially disable dragging if not in drag mode
-    if (!this.isDragModeEnabled) {
-      marker.dragging?.disable();
-    }
 
     // Create popup content
     const popupContent = this.createPopupContent(item);
@@ -390,34 +385,21 @@ export class InfrastructureManager {
     console.log(`🏗️ InfrastructureManager: Setting drag mode to ${enabled} for ${this.markers.size} markers`);
     this.isDragModeEnabled = enabled;
     
-    // Update all existing markers
+    // Recreate all markers to properly set draggable state
     this.markers.forEach((marker, itemId) => {
       if (marker) {
-        console.log(`🏗️ Setting draggable=${enabled} for infrastructure ${itemId}`);
+        // Remove old marker
+        this.markerGroup.removeLayer(marker);
         
-        // Use the dragging property to enable/disable
-        if (enabled) {
-          if (marker.dragging) {
-            marker.dragging.enable();
-            console.log(`🏗️ Dragging enabled for infrastructure ${itemId}`);
-          } else {
-            console.warn(`🏗️ No dragging property on marker for infrastructure ${itemId}`);
-          }
-          // Remove hover effects in drag mode
-          marker.off('mouseover');
-          marker.off('mouseout');
-        } else {
-          if (marker.dragging) {
-            marker.dragging.disable();
-            console.log(`🏗️ Dragging disabled for infrastructure ${itemId}`);
-          }
-          // Re-enable hover effects when dev mode is off
-          marker.on('mouseover', () => {
-            marker.openPopup();
-          });
-          marker.on('mouseout', () => {
-            marker.closePopup();
-          });
+        // Find infrastructure item data
+        const item = this.infrastructureItems.find(i => i.id === itemId);
+        if (item) {
+          // Create new marker with correct draggable state
+          const newMarker = this.createMarker(item);
+          this.markers.set(itemId, newMarker);
+          
+          // Add the new marker to the group
+          this.markerGroup.addLayer(newMarker);
         }
       }
     });

@@ -34,6 +34,7 @@
     max-height: 32px !important;
     min-width: 32px !important;
     min-height: 32px !important;
+    touch-action: manipulation !important;
   }
   
   .vendor-marker:hover {
@@ -90,6 +91,7 @@
   max-height: 32px !important;
   min-width: 32px !important;
   min-height: 32px !important;
+  touch-action: manipulation !important;
 }
 
 .infrastructure-marker:hover {
@@ -242,6 +244,7 @@
   max-height: 32px !important;
   min-width: 32px !important;
   min-height: 32px !important;
+  touch-action: manipulation !important;
 }
 
 .vendor-marker:hover {
@@ -334,6 +337,7 @@
     max-height: 32px !important;
     min-width: 32px !important;
     min-height: 32px !important;
+    touch-action: manipulation !important;
   }
   
   .infrastructure-marker-icon {

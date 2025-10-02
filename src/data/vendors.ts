@@ -262,10 +262,10 @@ export const vendors: VendorData[] = [
     image: 'images/vendors/avatars/nujo-avatar.jpg', // Local avatar image
     detailImage: 'images/vendors/details/nujo-details.jpg', // Local detail image
     location: {
-      x: 55,
+      x: 75,
       y: 25,
-      area: 'central-vendor-area',
-      coordinates: generateCoords(0.0003059, -0.0000139)
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0003860, -0.0001775)
     },
     description: 'NUJO is a beveragepowered by 6 organic superfoods that combine for a better-than-coffee experience.',
     contact: {
@@ -482,10 +482,10 @@ export const vendors: VendorData[] = [
     image: 'images/vendors/avatars/handmadebyjoyce-avatar.jpg', // Local avatar image
     detailImage: 'images/vendors/details/handmadebyjoyce-details.jpg', // Local detail image
     location: {
-      x: 75,
+      x: 55,
       y: 25,
-      area: 'east-vendor-area',
-      coordinates: generateCoords(0.0003860, -0.0001775)
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0003059, -0.0000139)
     },
     description: 'Handmade knitted items like hats, scarves, washcloths and more by Joyce.',
   },
