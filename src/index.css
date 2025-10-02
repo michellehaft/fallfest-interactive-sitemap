@@ -28,6 +28,12 @@
   .vendor-marker {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    width: 32px !important;
+    height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
   }
   
   .vendor-marker:hover {
@@ -78,6 +84,12 @@
 .infrastructure-marker {
   cursor: pointer;
   user-select: none;
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
 }
 
 .infrastructure-marker:hover {
@@ -224,6 +236,12 @@
 /* Vendor marker animations */
 .vendor-marker {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
 }
 
 .vendor-marker:hover {
@@ -309,7 +327,13 @@
   
   /* Make infrastructure markers more touch-friendly on mobile */
   .infrastructure-marker {
-    /* Removed min-width/min-height to match vendor marker size */
+    /* Force exact 32px size to match vendor markers */
+    width: 32px !important;
+    height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
   }
   
   .infrastructure-marker-icon {
