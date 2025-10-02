@@ -309,8 +309,7 @@
   
   /* Make infrastructure markers more touch-friendly on mobile */
   .infrastructure-marker {
-    min-width: 44px !important;
-    min-height: 44px !important;
+    /* Removed min-width/min-height to match vendor marker size */
   }
   
   .infrastructure-marker-icon {
