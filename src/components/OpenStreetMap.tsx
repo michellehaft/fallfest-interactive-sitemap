@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { VendorData } from '../data/vendors';
@@ -33,9 +33,10 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
   const infrastructureManagerRef = useRef<InfrastructureManager | null>(null);
   const tempMarkersRef = useRef<L.Marker[]>([]);
   
+  // DEV MODE DISABLED FOR PRODUCTION - Uncomment to re-enable
   // Development mode state
-  const [devMode, setDevMode] = useState(false);
-  const [clickedCoordinates, setClickedCoordinates] = useState<Array<{lat: number, lng: number, offsetLat: number, offsetLng: number}>>([]);
+  // const [devMode, setDevMode] = useState(false);
+  // const [clickedCoordinates, setClickedCoordinates] = useState<Array<{lat: number, lng: number, offsetLat: number, offsetLng: number}>>([]);
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
@@ -64,20 +65,21 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
       onVendorClick: (vendor) => {
         onVendorClick(vendor);
       },
-      onVendorDrag: (vendor, newCoordinates) => {
-        console.log(`🎯 ${vendor.name} moved to: [${newCoordinates[0].toFixed(7)}, ${newCoordinates[1].toFixed(7)}]`);
-        console.log(`📍 For generateCoords: generateCoords(${(newCoordinates[0] - EASTWOOD_CENTER[0]).toFixed(7)}, ${(newCoordinates[1] - EASTWOOD_CENTER[1]).toFixed(7)})`);
-        
-        // Add to coordinates state for display
-        setClickedCoordinates(prev => [...prev, { 
-          lat: newCoordinates[0], 
-          lng: newCoordinates[1], 
-          offsetLat: newCoordinates[0] - EASTWOOD_CENTER[0], 
-          offsetLng: newCoordinates[1] - EASTWOOD_CENTER[1],
-          type: 'vendor',
-          name: vendor.name
-        }]);
-      },
+      // DEV MODE DISABLED FOR PRODUCTION - Uncomment to re-enable
+      // onVendorDrag: (vendor, newCoordinates) => {
+      //   console.log(`🎯 ${vendor.name} moved to: [${newCoordinates[0].toFixed(7)}, ${newCoordinates[1].toFixed(7)}]`);
+      //   console.log(`📍 For generateCoords: generateCoords(${(newCoordinates[0] - EASTWOOD_CENTER[0]).toFixed(7)}, ${(newCoordinates[1] - EASTWOOD_CENTER[1]).toFixed(7)})`);
+      //   
+      //   // Add to coordinates state for display
+      //   setClickedCoordinates(prev => [...prev, { 
+      //     lat: newCoordinates[0], 
+      //     lng: newCoordinates[1], 
+      //     offsetLat: newCoordinates[0] - EASTWOOD_CENTER[0], 
+      //     offsetLng: newCoordinates[1] - EASTWOOD_CENTER[1],
+      //     type: 'vendor',
+      //     name: vendor.name
+      //   }]);
+      // },
       popupOptions: {
         maxWidth: 350,
         className: 'vendor-popup'
@@ -89,20 +91,21 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
 
     // Initialize InfrastructureManager
     infrastructureManagerRef.current = new InfrastructureManager(map, infrastructureItems, {
-      onInfrastructureDrag: (item, newCoordinates) => {
-        console.log(`🏗️ ${item.name} moved to: [${newCoordinates[0].toFixed(7)}, ${newCoordinates[1].toFixed(7)}]`);
-        console.log(`🏗️ For generateCoords: generateCoords(${(newCoordinates[0] - EASTWOOD_CENTER[0]).toFixed(7)}, ${(newCoordinates[1] - EASTWOOD_CENTER[1]).toFixed(7)})`);
-        
-        // Add to coordinates state for display
-        setClickedCoordinates(prev => [...prev, { 
-          lat: newCoordinates[0], 
-          lng: newCoordinates[1], 
-          offsetLat: newCoordinates[0] - EASTWOOD_CENTER[0], 
-          offsetLng: newCoordinates[1] - EASTWOOD_CENTER[1],
-          type: 'infrastructure',
-          name: item.name
-        }]);
-      }
+      // DEV MODE DISABLED FOR PRODUCTION - Uncomment to re-enable
+      // onInfrastructureDrag: (item, newCoordinates) => {
+      //   console.log(`🏗️ ${item.name} moved to: [${newCoordinates[0].toFixed(7)}, ${newCoordinates[1].toFixed(7)}]`);
+      //   console.log(`🏗️ For generateCoords: generateCoords(${(newCoordinates[0] - EASTWOOD_CENTER[0]).toFixed(7)}, ${(newCoordinates[1] - EASTWOOD_CENTER[1]).toFixed(7)})`);
+      //   
+      //   // Add to coordinates state for display
+      //   setClickedCoordinates(prev => [...prev, { 
+      //     lat: newCoordinates[0], 
+      //     lng: newCoordinates[1], 
+      //     offsetLat: newCoordinates[0] - EASTWOOD_CENTER[0], 
+      //     offsetLng: newCoordinates[1] - EASTWOOD_CENTER[1],
+      //     type: 'infrastructure',
+      //     name: item.name
+      //   }]);
+      // }
     });
 
     // Notify parent about infrastructure manager
@@ -143,73 +146,76 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
     }
   }, [onVendorManagerReady, vendors]);
 
+  // DEV MODE DISABLED FOR PRODUCTION - Uncomment to re-enable
   // Handle dev mode changes
-  useEffect(() => {
-    try {
-                console.log(`🛠️ Dev mode effect triggered. devMode=${devMode}, vendorManager=${!!vendorManagerRef.current}, infrastructureManager=${!!infrastructureManagerRef.current}, map=${!!mapInstanceRef.current}`);
-      if (vendorManagerRef.current && mapInstanceRef.current) {
-        // Small delay to ensure markers are fully created
-        setTimeout(() => {
-          console.log(`🛠️ Setting drag mode to: ${devMode}`);
-          vendorManagerRef.current?.setDragMode(devMode);
-          infrastructureManagerRef.current?.setDevMode(devMode);
-        }, 100);
-        
-        // Disable/enable map dragging based on dev mode
-        if (devMode) {
-          // Disable map dragging when dev mode is active
-          mapInstanceRef.current.dragging.disable();
-          mapInstanceRef.current.doubleClickZoom.disable();
-          mapInstanceRef.current.scrollWheelZoom.disable();
-          mapInstanceRef.current.boxZoom.disable();
-          mapInstanceRef.current.keyboard.disable();
-          if ((mapInstanceRef.current as any).tap) (mapInstanceRef.current as any).tap.disable();
-        } else {
-          // Re-enable map dragging when dev mode is disabled
-          mapInstanceRef.current.dragging.enable();
-          mapInstanceRef.current.doubleClickZoom.enable();
-          mapInstanceRef.current.scrollWheelZoom.enable();
-          mapInstanceRef.current.boxZoom.enable();
-          mapInstanceRef.current.keyboard.enable();
-          if ((mapInstanceRef.current as any).tap) (mapInstanceRef.current as any).tap.enable();
-          
-          // Clear temporary markers and coordinates when exiting dev mode
-          tempMarkersRef.current.forEach(marker => {
-            if (mapInstanceRef.current) {
-              mapInstanceRef.current.removeLayer(marker);
-            }
-          });
-          tempMarkersRef.current = [];
-          setClickedCoordinates([]);
-        }
-      }
-    } catch (error) {
-      console.error('Error handling dev mode change:', error);
-    }
-  }, [devMode, vendors]);
+  // useEffect(() => {
+  //   try {
+  //               console.log(`🛠️ Dev mode effect triggered. devMode=${devMode}, vendorManager=${!!vendorManagerRef.current}, infrastructureManager=${!!infrastructureManagerRef.current}, map=${!!mapInstanceRef.current}`);
+  //     if (vendorManagerRef.current && mapInstanceRef.current) {
+  //       // Small delay to ensure markers are fully created
+  //       setTimeout(() => {
+  //         console.log(`🛠️ Setting drag mode to: ${devMode}`);
+  //         vendorManagerRef.current?.setDragMode(devMode);
+  //         infrastructureManagerRef.current?.setDevMode(devMode);
+  //       }, 100);
+  //       
+  //       // Disable/enable map dragging based on dev mode
+  //       if (devMode) {
+  //         // Disable map dragging when dev mode is active
+  //         mapInstanceRef.current.dragging.disable();
+  //         mapInstanceRef.current.doubleClickZoom.disable();
+  //         mapInstanceRef.current.scrollWheelZoom.disable();
+  //         mapInstanceRef.current.boxZoom.disable();
+  //         mapInstanceRef.current.keyboard.disable();
+  //         if ((mapInstanceRef.current as any).tap) (mapInstanceRef.current as any).tap.disable();
+  //       } else {
+  //         // Re-enable map dragging when dev mode is disabled
+  //         mapInstanceRef.current.dragging.enable();
+  //         mapInstanceRef.current.doubleClickZoom.enable();
+  //         mapInstanceRef.current.scrollWheelZoom.enable();
+  //         mapInstanceRef.current.boxZoom.enable();
+  //         mapInstanceRef.current.keyboard.enable();
+  //         if ((mapInstanceRef.current as any).tap) (mapInstanceRef.current as any).tap.enable();
+  //         
+  //         // Clear temporary markers and coordinates when exiting dev mode
+  //         tempMarkersRef.current.forEach(marker => {
+  //           if (mapInstanceRef.current) {
+  //             mapInstanceRef.current.removeLayer(marker);
+  //           }
+  //         });
+  //         tempMarkersRef.current = [];
+  //         setClickedCoordinates([]);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error handling dev mode change:', error);
+  //   }
+  // }, [devMode, vendors]);
 
+  // DEV MODE DISABLED FOR PRODUCTION - Uncomment to re-enable
   // Keyboard shortcut for dev mode (Ctrl/Cmd + D)
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
-        e.preventDefault();
-        setDevMode(prev => {
-          const newMode = !prev;
-          console.log(`🛠️ Dev Mode ${newMode ? 'ENABLED' : 'DISABLED'} (Ctrl/Cmd + D)`);
-          return newMode;
-        });
-      }
-    };
+  // useEffect(() => {
+  //   const handleKeyPress = (e: KeyboardEvent) => {
+  //     if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+  //       e.preventDefault();
+  //       setDevMode(prev => {
+  //         const newMode = !prev;
+  //         console.log(`🛠️ Dev Mode ${newMode ? 'ENABLED' : 'DISABLED'} (Ctrl/Cmd + D)`);
+  //         return newMode;
+  //       });
+  //     }
+  //   };
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, []);
+  //   window.addEventListener('keydown', handleKeyPress);
+  //   return () => window.removeEventListener('keydown', handleKeyPress);
+  // }, []);
 
+  // DEV MODE DISABLED FOR PRODUCTION - Uncomment to re-enable
   // Function to clear all coordinates
-  const clearTempMarkers = () => {
-    setClickedCoordinates([]);
-    console.log('🧹 Cleared all coordinates');
-  };
+  // const clearTempMarkers = () => {
+  //   setClickedCoordinates([]);
+  //   console.log('🧹 Cleared all coordinates');
+  // };
 
   // Update vendors when props change
   useEffect(() => {
@@ -240,8 +246,9 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
         style={{ zIndex: 1, marginBottom: 0, paddingBottom: 0, height: '100vh' }}
       />
       
+      {/* DEV MODE DISABLED FOR PRODUCTION - Uncomment to re-enable */}
       {/* Development Mode Controls */}
-      <div className="absolute top-4 right-4 bg-gray-900 text-white rounded-lg shadow-lg p-3 z-20">
+      {/* <div className="absolute top-4 right-4 bg-gray-900 text-white rounded-lg shadow-lg p-3 z-20">
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 text-sm font-medium">
             <input
@@ -269,10 +276,11 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
             <span className="text-gray-400">Ctrl/Cmd + D to toggle</span>
           </div>
         )}
-      </div>
+      </div> */}
 
+      {/* DEV MODE DISABLED FOR PRODUCTION - Uncomment to re-enable */}
       {/* Coordinates Display */}
-      {devMode && clickedCoordinates.length > 0 && (
+      {/* {devMode && clickedCoordinates.length > 0 && (
         <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 z-20 max-w-md max-h-80 overflow-y-auto">
           <div className="flex items-center justify-between mb-3">
             <h4 className="font-semibold text-gray-800">📍 Dragged Marker Coordinates</h4>
@@ -325,7 +333,7 @@ const OpenStreetMap: React.FC<OpenStreetMapProps> = ({ vendors, onVendorClick, o
             ))}
           </div>
         </div>
-      )}
+      )} */}
 
 
     </div>
