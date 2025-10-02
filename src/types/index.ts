@@ -23,6 +23,7 @@ export interface Vendor {
 export type VendorCategory = 
   | 'food' 
   | 'beverage'
+  | 'desserts'
   | 'merchant'
   | 'NGO/Civic'
   | 'activities' 

@@ -39,53 +39,52 @@ export const vendors: VendorData[] = [
       x: 20,
       y: 25,
       area: 'west-vendor-area',
-      coordinates: generateCoords(0.0002280, 0.0000263)
+      coordinates: generateCoords(0.0000851, -0.0000461)
     },
     description: 'Welcome to Ofelia, a vibrant homage to the rich culinary traditions of Mexico City, nestled in Nashville.',
     contact: {
       website: 'ofelianashville.com'
     },
-    dietaryOptions: ['gluten-free and vegetarian options available']
+    dietaryOptions: ['vegan', 'vegatarian','gluten-free']
   },
   
   {
     id: 'food-002',
-    name: 'Saap Saap BBQ',
+    name: 'Mijo Gordito',
     type: 'vendor',
     category: 'food' as VendorCategory,
-    image: 'images/vendors/avatars/saapsaap-avatar.jpg', // Local avatar image
-    detailImage: 'images/vendors/details/saapsaap-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/mijogordito-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/mijogordito-details.jpg', // Local detail image
     location: {
       x: 25,
       y: 30,
       area: 'west-vendor-area',
-      coordinates: generateCoords(0.0001327, -0.0000703)
+      coordinates: generateCoords(0.0004942, -0.0002205)
     },
-    description: 'Saap Saap BBQ in Nashville, TN, is where Southern barbecue meets vibrant Lao flavors, creating an unforgettable culinary experience. Complete with a trailer smoker, we bring expertly smoked and grilled meats to the streets of Nashville, offering a unique twist on traditional BBQ with Lao-inspired dishes.',
+    description: 'Mom + pop food shop dedicated to making food they love—blending Thai/Lao and Mexican flavors. Their rotating menu that includes everything from Golden curry and katsu to chilaquiles to pad kgra pao to griddled cheese crust burritos.',
     contact: {
-      website: 'roaminghunger.com/saap-saap-bbq/'
+      website: 'mijo-gordito.square.site'
     },
-    dietaryOptions: ['vegan', 'gluten-free']
+    dietaryOptions: ['vegan']
   },
 
   {
     id: 'food-003',
-    name: 'Dreamburger',
+    name: 'Ivory Cotton Bar',
     type: 'vendor',
-    category: 'food' as VendorCategory,
-    image: 'images/vendors/avatars/dreamburger-avatar.jpg', // Local avatar image
-    detailImage: 'images/vendors/details/dreamburger-details.jpg', // Local detail image
+    category: 'desserts' as VendorCategory,
+    image: 'images/vendors/avatars/ivorycottoncandy-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/ivorycottoncandy-details.jpg', // Local detail image
     location: {
       x: 35,
       y: 40,
       area: 'central-vendor-area',
-      coordinates: generateCoords(0.0002648, -0.0001266)
+      coordinates: generateCoords(-0.0001985, 0.0000639)
     },
-    description: 'Gourmet burgers made with locally sourced ingredients and creative toppings. From classic American favorites to innovative flavor combinations.',
+    description: 'Handcrafted cotton candy flavors, gourmet popcorn, cotton candy topped drinks, and other sweet treats.',
     contact: {
-      website: 'dreamburger.com'
+      website: 'ivorycottonbar.com'
     },
-    dietaryOptions: ['vegetarian']
   },
   {
     id: 'food-004',
@@ -125,6 +124,63 @@ export const vendors: VendorData[] = [
     },
     dietaryOptions: ['vegetarian']
   },
+  {
+    id: 'food-006',
+    name: 'FAB Pizza',
+    type: 'vendor',
+    category: 'food' as VendorCategory,
+    image: 'images/vendors/avatars/fabpizza-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/fabpizza-details.jpg', // Local detail image
+    location: {
+      x: 35,
+      y: 40,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0001132, 0.0000692)
+    },
+    description: 'Chef driven, wood-fired pizza, we can put almost ANYTHING on a pizza!',
+    contact: {
+      website: 'fab-pizza.square.site/menu'
+    },
+    dietaryOptions: ['vegetarian']
+  },
+
+  {
+    id: 'food-007',
+    name: 'Ice & Bones',
+    type: 'vendor',
+    category: 'desserts' as VendorCategory,
+    image: 'images/vendors/avatars/iceandbones-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/iceandbones-details.jpg', // Local detail image
+    location: {
+      x: 35,
+      y: 40,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(-0.0000145, 0.0001229)
+    },
+    description: 'Crafting gourmet ice cream bars in Nashville, TN',
+    contact: {
+      website: 'iceandbones.com'
+    },
+  },
+
+  {
+    id: 'food-008',
+    name: 'Sweetest Little Bakeshop',
+    type: 'vendor',
+    category: 'desserts' as VendorCategory,
+    image: 'images/vendors/avatars/sweetestbakeshop-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/sweetestbakeshop-details.jpg', // Local detail image
+    location: {
+      x: 35,
+      y: 40,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0004358, -0.0001936)
+    },
+    description: 'Desserts and baked goods from local baker Victoria Bronfman.',
+    contact: {
+      website: 'victoriabronfman.com'
+    },
+  },
 
   // === BEVERAGE VENDORS ===
   {
@@ -138,7 +194,7 @@ export const vendors: VendorData[] = [
       x: 45,
       y: 20,
       area: 'central-vendor-area',
-      coordinates: generateCoords(0.0004293, -0.0000676)
+      coordinates: generateCoords(0.0004228, -0.0000622)
     },
     description: 'Local craft brewery featuring handcrafted beers with a focus on East Nashville community spirit. Offering a variety of seasonal brews, IPAs, lagers, and specialty craft cocktails.',
     contact: {
@@ -149,18 +205,72 @@ export const vendors: VendorData[] = [
 
   {
     id: 'beverage-002',
-    name: 'Delger Boba Tea',
+    name: 'Bobananza Tea',
     type: 'vendor',
     category: 'beverage' as VendorCategory,
-    image: 'images/vendors/avatars/delger-avatar.jpg', // Local avatar image
-    detailImage: 'images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/bobananza-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/bobananza-details.jpg', // Local detail image
     location: {
       x: 55,
       y: 25,
       area: 'central-vendor-area',
-      coordinates: generateCoords(0.0002, -0.0001)
+      coordinates: generateCoords(-0.0001422, 0.0000424)
     },
     description: 'Fresh and authentic boba tea with a wide variety of flavors and toppings. From classic milk teas to fruit-infused refreshers, enjoy premium bubble tea made with quality ingredients.'
+  },
+  {
+    id: 'beverage-003',
+    name: 'Walker Brothers Kombucha',
+    type: 'vendor',
+    category: 'beverage' as VendorCategory,
+    image: 'images/vendors/avatars/walkerbros-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/walkerbros-details.jpg', // Local detail image
+    location: {
+      x: 55,
+      y: 25,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0003665, -0.0000381)
+    },
+    description: 'Great-tasting craft kombucha. No shortcuts, nothing artificial.',
+    contact: {
+      website: 'drinkwalkerbrothers.com'
+    },
+  },
+  {
+    id: 'beverage-004',
+    name: 'Pucker Up Lemonade',
+    type: 'vendor',
+    category: 'beverage' as VendorCategory,
+    image: 'images/vendors/avatars/puckerup-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/puckerup-details.jpg', // Local detail image
+    location: {
+      x: 55,
+      y: 25,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0000483, 0.0000960)
+    },
+    description: 'East Nashville lemonade stand run by 11 year old Ellie. Serving fresh squeezed drinks on the weekends.',
+    contact: {
+      website: 'instagram.com/puckerup_eastnash/'
+    },
+  },
+  {
+    id: 'beverage-005',
+    name: 'Drink Nujo',
+    type: 'vendor',
+    category: 'beverage' as VendorCategory,
+    image: 'images/vendors/avatars/nujo-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/nujo-details.jpg', // Local detail image
+    location: {
+      x: 55,
+      y: 25,
+      area: 'central-vendor-area',
+      coordinates: generateCoords(0.0003059, -0.0000139)
+    },
+    description: 'NUJO is a beveragepowered by 6 organic superfoods that combine for a better-than-coffee experience.',
+    contact: {
+      website: 'drinknujo.com'
+    },
   },
 
   // === MERCHANT VENDORS ===
@@ -175,7 +285,7 @@ export const vendors: VendorData[] = [
       x: 75,
       y: 25,
       area: 'east-vendor-area',
-      coordinates: generateCoords(0.0005678, -0.0002473)
+      coordinates: generateCoords(-0.0000859, 0.0000209)
     },
     description: 'Art-painting and paper cutouts by local artists Blair and Landon Matney.',
     contact: {
@@ -194,9 +304,9 @@ export const vendors: VendorData[] = [
       x: 65,
       y: 35,
       area: 'east-vendor-area',
-      coordinates: generateCoords(0.0004012, -0.0001722)
+      coordinates: generateCoords(0.0005419, -0.0001132)
     },
-    description: 'Natural, plant-based bath products that don’t suck. Our skincare is eco-friendly, plastic-free, and made for real humans with real skin. No palm oil. No weird chemicals. Just ethical, zero-waste products.',
+    description: 'Natural, plant-based bath products that don\’t suck. Our skincare is eco-friendly, plastic-free, and made for real humans with real skin. No palm oil. No weird chemicals. Just ethical, zero-waste products.',
     contact: {
       website: 'mycluckhut.com'
     }
@@ -204,19 +314,20 @@ export const vendors: VendorData[] = [
 
   {
     id: 'merchant-002',
-    name: 'Mollie Weinman-Crocheted Goods',
+    name: 'Souvenir de Marie',
     type: 'vendor',
     category: 'merchant' as VendorCategory,
-    image: 'images/vendors/avatars/mollieweinman-avatar.jpg', // Local avatar image
-    detailImage: 'images/vendors/details/eastnashbeerworkds-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/souvenirdemarie-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/souvenirdemarie-details.jpg', // Local detail image
     location: {
       x: 75,
       y: 40,
       area: 'east-vendor-area',
-      coordinates: generateCoords(0.0000635, -0.0000407)
+      coordinates: generateCoords(0.0005549, -0.0002500)
     },
-    description: 'Handcrafted crocheted items including scarves, hats, blankets, and home decor. Each piece is lovingly made with quality yarn and attention to detail.',
+    description: 'Subscription box for women ready to rediscover themselves. A monthly box of encouragement, creativity, and growth — designed for women feeling overwhelmed, anxious, or stuck in life.',
     contact: {
+      website: 'souvenirdemarie.com'
     }
   },
 
@@ -296,6 +407,173 @@ export const vendors: VendorData[] = [
     }
   },
 
+  {
+    id: 'merchant-007',
+    name: 'Virginia\'s Creations',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/virginiascreations-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/virginiascreations-details.png', // Local detail image
+    location: {
+      x: 75,
+      y: 40,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0004834, -0.0000890)
+    },
+    description: 'Handmade jewelry from local artist Virginia',
+  },
+
+  {
+    id: 'merchant-008',
+    name: 'The Soup Dealer',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/soupdealer-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/soupdealer-details.jpg', // Local detail image
+    location: {
+      x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0006717, -0.0003009)
+    },
+    description: 'East Nashville\'s premier soup dealer',
+    contact: {
+      website: 'thesoupdealer.com'
+    }
+  },
+
+  {
+    id: 'merchant-009',
+    name: 'Deer Bird Vintage',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/deerbird-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/deerbird-details.jpg', // Local detail image
+    location: {
+      x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0001457, -0.0000729)
+    },
+    description: 'We are a curated pop-up vintage shop specializing in 1960\'s & 1970\'s vintage as well as vintage western wear.',
+  },
+
+  {
+    id: 'merchant-010',
+    name: 'Lindy Lou Gifts',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/lindylou-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/lindylou-details.jpg', // Local detail image
+    location: {
+      x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0002063, -0.0000998)
+    },
+    description: 'Whimsical gifts & housewares',
+  },
+
+  {
+    id: 'merchant-011',
+    name: 'Handmade by Joyce',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/handmadebyjoyce-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/handmadebyjoyce-details.jpg', // Local detail image
+    location: {
+      x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0003860, -0.0001775)
+    },
+    description: 'Handmade knitted items like hats, scarves, washcloths and more by Joyce.',
+  },
+  {
+    id: 'merchant-012',
+    name: 'Eden\'s Jewelry',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/edensjewelry-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/edensjewelry-details.jpg', // Local detail image
+    location: {
+      x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(-0.0000253, -0.0000032)
+    },
+    description: 'Jewelry, beads, bracelets and necklaces by local Greenwood Ave. residents',
+  },
+  {
+    id: 'merchant-013',
+    name: 'Grace Wagenman Historic Renovations & Real Estate',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/gracewagenman-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/gracewagenman-details.jpg', // Local detail image
+    location: {
+      x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0003254, -0.0001534)
+    },
+    description: 'Grace does historic renovations, real-estate and design for residential clients',
+    contact: {
+      website: 'gracewagenman.com'
+    }
+  },
+  {
+    id: 'merchant-014',
+    name: 'Refinery Fragrances',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/refinery-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/refinery-details.jpg', // Local detail image
+    location: {
+      x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0001457, 0.0003857)
+    },
+    description: 'Nashville\'s first luxury fragrance boutique. We are passionate about the art of scent and dedicated to providing a luxurious experience for fragrance enthusiasts.',
+    contact: {
+      website: 'refineryfragrances.com'
+    }
+  },
+  {
+    id: 'merchant-015',
+    name: 'Futurustics',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/futurustics-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/futurustics-details.jpg', // Local detail image
+    location: {
+      x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0001804, 0.0000424)
+    },
+    description: 'Futurustics is a vintage store and a fun experience for the whole family. We sell everything from toys, collector\'s items, memorabilia, advertisement signs, crates, clocks and lamps, vinyl, tobacco tins and much more.',
+    contact: {
+      website: 'instagram.com/futurustics/'
+    }
+  },
+  {
+    id: 'merchant-016',
+    name: 'Greenwood Kids Businesses',
+    type: 'vendor',
+    category: 'merchant' as VendorCategory,
+    image: 'images/vendors/avatars/greenwoodkids-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/greenwoodkids-details.jpg', // Local detail image
+    location: {
+      x: 75,
+      y: 25,
+      area: 'east-vendor-area',
+      coordinates: generateCoords(0.0006155, -0.0002768)
+    },
+    description: 'Local kids come together to sell their handmade goods.',
+  },
+
   // === ACTIVITIES ===
   {
     id: 'activity-001',
@@ -327,7 +605,7 @@ export const vendors: VendorData[] = [
       x: 50,
       y: 40,
       area: 'central-stage',
-      coordinates: generateCoords(0.0005981, 0.0000263)
+      coordinates: generateCoords(0.0005743, -0.0000166)
     },
     description: 'Main performance stage featuring live music, square dancing,and special presentations throughout the festival.',
     capacity: '500+ audience'
@@ -361,7 +639,7 @@ export const vendors: VendorData[] = [
       x: 25,
       y: 50,
       area: 'demo-area',
-      coordinates: generateCoords(0.0004942, -0.0000998)
+      coordinates: generateCoords(0.0002453, 0.0000129)
     },
     description: 'Beekeeping demonstrations and honey tasting. Learn about local honey production and the importance of bees to our ecosystem. We\'ll also have our neighborhood Greenwood Honey Co. pickup truck staged in fall decor for the perfect fall family photo opportunity.',
     contact: {
@@ -380,9 +658,9 @@ export const vendors: VendorData[] = [
       x: 60,
       y: 50,
       area: 'craft-area',
-      coordinates: generateCoords(0.0003665, 0.0000478)
+      coordinates: generateCoords(-0.0000599, 0.0002409)
     },
-    description: 'Hands-on arts and crafts activities for all ages. Create your own festival keepsakes with guided projects and free materials.',
+    description: 'Hands-on arts and crafts activities for all ages. Decorate your own fall crown or paint a tiny pumpkin with guides and free materials.',
     ageRequirements: 'All ages welcome'
   },
 
@@ -397,7 +675,7 @@ export const vendors: VendorData[] = [
       x: 70,
       y: 45,
       area: 'demo-area',
-      coordinates: generateCoords(-0.0003067, 0.0000639)
+      coordinates: generateCoords(-0.0003240, 0.0001658)
     },
     description: 'Skateboard demonstrations, mini ramp setup, and skateboarding lessons for beginners. Local skate shop showcasing gear and skills.',
     ageRequirements: '8+ years old',
@@ -405,6 +683,24 @@ export const vendors: VendorData[] = [
     contact: {
       website: 'cecilsskate.com'
     }
+  },
+
+  {
+    id: 'activity-007',
+    name: "Beer Garden",
+    type: 'activity',
+    category: 'activities' as VendorCategory,
+    image: 'images/vendors/avatars/fallfest-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/cecils-details.jpg', // Local detail image
+    location: {
+      x: 70,
+      y: 45,
+      area: 'demo-area',
+      coordinates: generateCoords(0.0003990, 0.0000397)
+    },
+    description: 'Enjoy your craft beer or non-alcoholic beverage in our covered beer garden',
+    ageRequirements: '21+ years old',
+    safetyInfo: 'No drinking and driving',
   },
 
   // === SERVICE VENDORS ===
@@ -419,7 +715,7 @@ export const vendors: VendorData[] = [
       x: 35,
       y: 45,
       area: 'central-vendor-area',
-      coordinates: generateCoords(0.0004661, -0.0001990)
+      coordinates: generateCoords(-0.0000773, 0.0001524)
     },
     description: 'Magical fairy hair tinsel and temporary hair coloring services. Add sparkle and color to your festival look with our safe, temporary hair accessories and styling.',
     contact: {
@@ -438,7 +734,7 @@ export const vendors: VendorData[] = [
       x: 55,
       y: 45,
       area: 'central-vendor-area',
-      coordinates: generateCoords(0.0005635, -0.0001212)
+      coordinates: generateCoords(-0.0001379, 0.0001792)
     },
     description: 'Professional face painting and temporary tattoos for all ages. From simple designs to elaborate artwork, we bring your imagination to life with safe, high-quality paints.',
     contact: {
@@ -449,20 +745,20 @@ export const vendors: VendorData[] = [
   // === NGO/CIVIC VENDORS ===
   {
     id: 'ngo-001',
-    name: 'Root Nashville',
+    name: 'Linden Waldorf School Nashville',
     type: 'vendor',
     category: 'NGO/Civic' as VendorCategory,
-    image: 'images/vendors/avatars/rootnashville-avatar.jpg', // Local avatar image
-    detailImage: 'images/vendors/details/rootnashville-details.jpg', // Local detail image
+    image: 'images/vendors/avatars/lindenwaldorf-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/lindenwaldorf-details.jpg', // Local detail image
     location: {
       x: 30,
       y: 60,
       area: 'south-vendor-area',
-      coordinates: generateCoords(0.0000180, 0.0001121)
+      coordinates: generateCoords(0.0006003, -0.0001373)
     },
-    description: 'Community organization focused on sustainable urban development and environmental stewardship in Nashville. Learn about local environmental initiatives and how to get involved.',
+    description: 'Linden Waldorf School is a co-ed independent school in Nashville, Tennessee, where imagination is in the making for preschool–grade 8.',
     contact: {
-      website: 'rootnashville.org'
+      website: 'lindenwaldorf.org'
     }
   },
 
@@ -477,12 +773,30 @@ export const vendors: VendorData[] = [
       x: 70,
       y: 60,
       area: 'south-vendor-area',
-      coordinates: generateCoords(0.0006306, -0.0002768)
+      coordinates: generateCoords(0.0002669, -0.0001266)
     },
-    description: 'Local neighborhood association working to improve community life in Eastwood Village. Discover upcoming community events, volunteer opportunities, and ways to connect with your neighbors.',
+    description: 'Eastwood Neighbors, Inc. is a non-profit organization established in 1992 by community members. Discover upcoming community events, volunteer opportunities, and ways to connect with your neighbors.',
     contact: {
       email: 'info@eastwoodneighbors.org',
       website: 'eastwoodneighbors.org'
+    }
+  },
+  {
+    id: 'ngo-003',
+    name: 'Walden\'s Puddle',
+    type: 'vendor',
+    category: 'NGO/Civic' as VendorCategory,
+    image: 'images/vendors/avatars/waldenspuddle-avatar.jpg', // Local avatar image
+    detailImage: 'images/vendors/details/waldenspuddle-details.jpg', // Local detail image
+    location: {
+      x: 70,
+      y: 60,
+      area: 'south-vendor-area',
+      coordinates: generateCoords(0.0000310, -0.0000247)
+    },
+    description: 'Walden\’s Puddle provides care and treatment to sick, injured and orphaned native Tennessee wildlife. We are a professionally-staffed wildlife rehabilitation facility in Middle Tennessee.',
+    contact: {
+      website: 'waldenspuddle.org'
     }
   },
 
@@ -501,6 +815,11 @@ export const categoryConfig = {
     icon: '🧋',
     label: 'Beverage'
   },
+  desserts: {
+    color: '#FF69B4', // Hot Pink
+    icon: '🍰',
+    label: 'Desserts'
+  },
   merchant: {
     color: '#8B5CF6', // Purple
     icon: '🛍️',
@@ -509,7 +828,7 @@ export const categoryConfig = {
   'NGO/Civic': {
     color: '#EC4899', // Pink
     icon: '🤝',
-    label: 'Non-Profit'
+    label: 'Community Org'
   },
   activities: {
     color: '#1EB86B', // Emerald

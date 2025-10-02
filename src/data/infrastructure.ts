@@ -2,7 +2,7 @@
 export interface InfrastructureItem {
   id: string;
   name: string;
-  type: 'barricade' | 'detour' | 'seating' | 'trash' | 'security' | 'parking' | 'restrooms' | 'firstAid';
+  type: 'barricade' | 'detour' | 'seating' | 'trash' | 'security' | 'parking' | 'restrooms' | 'firstAid' | 'accessibility';
   location: {
     coordinates: [number, number];
   };
@@ -23,7 +23,7 @@ export const infrastructureItems: InfrastructureItem[] = [
     id: 'barricade-001',
     name: 'Barricade',
     type: 'barricade',
-    location: { coordinates: generateCoords(-0.0003457, 0.0001953) },
+    location: { coordinates: generateCoords(-0.0003349, 0.0000773) },
     description: 'Road closure for festival area'
   },
   {
@@ -38,13 +38,6 @@ export const infrastructureItems: InfrastructureItem[] = [
     name: 'Barricade',
     type: 'barricade',
     location: { coordinates: generateCoords(0.0000526, -0.0041418) },
-    description: 'Road closure for festival area'
-  },
-  {
-    id: 'barricade-004',
-    name: 'Barricade',
-    type: 'barricade',
-    location: { coordinates: generateCoords(0.0002496, -0.0007220) },
     description: 'Road closure for festival area'
   },
   {
@@ -80,9 +73,9 @@ export const infrastructureItems: InfrastructureItem[] = [
   
   {
     id: 'detour-005',
-    name: 'Greenwood Alley Detour',
+    name: 'Roberts Ave. Detour',
     type: 'detour',
-    location: { coordinates: generateCoords(0.0002972, -0.0007676) },
+    location: { coordinates: generateCoords(0.0000764, -0.0042491) },
     description: 'Local traffic redirect'
   },
   {
@@ -119,14 +112,14 @@ export const infrastructureItems: InfrastructureItem[] = [
     id: 'seating-004',
     name: 'Seating Area',
     type: 'seating',
-    location: { coordinates: generateCoords(0.0000656, 0.0001792) },
+    location: { coordinates: generateCoords(0.0002994, 0.0000853) },
     description: 'General seating area'
   },
   {
     id: 'seating-006',
     name: 'Seating Area',
     type: 'seating',
-    location: { coordinates: generateCoords(0.0003037, 0.0000800) },
+    location: { coordinates: generateCoords(-0.0002548, 0.0000907) },
     description: 'General seating area'
   },
 
@@ -135,14 +128,14 @@ export const infrastructureItems: InfrastructureItem[] = [
     id: 'trash-001',
     name: 'Main Stage Trash',
     type: 'trash',
-    location: { coordinates: generateCoords(0.0004358, 0.0000639) },
+    location: { coordinates: generateCoords(0.0005029, 0.0001953) },
     description: 'Trash disposal'
   },
   {
     id: 'trash-002',
     name: 'Seating Area Trash',
     type: 'trash',
-    location: { coordinates: generateCoords(0.0001565, 0.0000531) },
+    location: { coordinates: generateCoords(0.0002323, 0.0001148) },
     description: 'Trash disposal'
   },
   {
@@ -172,7 +165,7 @@ export const infrastructureItems: InfrastructureItem[] = [
     id: 'security-002',
     name: 'Roberts Security',
     type: 'security',
-    location: { coordinates: generateCoords(0.0000310, -0.0039434) },
+    location: { coordinates: generateCoords(-0.0003262, -0.0000005) },
     description: 'Roberts Security'
   },
   {
@@ -220,8 +213,18 @@ export const infrastructureItems: InfrastructureItem[] = [
     id: 'firstaid-001',
     name: 'First Aid Station',
     type: 'firstAid',
-    location: { coordinates: generateCoords(0.0006934, -0.0003036) }, // Placeholder coordinates - can be moved in dev mode
+    location: { coordinates: generateCoords(0.0002518, -0.0001963) }, // Placeholder coordinates - can be moved in dev mode
     description: 'Emergency medical assistance and basic first aid services available.'
+  },
+
+  // Accessibility (1 item)
+  {
+    id: 'accessibility-001',
+    name: 'Accessibile Loading/Unloading',
+    type: 'accessibility',
+    location: { coordinates: generateCoords(-0.0003219, -0.0000756) }, // Near Roberts Security for easy access
+    description: 'Designated area for loading and unloading mobility devices, wheelchairs, and accessibility equipment.',
+    features: ['wheelchair accessible', 'loading zone', 'unloading zone', 'mobility device support']
   }
 ];
 
@@ -273,6 +276,12 @@ export const infrastructureConfig = {
     color: '#EF4444', // Red
     icon: '🏥',
     label: 'First Aid',
+    shape: 'circle'
+  },
+  accessibility: {
+    color: '#10B981', // Emerald Green
+    icon: '♿',
+    label: 'Accessibility',
     shape: 'circle'
   }
 };

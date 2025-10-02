@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 import { Vendor, FilterState, UserPreferences } from '../types';
+import { VendorData } from '../data/vendors';
 
 interface AppState {
   // Vendors
-  vendors: Vendor[];
-  filteredVendors: Vendor[];
-  selectedVendor: Vendor | null;
+  vendors: VendorData[];
+  filteredVendors: VendorData[];
+  selectedVendor: VendorData | null;
   
   // Filters
   filters: FilterState;
@@ -19,9 +20,9 @@ interface AppState {
   isSearchOpen: boolean;
   
   // Actions
-  setVendors: (vendors: Vendor[]) => void;
-  setFilteredVendors: (vendors: Vendor[]) => void;
-  setSelectedVendor: (vendor: Vendor | null) => void;
+  setVendors: (vendors: VendorData[]) => void;
+  setFilteredVendors: (vendors: VendorData[]) => void;
+  setSelectedVendor: (vendor: VendorData | null) => void;
   
   // Filter actions
   updateFilters: (filters: Partial<FilterState>) => void;
@@ -38,9 +39,9 @@ interface AppState {
   toggleSearch: () => void;
   
   // Computed values
-  getFavorites: () => Vendor[];
-  getVisited: () => Vendor[];
-  getVendorsByCategory: (category: string) => Vendor[];
+  getFavorites: () => VendorData[];
+  getVisited: () => VendorData[];
+  getVendorsByCategory: (category: string) => VendorData[];
 }
 
 const initialFilters: FilterState = {

@@ -73,14 +73,9 @@ export class VendorManager {
     const marker = L.marker([lat, lng], {
       icon,
       title: vendor.name,
-      draggable: true, // Always create markers as draggable, we'll control it via enable/disable
+      draggable: this.isDragModeEnabled, // Only make draggable when in dev mode
       ...this.markerOptions
     });
-
-    // Initially disable dragging if not in drag mode
-    if (!this.isDragModeEnabled) {
-      marker.dragging?.disable();
-    }
 
     // Create popup content
     const popupContent = this.createPopupContent(vendor);
@@ -652,48 +647,24 @@ export class VendorManager {
       console.log(`🔧 VendorManager: Setting drag mode to ${enabled} for ${this.markers.size} markers`);
       this.isDragModeEnabled = enabled;
       
-      // Update all existing markers
+      // Recreate all markers to properly set draggable state
       this.markers.forEach((marker, vendorId) => {
         if (marker) {
-          console.log(`🔧 Setting draggable=${enabled} for vendor ${vendorId}`);
+          // Remove old marker
+          this.markerGroup.removeLayer(marker);
           
-          // Use the dragging property to enable/disable
-          if (enabled) {
-            if (marker.dragging) {
-              marker.dragging.enable();
-              console.log(`🔧 Dragging enabled for vendor ${vendorId}`);
-            } else {
-              console.warn(`🔧 No dragging property on marker for vendor ${vendorId}`);
-            }
-            // Remove hover effects in drag mode
-            marker.off('mouseover');
-            marker.off('mouseout');
-            // Change cursor to indicate draggable
-            const markerElement = marker.getElement();
-            if (markerElement) {
-              markerElement.style.cursor = 'move';
-              console.log(`🔧 Cursor set to 'move' for vendor ${vendorId}`);
-            }
-          } else {
-            if (marker.dragging) {
-              marker.dragging.disable();
-              console.log(`🔧 Dragging disabled for vendor ${vendorId}`);
-            }
-            // Re-add hover effects when not in drag mode
-            marker.on('mouseover', () => {
-              marker.openPopup();
-            });
-            marker.on('mouseout', () => {
-              marker.closePopup();
-            });
-            // Reset cursor
-            const markerElement = marker.getElement();
-            if (markerElement) {
-              markerElement.style.cursor = 'pointer';
+          // Find vendor data
+          const vendor = this.vendors.find(v => v.id === vendorId);
+          if (vendor) {
+            // Create new marker with correct draggable state
+            const newMarker = this.createMarker(vendor);
+            this.markers.set(vendorId, newMarker);
+            
+            // Apply current filter to show/hide the new marker
+            if (this.passesFilter(vendor)) {
+              this.markerGroup.addLayer(newMarker);
             }
           }
-        } else {
-          console.warn(`🔧 Marker for vendor ${vendorId} is invalid`);
         }
       });
     } catch (error) {
