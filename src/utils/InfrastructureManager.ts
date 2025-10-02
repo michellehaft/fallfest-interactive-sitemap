@@ -172,8 +172,8 @@ export class InfrastructureManager {
             );
             background-size: 8px 8px;
             border: 2px solid #FFFFFF;
-            width: 40px;
-            height: 20px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -183,8 +183,8 @@ export class InfrastructureManager {
           " data-type="${type}">
           </div>
         `;
-        iconSize = [40, 20];
-        iconAnchor = [20, 10];
+        iconSize = [32, 32];
+        iconAnchor = [16, 16];
         break;
 
       case 'diamond':
